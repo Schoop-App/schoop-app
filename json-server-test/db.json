@@ -1,0 +1,78 @@
+{
+	"schedule": [
+		{
+			"number": 1,
+			"type": "PERIOD",
+			"start": [8, 0],
+			"end": [9, 15]
+		},
+		{
+			"name": "Monday Morning Meeting/Nutrition",
+			"type": "ASSEMBLY",
+			"start": [9, 15],
+			"end": [10, 0]
+		},
+		{
+			"number": 3,
+			"type": "PERIOD",
+			"start": [10, 0],
+			"end": [11, 15]
+		},
+		{
+			"name": "Extra Help",
+			"type": "BREAK",
+			"start": [11, 15],
+			"end": [11, 40]
+		},
+		{
+			"number": 5,
+			"type": "PERIOD",
+			"start": [11, 40],
+			"end": [12, 55]
+		},
+		{
+			"name": "Lunch",
+			"type": "BREAK",
+			"start": [12, 55],
+			"end": [13, 40]
+		},
+		{
+			"number": 7,
+			"type": "PERIOD",
+			"start": [13, 40],
+			"end": [14, 55]
+		}
+	],
+	"classes": [
+		{
+			"name": "PreCalc Honors",
+			"zoom_link": "https://zoom.us"
+		},
+		{
+			"name": "AP Euro",
+			"zoom_link": "https://zoom.us"
+		},
+		{
+			"name": "Madrigals - Chromatics",
+			"zoom_link": "https://zoom.us"
+		},
+		{
+			"name": "Spanish 3H",
+			"zoom_link": "https://zoom.us"
+		},
+		{
+			"name": "English 10H",
+			"zoom_link": "https://zoom.us"
+		},
+		{
+			"name": "AP CompSci A",
+			"zoom_link": "https://zoom.us"
+		},
+		{
+			"name": "Chemistry Honors",
+			"zoom_link": "https://zoom.us"
+		},
+		null,
+		null
+	]
+}

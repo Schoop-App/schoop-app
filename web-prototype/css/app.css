@@ -1,0 +1,11 @@
+html, body {
+	font-family: 'Karla', sans-serif;
+}
+
+table.today-schedule {
+	border-collapse: collapse;
+}
+
+table.today-schedule tr:not(:first-child) {
+	border-top: 2px solid #000;
+}
