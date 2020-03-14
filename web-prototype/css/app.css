@@ -1,11 +1,111 @@
+:root {
+	--main-content-padding: 20px;
+	--today-schedule-row-padding-lr: 22px;
+	--today-schedule-row-padding-tb: 12px;
+	--today-table-border-radius: 10px;
+}
+
 html, body {
 	font-family: 'Karla', sans-serif;
+	background: #f4f4f4;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	font-family: 'Poppins', sans-serif;
+	font-weight: 700;
+}
+
+main.content {
+	padding: var(--main-content-padding);
+}
+
+h1.today-heading, h1.mission-control-heading {
+	margin-top: 0;
+	margin-bottom: 12px;
+}
+
+.fix-border-radius {
+	mask-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAA5JREFUeNpiYGBgAAgwAAAEAAGbA+oJAAAAAElFTkSuQmCC);
+	overflow: hidden;
 }
 
 table.today-schedule {
+	background: #fff;
 	border-collapse: collapse;
+	border-radius: var(--today-table-border-radius);
+
+	width: 100%;
+	height: auto;
+
+	table-layout: fixed; /* keeps all boxes equal */
 }
 
-table.today-schedule tr:not(:first-child) {
-	border-top: 2px solid #000;
+table.today-schedule tr {
+	border-top: 1px solid #ccc;
+	font-size: 20px;
+	position: relative;
+}
+
+table.today-schedule tr:first-child {
+	border-top: none;
+}
+
+table.today-schedule tr.event-dark {
+	color: #fff;
+}
+
+table.today-schedule tr.event-light {
+	color: #000;
+}
+
+table.today-schedule tr.event-has-link {
+	cursor: pointer;
+	user-select: none;
+}
+
+table.today-schedule tr td {
+	padding-top: var(--today-schedule-row-padding-tb);
+	padding-bottom: var(--today-schedule-row-padding-tb);
+	padding-right: var(--today-schedule-row-padding-lr);
+}
+
+table.today-schedule tr td:first-child {
+	padding-left: var(--today-schedule-row-padding-lr);
+	padding-right: 0;
+}
+
+table.today-schedule tr td.left {
+	text-align: left;
+}
+
+table.today-schedule tr td.signifier {
+	font-weight: 700;
+	font-family: 'Poppins', sans-serif;
+}
+
+table.today-schedule tr td.center {
+	text-align: center;
+}
+
+table.today-schedule tr td.right {
+	text-align: right;
+}
+
+p.zoom-link-hint {
+	margin-bottom: 6px;
+	margin-left: calc(var(--today-table-border-radius) / 2);
+	font-weight: 700;
+}
+
+div.gridded-items {
+	display: grid;
+	grid-template-columns: 62fr 38fr;
+	/*grid-template-columns: auto;*/
+	grid-gap: var(--main-content-padding);
+}
+
+div.mission-control-outer div.gridded-mission-control {
+	display: grid;
+	grid-template-rows: 25fr 20fr 55fr;
+	border-radius: var(--today-table-border-radius);
 }

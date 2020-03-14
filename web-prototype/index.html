@@ -12,37 +12,39 @@
 </head>
 <body>
 	<!-- content -->
-	<div class="content">
-		<table class="today-schedule">
-			<tbody>
-			<!-- < --><!-- tr>
-				<td>P1</td>
-				<td>PreCalc Honors</td>
-				<td>8:00AM-9:15AM</td>
-			</tr>
-			<tr>
-				<td>ASM</td>
-				<td>Monday Morning Meeting/Nutrition</td>
-				<td>9:15AM-10:00AM</td>
-			</tr> -->
-			<!-- <tr>
-				<td>P3</td>
-				<td>Madrigals: Chromatics</td>
-				<td>10:00AM-11:15AM</td>
-			</tr>
-			<tr>
-				<td>BRK</td>
-				<td>Extra Help</td>
-				<td>11:15AM-11:40AM</td>
-			</tr>
-			<tr>
-				<td>P5</td>
-				<td>English 10H</td>
-				<td>11:15</td>
-				</tr> -->
-			</tbody>
-		</table>
-	</div>
+	<main class="content">
+		<div class="gridded-items">
+			<!-- today and dashboard are gridded -->
+			<div class="today-container">
+				<h1 class="today-heading">Today</h1>
+				<div class="today-schedule-outer">
+					<p class="zoom-link-hint">Click an event to open the Zoom link.</p>
+					<table class="today-schedule fix-border-radius">
+						<tbody></tbody>
+					</table>
+				</div>
+			</div>
+			<div class="mission-control-container">
+				<h1 class="mission-control-heading">Mission Control</h1>
+				<div class="mission-control-outer">
+					<!-- reused the same class. I'm lazy like that ;) -->
+					<p class="zoom-link-hint">See what's happening right now.</p>
+					<div class="gridded-mission-control fix-border-radius">
+						<div class="mission-control-part current-status" style="background-color: #f00;">
+							<!-- Current Status -->
+						</div>
+						<div class="mission-control-part qotd" style="background-color: #0f0;">
+							<!-- Quote of the Day -->
+						</div>
+						<div class="mission-control-part twitter-feed">
+							<!-- Windward Twitter feed -->
+							<iframe width="100%" height="100%" frameborder="0" src="./ww-twitter.html"></iframe>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</main>
 
 	<!-- scripts -->
 	<script src="./js/vendor.js"></script>

@@ -46,31 +46,38 @@
 	"classes": [
 		{
 			"name": "PreCalc Honors",
-			"zoom_link": "https://zoom.us"
+			"zoom_link": "https://zoom.us",
+			"color": "#87c3be"
 		},
 		{
 			"name": "AP Euro",
-			"zoom_link": "https://zoom.us"
+			"zoom_link": "https://zoom.us",
+			"color": "#1c3a51"
 		},
 		{
 			"name": "Madrigals - Chromatics",
-			"zoom_link": "https://zoom.us"
+			"zoom_link": "https://zoom.us",
+			"color": "#3c353c"
 		},
 		{
 			"name": "Spanish 3H",
-			"zoom_link": "https://zoom.us"
+			"zoom_link": "https://zoom.us",
+			"color": "#035ba8"
 		},
 		{
 			"name": "English 10H",
-			"zoom_link": "https://zoom.us"
+			"zoom_link": "https://zoom.us",
+			"color": "#36bb04"
 		},
 		{
 			"name": "AP CompSci A",
-			"zoom_link": "https://zoom.us"
+			"zoom_link": "https://zoom.us",
+			"color": "#7497f2"
 		},
 		{
 			"name": "Chemistry Honors",
-			"zoom_link": "https://zoom.us"
+			"zoom_link": "https://zoom.us",
+			"color": "#50e7fe"
 		},
 		null,
 		null
