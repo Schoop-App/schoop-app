@@ -46,40 +46,51 @@
 	"classes": [
 		{
 			"name": "PreCalc Honors",
-			"zoom_link": "https://zoom.us",
-			"color": "#87c3be"
+			"zoom_link": "https://zoom.us"
 		},
 		{
 			"name": "AP Euro",
-			"zoom_link": "https://zoom.us",
-			"color": "#1c3a51"
+			"zoom_link": "https://zoom.us"
 		},
 		{
 			"name": "Madrigals - Chromatics",
-			"zoom_link": "https://zoom.us",
-			"color": "#3c353c"
+			"zoom_link": "https://zoom.us"
 		},
 		{
 			"name": "Spanish 3H",
-			"zoom_link": "https://zoom.us",
-			"color": "#035ba8"
+			"zoom_link": "https://zoom.us"
 		},
 		{
 			"name": "English 10H",
-			"zoom_link": "https://zoom.us",
-			"color": "#36bb04"
+			"zoom_link": "https://zoom.us"
 		},
 		{
 			"name": "AP CompSci A",
-			"zoom_link": "https://zoom.us",
-			"color": "#7497f2"
+			"zoom_link": "https://zoom.us"
 		},
 		{
 			"name": "Chemistry Honors",
-			"zoom_link": "https://zoom.us",
-			"color": "#50e7fe"
+			"zoom_link": "https://zoom.us"
 		},
 		null,
 		null
-	]
+	],
+	"class_colors": [
+		"#9CE87B",
+		"#89BBEF",
+		"#FEF486",
+		"#F1D483",
+		"#BABABC",
+		"#B198E6",
+		"#82C2E5",
+		"#EE9DC2",
+		"#60B2A1"
+	],
+	"qotd": {
+		"_id": "uqaaARLMJn6",
+		"tags": ["famous-quotes", "inspirational"],
+		"content": "Once we accept our limits, we go beyond them.",
+		"author": "Albert Einstein",
+		"length": 45
+	}
 }
