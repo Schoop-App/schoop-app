@@ -1,16 +1,26 @@
 const openZoomLink = elem => {
-	let link = elem.getAttribute("data-link");
-	let shouldOpenLink = confirm("Open Zoom link?");
-	if (shouldOpenLink) window.open(link);
+	let eventLink = elem.getAttribute("data-link");
+	let eventName = elem.getAttribute("data-event-name");
+	if (confirm("Open Zoom link for " + eventName + "?\n(" + eventLink + ")")) window.open(eventLink);
 };
 
 // SHOW/HIDE LOADING OVERLAY
-const hideLoadingOverlay = () => document.querySelector(".loading-overlay").classList.add("hidden");
-const showLoadingOverlay = () => document.querySelector(".loading-overlay").classList.remove("hidden");
+const hideLoadingOverlay = () => {
+	document.querySelector("main.content").classList.add("page-loaded");
+	document.querySelector(".loading-overlay").classList.add("hidden");
+};
+const showLoadingOverlay = () => {
+	document.querySelector("main.content").classList.remove("page-loaded");
+	document.querySelector(".loading-overlay").classList.remove("hidden");
+};
 
 (window => {
+	// STARTING DATE
+	let todaysDate = new Date();
+
 	// CONTSTANTS //
 	const API_HOST = "http://localhost:3000"; // json-server testing
+	const NOTHING_DEMARCATOR = "-----"; // when there is NOTHING for an event or time
 
 	// enums for object mapping (prolly)
 	const EVENT_SIGNIFIERS = {
@@ -28,7 +38,7 @@ const showLoadingOverlay = () => document.querySelector(".loading-overlay").clas
 	const MONTHS_FOR_TODAY_VIEW = MONTHS_FULL.map(k => k.substring(0, 3)); // Jan, Feb, Mar, etc.
 
 	const eventRowTemplate = Handlebars.compile(
-`<tr style="background-color: {{{eventColor}}};" class="event-{{{eventIsLightOrDark}}}{{#if hasLink}} event-has-link{{/if}}"{{#if hasLink}} data-link="{{{eventZoomLink}}}" onclick="openZoomLink(this);"{{/if}}>
+`<tr style="background-color: {{{eventColor}}};" class="event-{{{eventIsLightOrDark}}}{{#if hasLink}} event-has-link{{/if}}"{{#if hasLink}} data-link="{{{eventZoomLink}}}" onclick="openZoomLink(this);"{{/if}} data-event-name="{{{eventName}}}">
 	<td class="signifier left">{{{eventSignifier}}}</td>
 	<td class="center" style="font-weight: 700;">{{eventName}}</td>
 	<td class="right">{{eventTimespan}}</td>
@@ -43,6 +53,14 @@ const showLoadingOverlay = () => document.querySelector(".loading-overlay").clas
 // 	<td class="right">${config.eventTimespan}</td>
 // </tr>`;
 // 	}
+
+	// thanks to https://stackoverflow.com/a/28633515
+	const getScrollTop = () => window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+
+	const handleScroll = () => {
+		let classAction = getScrollTop() > 5 ? "add" : "remove"
+		document.querySelector("nav.navbar").classList[classAction]("scrolled");
+	};
 
 	// light or dark algorithm from https://awik.io/determine-color-bright-dark-using-javascript/. thank you!
 	const lightOrDark = color => {
@@ -196,14 +214,17 @@ const showLoadingOverlay = () => document.querySelector(".loading-overlay").clas
  //        ]
  //    }
 
- 	const getEventSignifier = event => {
+ 	const getEventSignifier = (event, addPeriod=false) => {
+ 		let signifierToReturn;
  		if (typeof event.overrideSignifier === "undefined") {
 			// no override
-			return EVENT_SIGNIFIERS[event.type];
+			signifierToReturn = EVENT_SIGNIFIERS[event.type] || NOTHING_DEMARCATOR;
+			if (addPeriod && typeof event.number !== "undefined") signifierToReturn += event.number;
 		} else {
 			// OVERRIDDEN
-			return event.overrideSignifier;
+			signifierToReturn = event.overrideSignifier;
 		}
+		return signifierToReturn;
  	}
 
 	// const buildScheduleItemHTML = (event, period) => {
@@ -226,7 +247,7 @@ const showLoadingOverlay = () => document.querySelector(".loading-overlay").clas
 				eventSignifier += `<span style="font-size: 0.93em;">${periodNumber}</span>`; // hacky as hell, sorry
 			}
 			eventZoomLink = event.zoom_link;
-			eventName = event.name || "-----";
+			eventName = event.name || NOTHING_DEMARCATOR;
 			eventTimespan = generateTimespan(event.start, event.end);
 			eventIsLightOrDark = lightOrDark(event.color);
 		} catch (e) {
@@ -279,7 +300,7 @@ const showLoadingOverlay = () => document.querySelector(".loading-overlay").clas
 	window.dateFitsInTimeRange = dateFitsInTimeRange;
 
 	// const generateMissionControlEventText = event => `${getEventSignifier(event)}${event.number || ""} - ${event.name}`;
-	const generateMissionControlEventText = event => event.name;
+	const generateMissionControlEventText = event => event.name || NOTHING_DEMARCATOR;
 
 	// early or late enum
 	const EarlyOrLate = {
@@ -299,12 +320,35 @@ const showLoadingOverlay = () => document.querySelector(".loading-overlay").clas
 			throw new Error("Unexpected scenario in populateMissionControlStatus. (No period/event handling)"); // debug
 	};
 
+	const getIndexOfEventAfterPassingPeriod = (d, schedule) => {
+		let firstEvent;
+		let secondEvent;
+		let dateMinutes = convertDateToMins(d);
+		for (let i = 0; i < schedule.length - 1; i++) {
+			firstEvent = schedule[i];
+			secondEvent = schedule[i + 1];
+
+			if (convertArrToMins(firstEvent.end) < dateMinutes && convertArrToMins(secondEvent.start) > dateMinutes) {
+				return i + 1;
+			}
+		}
+		return -1;
+	};
+
+	const populateMissionControlUpNextEvent = (upNextEvent, upNextTimeElem, upNextEventElem, upNextSignifierElem) => {
+		upNextTimeElem.innerText = generateTimeFromArr(upNextEvent.start, " ");
+		upNextEventElem.innerText = generateMissionControlEventText(upNextEvent);
+		upNextSignifierElem.innerText = getEventSignifier(upNextEvent, true);
+	}
+
 	// WORK ON THIS
-	const populateMissionControlStatus = (d, schedule, classColors) => {
+	const populateMissionControlStatus = (d, schedule) => {
 		// console.log("SCHEDULE:", JSON.stringify(schedule, null, 2));
+		let nowSignifierElem = document.querySelector("div.mission-control-status-container.now .event-signifier");
 		let nowTimeElem = document.querySelector("div.mission-control-status-container.now div.time");
 		let nowEventElem = document.querySelector("div.mission-control-status-container.now div.event");
 		
+		let upNextSignifierElem = document.querySelector("div.mission-control-status-container.up-next .event-signifier");
 		let upNextTimeElem = document.querySelector("div.mission-control-status-container.up-next div.time");
 		let upNextEventElem = document.querySelector("div.mission-control-status-container.up-next div.event");
 
@@ -315,34 +359,45 @@ const showLoadingOverlay = () => document.querySelector(".loading-overlay").clas
 			let absoluteSchoolEndTime = schedule[schedule.length - 1].end;
 			if (dateFitsInTimeRange(d, absoluteSchoolStartTime, absoluteSchoolEndTime)) {
 				// THERE IS A PERIOD OR EVENT OF SOME SORT NOW
-
 				let missionControlCurrentEvent = schedule.find(k => dateFitsInTimeRange(d, k.start, k.end));
-				nowEventElem.innerHTML = generateMissionControlEventText(missionControlCurrentEvent);
+				if (typeof missionControlCurrentEvent === "undefined") {
+					nowEventElem.innerText = "Passing Period";
+					nowSignifierElem.innerText = "PP";
 
-				// tries to find up next. if there is no period next then it fails gracefully
-				try {
-					let upNextEventIndex = schedule.findIndex(k => k === missionControlCurrentEvent) + 1;
-					let upNextEvent = schedule[upNextEventIndex];
-					console.log("upNextEvent", upNextEvent);
+					let upNextEvent = schedule[getIndexOfEventAfterPassingPeriod(d, schedule)];
 
-					upNextTimeElem.innerText = generateTimeFromArr(upNextEvent.start, " ");
-					upNextEventElem.innerHTML = generateMissionControlEventText(upNextEvent);
-				} catch (e) {
-					console.error(e);
-					console.log("No upcoming event");
+					populateMissionControlUpNextEvent(upNextEvent, upNextTimeElem, upNextEventElem, upNextSignifierElem);
+				} else {
+					nowEventElem.innerText = generateMissionControlEventText(missionControlCurrentEvent);
+					nowSignifierElem.innerText = getEventSignifier(missionControlCurrentEvent, true);
+					try {
+						let upNextEventIndex = schedule.findIndex(k => k === missionControlCurrentEvent) + 1;
+						let upNextEvent = schedule[upNextEventIndex];
+						console.log("upNextEvent", upNextEvent);
+
+						populateMissionControlUpNextEvent(upNextEvent, upNextTimeElem, upNextEventElem, upNextSignifierElem);
+					} catch (e) {
+						console.error(e);
+						console.log("No upcoming event");
+
+						upNextTimeElem.innerText = NOTHING_DEMARCATOR;
+						upNextEventElem.innerText = NOTHING_DEMARCATOR;
+						upNextSignifierElem.innerText = NOTHING_DEMARCATOR;
+					}
 				}
+				// tries to find up next. if there is no period next then it fails gracefully
 			} else {
 				// THERE IS ***NOT*** A PERIOD/EVENT NOW
-				nowEventElem.innerHTML = "-----";
+				nowEventElem.innerHTML = NOTHING_DEMARCATOR;
 				switch (checkEarlyOrLate(d, absoluteSchoolStartTime, absoluteSchoolEndTime)) {
 					case EarlyOrLate.EARLY:
 						let upNextEvent = schedule[0];
-						upNextTimeElem.innerText = generateTimeFromArr(upNextEvent.start, " ");
-						upNextEventElem.innerHTML = generateMissionControlEventText(upNextEvent);
+						populateMissionControlUpNextEvent(upNextEvent, upNextTimeElem, upNextEventElem, upNextSignifierElem);
 						break;
 					case EarlyOrLate.LATE:
-						upNextTimeElem.innerText = "-----";
-						upNextEventElem.innerText = "-----";
+						upNextTimeElem.innerText = NOTHING_DEMARCATOR;
+						upNextEventElem.innerText = NOTHING_DEMARCATOR;
+						upNextSignifierElem.innerText = NOTHING_DEMARCATOR;
 						break;
 					default:
 						console.log("UNEXPECTED OUTCOME FOR EARLY OR LATE IN populateMissionControlStatus");
@@ -350,10 +405,12 @@ const showLoadingOverlay = () => document.querySelector(".loading-overlay").clas
 			}
 		} else {
 			// THERE IS A MESSAGE (means there is no school that day...)
-			nowEventElem.innerText = "-----";
+			nowEventElem.innerText = NOTHING_DEMARCATOR;
+			nowSignifierElem.innerText = NOTHING_DEMARCATOR;
 
-			upNextTimeElem.innerText = "-----";
-			upNextEventElem.innerText = "-----";
+			upNextTimeElem.innerText = NOTHING_DEMARCATOR;
+			upNextEventElem.innerText = NOTHING_DEMARCATOR;
+			upNextSignifierElem.innerText = NOTHING_DEMARCATOR;
 		}
 	};
 
@@ -376,14 +433,37 @@ const showLoadingOverlay = () => document.querySelector(".loading-overlay").clas
 
 	// window.addEventListener("twitterReady", () => console.log("twitter load"));
 
+	// highlights the active page link if it exists
+	const activateLink = elem => {
+		try {
+			elem.parentElement.classList.add("link-active");
+		} catch (e) {
+			console.log("link not present in top bar");
+		}
+	}
+	const selectActivePageLink = () => {
+		let linkUrl = window.location.pathname.replace(/\/$/, "");
+		if (linkUrl === "") {
+			linkUrl = "/";
+		}
+
+		let linkToSelect = Array.from(document.querySelectorAll("div.navbar-nav-btns ul li a")).find(k => k.getAttribute("href") === linkUrl);
+
+		activateLink(linkToSelect);
+	};
+
 	const onPageReady = async () => {
 		// let twitterHasLoaded = false;
 		// let allOtherReqsHaveLoaded = false;
 		// showLoadingOverlay();
 
 		// let todaysDate = new Date("Monday March 16 2020 7:59 AM");
-		let todaysDate = new Date("Tuesday March 17 2020 10:35 AM");
-		// let todaysDate = new Date();
+		// let todaysDate = new Date("Monday March 16 2020 8:01 AM");
+		// let todaysDate = new Date("Tuesday March 17 2020 10:35 AM");
+		// let todaysDate = new Date("Thursday March 19 2020 2:06 PM");
+		// todaysDate = new Date("Friday March 20 2020 2:06 PM");
+		// todaysDate = new Date(Date.now() + (24 * 60 * 60 * 1000));
+		todaysDate = new Date();
 		if (!(typeof CANCEL_API_REQS !== "undefined" && CANCEL_API_REQS)) {
 			let template = await getScheduleTemplate("UPPER", todaysDate);
 			let classes = await getClasses();
@@ -395,7 +475,7 @@ const showLoadingOverlay = () => document.querySelector(".loading-overlay").clas
 			document.querySelector("table.today-schedule tbody").innerHTML = scheduleHtml;
 
 			// MISSION CONTROL (Your Schoop)
-			populateMissionControlStatus(todaysDate, userSchedule, classColors);
+			populateMissionControlStatus(todaysDate, userSchedule);
 
 			let qotd = await getQotd();
 			document.querySelector(".quote-content span").innerText = qotd.content;
@@ -406,7 +486,12 @@ const showLoadingOverlay = () => document.querySelector(".loading-overlay").clas
 		window.addEventListener("resize", handleWindowResize);
 
 		// title would look something like "Today - Monday"
-		document.querySelector(".today-heading").innerHTML = `Today <span style="font-weight: 500;">&ndash; <strong>${DAYS_FULL[todaysDate.getDay()]}</strong>, ${MONTHS_FOR_TODAY_VIEW[todaysDate.getMonth()]} ${todaysDate.getDate()}</span>`;
+		document.querySelector(".today-heading").innerHTML = `Today&nbsp;<span style="font-weight: 500;">&ndash;&nbsp;<strong>${DAYS_FULL[todaysDate.getDay()]}</strong>,&nbsp;${MONTHS_FOR_TODAY_VIEW[todaysDate.getMonth()]} ${todaysDate.getDate()}</span>`;
+
+		handleScroll(); // refresh document scroll feature (navbar shadow)
+		document.addEventListener("scroll", handleScroll);
+
+		selectActivePageLink(); // highlight link of current page if it exists
 
 		setTimeout(hideLoadingOverlay, 150);
 	};
