@@ -10,7 +10,7 @@ module.exports = imports => {
 	router.get("/google", passport.authenticate("google"));
 
 	router.get("/google/callback",
-		passport.authenticate("google", { failureRedirect: "/?failed=1", session: false }),
+		passport.authenticate("google", { failureRedirect: "/?failed=1", session: false, hostedDomain: "windwardschool.org" }),
 		(req, res) => {
 			logger.log("user authenticated");
 			res.status(200).send(req.user);

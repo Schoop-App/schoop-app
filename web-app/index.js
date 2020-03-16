@@ -26,8 +26,7 @@ passport.use(new GoogleStrategy(
 		clientID: PRIVATE_CONFIG.googleOAuth.web.client_id,
 		clientSecret: PRIVATE_CONFIG.googleOAuth.web.client_secret,
 		callbackURL: "https://schoop.app/api/auth/google/callback",
-		scope: ["email", "profile"],
-		hostedDomain: "windwardschool.org"
+		scope: ["email", "profile"]
 	},
 	// This is a "verify" function required by all Passport strategies
 	(accessToken, refreshToken, profile, cb) => {
