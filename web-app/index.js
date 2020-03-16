@@ -17,6 +17,8 @@ const logger = require("./app/core/logger");
 
 const app = express();
 
+app.enable("trust proxy"); // trust Nginx reverse proxy
+
 // Set up passport strategy
 passport.use(new GoogleStrategy(  
 	{
