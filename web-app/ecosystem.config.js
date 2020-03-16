@@ -5,11 +5,11 @@ module.exports = {
 
     // Options reference: https://pm2.keymetrics.io/docs/usage/application-declaration/
     args: 'one two',
-    instances: 1,
+    instances: 4,
     autorestart: true,
     watch: true,
     ignore_watch: ["static"],
-    max_memory_restart: '1G',
+    max_memory_restart: '4G',
     //instances: -1,
     instances: 4,
     exec_mode: 'cluster',
