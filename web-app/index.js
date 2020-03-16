@@ -31,7 +31,8 @@ passport.use(new GoogleStrategy(
 	},
 	// This is a "verify" function required by all Passport strategies
 	(accessToken, refreshToken, profile, cb) => {
-		logger.log("Our user authenticated with Google, and Google sent us back this profile info identifying the authenticated user:", profile);
+		// logger.log("Our user authenticated with Google, and Google sent us back this profile info identifying the authenticated user:", profile);
+		logger.log("User authenticated through Google");
 		return cb(null, profile);
 	}
 ));
