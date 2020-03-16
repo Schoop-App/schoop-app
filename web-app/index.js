@@ -39,6 +39,6 @@ app.use("/api", require("./app/routes/api")({ Sentry, passport, logger }));
 
 // app.get("/rand", (req, res) => res.status(200).send(RAND));
 
-app.get("/test", (req, res) => res.status(200).send(`API is working! Server time ${Date.now()}`));
+app.get("/test", (req, res) => res.status(200).send(`Look what you found!! API is working! Server time ${Date.now()}`));
 
 app.listen(PORT, () => logger.log(`Server listening on port ${PORT}`));
