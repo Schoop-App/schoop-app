@@ -7,10 +7,10 @@ module.exports = imports => {
 	const router = require("express").Router();
 
 	// routes here
-	router.get("/google", passport.authenticate("google"));
+	router.get("/google", passport.authenticate("google", { hostedDomain: "windwardschool.org" }));
 
 	router.get("/google/callback",
-		passport.authenticate("google", { failureRedirect: "/?failed=1", session: false, hostedDomain: "windwardschool.org" }),
+		passport.authenticate("google", { failureRedirect: "/?failed=1", session: false }),
 		(req, res) => {
 			logger.log("user authenticated");
 			res.status(200).send(req.user);
