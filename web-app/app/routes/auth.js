@@ -1,9 +1,21 @@
 /* AUTH ROUTES */
-module.exports = Sentry => {
+module.exports = imports => {
+	const Sentry = imports.Sentry;
+	const passport = imports.passport;
+	const logger = imports.logger;
+
 	const router = require("express").Router();
 
 	// routes here
-	// blah blah blah
+	router.get("/google", passport.authenticate("google"));
+
+	router.get("/google/callback",
+		passport.authenticate("google", { failureRedirect: "/?failed=1", session: false }),
+		(req, res) => {
+			logger.log("user authenticated");
+			res.status(200).send(req.user);
+		}
+	);
 
 	return router;
 };
