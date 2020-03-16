@@ -7,9 +7,11 @@ module.exports = {
     args: 'one two',
     instances: 1,
     autorestart: true,
-    watch: false,
+    watch: true,
+    ignore_watch: ["static"],
     max_memory_restart: '1G',
-    instances: -1,
+    //instances: -1,
+    instances: 4,
     exec_mode: 'cluster',
     env: {
       NODE_ENV: 'development'
