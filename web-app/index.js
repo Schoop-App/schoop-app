@@ -10,6 +10,8 @@ const PRIVATE_CONFIG = require("./private-config.json");
 // const RAND = Math.random().toString();
 const PORT = process.env.SCHOOP_PORT || 3060;
 
+const fs = require("fs");
+
 const express = require("express");
 const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
@@ -21,8 +23,9 @@ const dbConn = mysql.createConnection({
 	user: PRIVATE_CONFIG.database.user,
 	password: PRIVATE_CONFIG.database.password,
 	database: PRIVATE_CONFIG.database.database,
+	port: PRIVATE_CONFIG.database.port,
 	ssl: {
-		ca: fs.readFileSync(process.env.DATABASECERTPATH)
+		ca: fs.readFileSync(process.env.DATABASE_CERT_PATH)
 	}
 });
 

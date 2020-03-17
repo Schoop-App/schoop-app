@@ -1,11 +1,14 @@
+const util = require("util");
 const logger = require("./logger");
+const MysqlPromisified = require("./mysql-promisified");
 
 module.exports = imports => {
 	const Sentry = imports.Sentry;
-	const dbConn = util.promisify(imports.dbConn);
+	const dbConn = imports.dbConn;
+	const dbConnAsync = MysqlPromisified(dbConn);
 
 	let doesUserExist = async studentId => {
-		let query = dbConn.query(`SELECT 1 FROM students WHERE google_oauth_id = ${connection.escape(studentId)}`);
+		let query = dbConnAsync.query(`SELECT 1 FROM students WHERE google_oauth_id = ${dbConn.escape(studentId)}`);
 		return query;
 	};
 
