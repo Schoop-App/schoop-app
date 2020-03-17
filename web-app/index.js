@@ -22,14 +22,15 @@ const dbConn = mysql.createConnection({
 	password: PRIVATE_CONFIG.database.password,
 	database: PRIVATE_CONFIG.database.database,
 	ssl: {
-		ca: fs.readFileSync(process.env.DATABASECERTPATH);
+		ca: fs.readFileSync(process.env.DATABASECERTPATH)
 	}
 });
 
 dbConn.connect(async err => {
 	if (err) {
 		Sentry.captureException(err);
-		throw err;
+		//throw err;
+		logger.error(err);
 	}
 
 	const db = require("./app/core/db")({ Sentry, dbConn });

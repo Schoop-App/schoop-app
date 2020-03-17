@@ -12,6 +12,7 @@ module.exports = {
     watch: true,
     ignore_watch: ["static"],
     max_memory_restart: '4G',
+    exp_backoff_restart_delay: 100,
     //instances: -1,
     instances: 4,
     exec_mode: 'cluster',
