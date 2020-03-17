@@ -1,3 +1,5 @@
+const PRIVATE_CONFIG = require("./private-config.json");
+
 module.exports = {
   apps : [{
     name: 'Schoop Backend',
@@ -14,22 +16,24 @@ module.exports = {
     instances: 4,
     exec_mode: 'cluster',
     env: {
-      NODE_ENV: 'development'
+      NODE_ENV: 'development',
+      DATABASE_CERT_PATH: '~/ca-certificate.crt'
     },
     env_production: {
       NODE_ENV: 'production',
-      SCHOOPPORT: 3000
+      SCHOOP_PORT: 3000,
+      DATABASE_CERT_PATH: `${PRIVATE_CONFIG.server.server_home_path}/ca-certificate.crt`
     }
-  }],
+  }]/*,*/
 
-  deploy : {
-    production : {
-      user : 'node',
-      host : '212.83.163.1',
-      ref  : 'origin/master',
-      repo : 'git@github.com:repo.git',
-      path : '/var/www/production',
-      'post-deploy' : 'npm install && pm2 reload ecosystem.config.js --env production'
-    }
-  }
+  // deploy : {
+  //   production : {
+  //     user : 'node',
+  //     host : '212.83.163.1',
+  //     ref  : 'origin/master',
+  //     repo : 'git@github.com:repo.git',
+  //     path : '/var/www/production',
+  //     'post-deploy' : 'npm install && pm2 reload ecosystem.config.js --env production'
+  //   }
+  // }
 };
