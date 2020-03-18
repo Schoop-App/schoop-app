@@ -81,6 +81,8 @@ module.exports = imports => {
 
 	return {
 		doesUserExist,
-		getStudentInfo
+		getStudentInfo,
+		addStudent,
+		addClass
 	};
 };
