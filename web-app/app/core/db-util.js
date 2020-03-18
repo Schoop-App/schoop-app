@@ -3,6 +3,6 @@ module.exports = conn => {
 		generateValuesList: arr => {
 			let arrEscaped = arr.map(k => conn.escape(k));
 			return `(${arrEscaped.join(", ")})`;
-		};
+		}
 	};
 };
