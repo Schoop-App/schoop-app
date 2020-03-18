@@ -80,7 +80,7 @@ module.exports = imports => {
 	/* END WRITE DB */
 
 	return {
-		doesUserExist,
+		doesStudentExist,
 		getStudentInfo,
 		addStudent,
 		addClass
