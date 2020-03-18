@@ -45,7 +45,7 @@ dbConn.connect(async err => {
 	app.use(session({
 		secret: process.env.SESSION_SECRET || "development_secret",
 		resave: false,
-		saveUnitialized: false
+		saveUninitialized: false
 	}));
 
 	// passport init
@@ -53,14 +53,22 @@ dbConn.connect(async err => {
 	app.use(passport.session());
 
 	// just putting in "null for now :)"
-	passport.serializeUser((user, done) => done(null, user));
-	passport.deerializeUser((userDataFromCookie, done) => done(null, userDataFromCookie));
+	passport.serializeUser((user, done) => {
+		done(null, user);
+	});
+
+	passport.deserializeUser((userDataFromCookie, done) => {
+		done(null, userDataFromCookie);
+	});
+
+	//passport.serializeUser((user, done) => done(null, user));
+	//passport.deserializeUser((userDataFromCookie, done) => done(null, userDataFromCookie));
 
 	app.enable("trust proxy"); // trust Nginx reverse proxy
 	app.disable("x-powered-by"); // hide Express headers
 
 	// Set up passport strategy
-	passport.use(new GoogleStrategy(  
+	passport.use(new GoogleStrategy(
 		{
 			clientID: PRIVATE_CONFIG.googleOAuth.web.client_id,
 			clientSecret: PRIVATE_CONFIG.googleOAuth.web.client_secret,
