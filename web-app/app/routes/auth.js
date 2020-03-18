@@ -3,6 +3,7 @@ module.exports = imports => {
 	const Sentry = imports.Sentry;
 	const passport = imports.passport;
 	const logger = imports.logger;
+	const db = imports.db; // database
 
 	const router = require("express").Router();
 
@@ -11,9 +12,13 @@ module.exports = imports => {
 
 	router.get("/google/callback",
 		passport.authenticate("google", { failureRedirect: "/?failed=1", session: true }),
-		(req, res) => {
+		async (req, res) => {
 			logger.log("user authenticated");
-			res.status(200).send(req.user);
+			let studentIsRegistered = await db.doesStudentExist(user.id);
+
+			res.status(200).send({ studentIsRegistered });
+
+			// res.status(200).send(req.user);
 		}
 	);
 

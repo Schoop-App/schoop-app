@@ -13,6 +13,7 @@ const PORT = process.env.SCHOOP_PORT || 3060;
 const fs = require("fs");
 
 const express = require("express");
+const redis = require("redis");
 const session = require("express-session"); // session handling middleware
 const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
@@ -42,7 +43,11 @@ dbConn.connect(async err => {
 	// begin app stuff
 	const app = express();
 
+	let RedisStore = require("connect-redis")(session);
+	let redisClient = redis.createClient();
+
 	app.use(session({
+		store: new RedisStore({ client: redisClient }),
 		secret: process.env.SESSION_SECRET || "development_secret",
 		resave: false,
 		saveUninitialized: false
@@ -72,7 +77,7 @@ dbConn.connect(async err => {
 		{
 			clientID: PRIVATE_CONFIG.googleOAuth.web.client_id,
 			clientSecret: PRIVATE_CONFIG.googleOAuth.web.client_secret,
-			callbackURL: "https://schoop.app/api/auth/google/callback",
+			callbackURL: (process.env.SCHOOP_HOST || "https://schoop.app") + "/api/auth/google/callback",
 			scope: ["email", "profile"]
 		},
 		// This is a "verify" function required by all Passport strategies
@@ -83,7 +88,7 @@ dbConn.connect(async err => {
 		}
 	));
 
-	app.use("/api", require("./app/routes/api")({ Sentry, passport, logger }));
+	app.use("/api", require("./app/routes/api")({ Sentry, passport, logger, db }));
 
 	// app.get("/rand", (req, res) => res.status(200).send(RAND));
 

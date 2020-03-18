@@ -18,12 +18,13 @@ module.exports = {
     exec_mode: 'cluster',
     env: {
       NODE_ENV: 'development',
-      DATABASE_CERT_PATH: '~/ca-certificate.crt'
+      DATABASE_CERT_PATH: '/Users/zooza310/ca-certificate.crt'
     },
     env_production: {
       NODE_ENV: 'production',
       SCHOOP_PORT: 3000,
-      DATABASE_CERT_PATH: `${PRIVATE_CONFIG.server.server_home_path}/ca-certificate.crt`
+      DATABASE_CERT_PATH: `${PRIVATE_CONFIG.server.server_home_path}/ca-certificate.crt`,
+      SESSION_SECRET: PRIVATE_CONFIG.server.session_secret
     }
   }]/*,*/
 
