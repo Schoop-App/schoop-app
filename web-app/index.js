@@ -66,7 +66,7 @@ dbConn.connect(async err => {
 
 	app.get("/test", (req, res) => res.status(200).send(`Look what you found!! Backend is working! Server time ${Date.now()}`));
 
-	app.get("/test_db", async (req, res) => res.status(200).send(await db.doesUserExist("test")));
+	app.get("/test_db", async (req, res) => res.status(200).send(await db.doesStudentExist("test")));
 
 	app.listen(PORT, () => logger.log(`Server listening on port ${PORT}`));
 });
