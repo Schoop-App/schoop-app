@@ -24,13 +24,15 @@ module.exports = imports => {
 	/* WRITE DB */
 	const dbInsertQueryGeneric = async (table, dbJson) => {
 		try {
-			let dbInsertIdentifiers = `(${Object.keys(table).join(", ")})`;
+			let dbInsertIdentifiers = `(${Object.keys(dbJson).join(", ")})`;
 			let dbValues = Object.keys(dbJson).map(k => dbJson[k]);
 
-			let querySql = `INSERT INTO students ${dbInsertIdentifiers} VALUES ${dbUtil.generateValuesList(dbValues)}`;
+			let querySql = `INSERT INTO ${table} ${dbInsertIdentifiers} VALUES ${dbUtil.generateValuesList(dbValues)}`;
+			// logger.log(querySql);
 			let query = await dbConnAsync.query(querySql);
 			return true;
 		} catch (e) {
+			logger.error(e);
 			Sentry.captureException(e); // for me to see what exactly went wrong
 			return false;
 		}
