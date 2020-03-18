@@ -20,6 +20,10 @@ const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const mysql = require("mysql");
 const logger = require("./app/core/logger");
 
+// IMPORTANT MIDDLEWARES
+const homeAuthCheck = require("./app/middleware/home-auth-check");
+const loginAuthCheck = require("./app/middleware/login-auth-check");
+
 const dbConn = mysql.createConnection({
 	host: PRIVATE_CONFIG.database.host,
 	user: PRIVATE_CONFIG.database.user,
@@ -92,9 +96,24 @@ dbConn.connect(async err => {
 
 	// app.get("/rand", (req, res) => res.status(200).send(RAND));
 
-	app.get("/test", (req, res) => res.status(200).send(`Look what you found!! Backend is working! Server time ${Date.now()}`));
+	// app.get("/test", (req, res) => res.status(200).send(`Look what you found!! Backend is working! Server time ${Date.now()}`));
 
-	app.get("/test_db", async (req, res) => res.status(200).send(await db.doesStudentExist("test")));
+	// app.get("/test_db", async (req, res) => res.status(200).send(await db.doesStudentExist("test")));
+
+	// ROUTES
+	app.get("/", (req, res) => {
+		if (req.isAuthenticated()) {
+			// user logged in
+			res.redirect("/home");
+		} else {
+			res.redirect("/login");
+		}
+	});
+
+	app.get("/login", loginAuthCheck, (req, res) => res.status(200).send(`<a href="/api/auth/google">Log In with Google (WW account)</a>`));
+
+	// PROTECTED ROUTES
+	app.get("/home", homeAuthCheck, (req, res) => res.status(200).send("Welcome home!"));
 
 	app.listen(PORT, () => logger.log(`Server listening on port ${PORT}`));
 });
