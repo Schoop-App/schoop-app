@@ -1,4 +1,4 @@
-const authCallbackMiddleware = require("../middleware/auth-callback");
+const AuthCallback = require("../middleware/auth-callback");
 
 /* AUTH ROUTES */
 module.exports = imports => {
@@ -9,6 +9,9 @@ module.exports = imports => {
 
 	const router = require("express").Router();
 
+	const authCallbackMiddleware = AuthCallback(db);
+	console.log(authCallbackMiddleware.toString());
+
 	// routes here
 	router.get("/google", passport.authenticate("google", { hostedDomain: "windwardschool.org" }));
 
@@ -16,7 +19,7 @@ module.exports = imports => {
 		passport.authenticate("google", { failureRedirect: "/?failed=1", session: true }),
 		authCallbackMiddleware,
 		(req, res) => {
-			if (student.isNew)
+			if (req.isNewStudent)
 				res.redirect("/setup")
 			else
 				res.redirect("/home")
