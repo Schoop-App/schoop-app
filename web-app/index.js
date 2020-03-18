@@ -13,6 +13,7 @@ const PORT = process.env.SCHOOP_PORT || 3060;
 const fs = require("fs");
 
 const express = require("express");
+const session = require("express-session"); // session handling middleware
 const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const mysql = require("mysql");
@@ -40,6 +41,20 @@ dbConn.connect(async err => {
 
 	// begin app stuff
 	const app = express();
+
+	app.use(session({
+		secret: process.env.SESSION_SECRET || "development_secret",
+		resave: false,
+		saveUnitialized: false
+	}));
+
+	// passport init
+	app.use(passport.initialize());
+	app.use(passport.session());
+
+	// just putting in "null for now :)"
+	passport.serializeUser((user, done) => done(null, user));
+	passport.deerializeUser((userDataFromCookie, done) => done(null, userDataFromCookie));
 
 	app.enable("trust proxy"); // trust Nginx reverse proxy
 	app.disable("x-powered-by"); // hide Express headers
