@@ -21,7 +21,7 @@ module.exports = imports => {
 	};
 	const studentDidSetup = async studentId => {
 		let query = await dbConnAsync.query(`SELECT student_did_setup FROM students where google_oauth_id = ${dbConn.escape(studentId)}`);
-		return query.results[0];
+		return Boolean(query.results[0]);
 	};
 	/* END READ DB */
 
