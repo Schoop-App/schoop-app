@@ -78,7 +78,8 @@ dbConn.connect(async err => {
 	//passport.serializeUser((user, done) => done(null, user));
 	//passport.deserializeUser((userDataFromCookie, done) => done(null, userDataFromCookie));
 
-	app.enable("trust proxy"); // trust Nginx reverse proxy
+	// app.enable("trust proxy"); // trust Nginx reverse proxy
+	app.set("trust proxy", "127.0.0.1"); // trust Nginx reverse proxy
 	app.disable("x-powered-by"); // hide Express headers
 
 	// Set up passport strategy
