@@ -47,6 +47,7 @@ dbConn.connect(async err => {
 	const db = require("./app/core/db")({ Sentry, dbConn });
 	// MIDDLEWARE **** FOR HOME:
 	const homeAuthCheck = require("./app/middleware/home-auth-check")(db);
+	const setupCheck = require("./app/middleware/setup-check")(db);
 
 	// begin app stuff
 	const app = express();
@@ -110,7 +111,7 @@ dbConn.connect(async err => {
 	app.get("/login", loginAuthCheck, (req, res) => res.status(200).send(`<a href="/api/auth/google">Log In with Google (WW account)</a>`));
 
 	// PROTECTED ROUTES
-	app.get("/setup", generalAuthCheck, (req, res) => res.status(200).send("Set up your account (WIP)"));
+	app.get("/setup", generalAuthCheck, setupCheck, (req, res) => res.status(200).send("Set up your account (WIP)"));
 	app.get("/home", homeAuthCheck, (req, res) => res.status(200).send("Welcome to homepage!"));
 
 	// CATCH-ALL ROUTE (must go at end) 404
