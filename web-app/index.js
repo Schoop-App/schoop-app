@@ -23,6 +23,7 @@ const logger = require("./app/core/logger");
 // IMPORTANT MIDDLEWARES
 // const homeAuthCheck = require("./app/middleware/home-auth-check");
 const generalAuthCheck = require("./app/middleware/general-auth-check");
+const slashAuthCheck = require("./app/middleware/slash-auth-check"); // for the endpoint / ("slash")
 const loginAuthCheck = require("./app/middleware/login-auth-check");
 
 const dbConn = mysql.createConnection({
@@ -104,13 +105,16 @@ dbConn.connect(async err => {
 	// app.get("/test_db", async (req, res) => res.status(200).send(await db.doesStudentExist("test")));
 
 	// ROUTES
-	app.get("/", generalAuthCheck);
+	app.get("/", slashAuthCheck);
 
 	app.get("/login", loginAuthCheck, (req, res) => res.status(200).send(`<a href="/api/auth/google">Log In with Google (WW account)</a>`));
 
 	// PROTECTED ROUTES
 	app.get("/setup", generalAuthCheck, (req, res) => res.status(200).send("Set up your account (WIP)"));
 	app.get("/home", homeAuthCheck, (req, res) => res.status(200).send("Welcome to homepage!"));
+
+	// CATCH-ALL ROUTE (must go at end) 404
+	app.all("*", (req, res) => res.status(404).send("Error - Not Found"));
 
 	app.listen(PORT, () => logger.log(`Server listening on port ${PORT}`));
 });
