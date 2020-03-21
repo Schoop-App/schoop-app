@@ -12,9 +12,10 @@ let doGetQotd = async () => {
 	} catch (e) {
 		logger.log("Error getting quote:");
 		logger.error(e);
+		return;
 	}
 };
 
-doGetQotd();
+doGetQotd().then(() => process.exit(0));
 
 module.exports = doGetQotd;
