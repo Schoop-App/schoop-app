@@ -2,7 +2,7 @@ const axios = require("axios");
 const redisClient = require("redis").createClient();
 const setAsync = require("util").promisify(redisClient.set).bind(redisClient);
 
-(async () => {
+let doGetQotd = async () => {
 	try {
 		let qotdReq = await axios.get("https://api.quotable.io/random?maxLength=50&tags=inspirational");
 		await setAsync("schoop:qotd", JSON.stringify(qotdReq.data));
@@ -11,4 +11,8 @@ const setAsync = require("util").promisify(redisClient.set).bind(redisClient);
 		console.log("Error getting quote:");
 		console.error(e);
 	}
-})();
+};
+
+doGetQotd();
+
+module.exports = doGetQotd;
