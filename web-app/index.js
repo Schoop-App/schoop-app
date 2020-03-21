@@ -106,7 +106,7 @@ dbConn.connect(async err => {
 	app.set("view engine", "handlebars");
 
 	// STATIC FILES
-	app.use("/static", express.static(`${__dirname}/static`));
+	app.use(express.static(`${__dirname}/static`));
 
 	// API ROUTES
 	app.use("/api", require("./app/routes/api")({ Sentry, passport, logger, db }));
