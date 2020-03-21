@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>MobX Test</title>
+	<script src="https://unpkg.com/mobx@5.15.4/lib/mobx.umd.js"></script>
+</head>
+<body>
+	<script>
+		var person = mobx.observable({
+			firstName: 'Matt',
+			lastName: 'Ruby',
+			age: 34,
+			get fullName () {
+				console.count('fullName');
+				return this.firstName + ' ' + this.lastName;
+			}
+		});
+
+		var student = mobx.observable({
+			name: "Zane",
+			class: 2022,
+			get testFunct() {
+				return `${this.name}, class of ${this.class}`;
+			}
+		});
+
+		mobx.autorun(function auto_fullNameAge () {
+			console.log('autorun: ' + person.fullName + ' ' + person.age);
+			console.log('autorun 2: ' + student.testFunct);
+		});
+
+		person.firstName = 'Mike';
+		person.firstName = 'Lissy';
+		person.firstName = 'Joe Mama';
+	</script>
+</body>
+</html>

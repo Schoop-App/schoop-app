@@ -25,6 +25,12 @@ module.exports = imports => {
 		//return Boolean(query.results[0].student_did_setup);
 		return query.results[0].student_did_setup;
 	};
+
+	// LEFT OFF HERE
+	const getClasses = async studentId => {
+		let query = await dbConnAsync.query(`SELECT * FROM classes where student_oauth_id = ${dbConn.escape(studentId)}`);
+		return query.results;
+	};
 	/* END READ DB */
 
 	/* WRITE DB */
@@ -43,6 +49,7 @@ module.exports = imports => {
 			return false;
 		}
 	};
+
 	// const dbWriteQueryGeneric = async query => {
 	// 	try {
 	// 		let query = await dbConnAsync.query(query);
@@ -85,6 +92,26 @@ module.exports = imports => {
 		});
 		return query;
 	};
+
+	const setSeminarZoomLink = async (studentId, zoomLink) => {
+		let querySql = `UPDATE students SET seminar_zoom_link=${dbConn.escape(zoomLink)} WHERE google_oauth_id = ${dbConn.escape(studentId)}`;
+		let query = await dbConnAsync.query(querySql);
+	};
+
+	const setStudentGradYear = async (studentId, gradYear) => {
+		let querySql = `UPDATE students SET graduation_year=${dbConn.escape(gradYear)} WHERE google_oauth_id = ${dbConn.escape(studentId)}`;
+		let query = await dbConnAsync.query(querySql);
+	};
+
+	const setSetupState = async (studentId, setupState) => {
+		if (state === 0 || state === 1) {
+			let querySql = `UPDATE students SET student_did_setup=${dbConn.escape(setupState)} WHERE google_oauth_id = ${dbConn.escape(studentId)}`;
+			let query = await dbConnAsync.query(querySql);
+		} else {
+			throw new Error(`Invalid setup state provided (given ${setupState}`);
+		}
+	};
+
 	/* END WRITE DB */
 
 	return {
@@ -92,6 +119,8 @@ module.exports = imports => {
 		getStudentInfo,
 		studentDidSetup,
 		addStudent,
-		addClass
+		addClass,
+		setSeminarZoomLink,
+		setStudentGradYear
 	};
 };

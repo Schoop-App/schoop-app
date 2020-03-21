@@ -1,0 +1,593 @@
+:root {
+	--main-content-padding: 20px;
+	--today-schedule-row-padding-lr: 22px;
+	--today-schedule-row-padding-tb: 12px;
+	--today-table-border-radius: 10px;
+	--navbar-height: 78px;
+	--main-theme-color: #000;
+}
+
+:root {
+	--vw: 1vw;
+	--vh: 1vh;
+}
+
+/* NAVBAR RULES */
+@media only screen and (max-width: 949px) {
+	nav.navbar a.navbar-title {
+		text-align: center;
+		left: 50%;
+		transform: translate(-50%, -50%) !important;
+	}
+}
+
+@media only screen and (max-width: 350px) {
+	nav.navbar .nav-btns-inner li {
+		padding-right: 4px !important;
+	}
+	/*nav.navbar .nav-btns-inner li a i {
+		font-size: 15px !important;
+	}*/
+}
+
+@media only screen and (max-width: 599px) {
+	div.gridded-items h1, h1.class-entry-header {
+		font-size: 25px;
+	}
+
+	table.today-schedule tr {
+		font-size: 17px;
+	}
+
+	table.today-schedule tr {
+		font-size: 14px;
+	}
+
+	div.mission-control-part.current-status div.mission-control-status-container div.mission-control-status-field.event {
+		font-size: 16px;
+	}
+
+	nav.navbar a.navbar-title {
+		font-size: 15px;
+	}
+
+	nav.navbar .nav-btns-inner li {
+		padding-right: 5px;
+	}
+}
+
+@media only screen and (min-width: 600px) and (max-width: 779px) {
+	table.today-schedule tr {
+		font-size: 18px;
+	}
+	div.mission-control-part.current-status div.mission-control-status-container div.mission-control-status-field.event {
+		font-size: 17px;
+	}
+	nav.navbar a.navbar-title {
+		font-size: 16px;
+	}
+
+	nav.navbar .nav-btns-inner li {
+		padding-right: 6px;
+	}
+}
+
+/*SPECIAL*/
+@media only screen and (min-width: 780px) {
+	table.today-schedule tr {
+		font-size: 20px;
+	}
+}
+
+@media only screen and (min-width: 650px) and (max-width: 949px) {
+	div.mission-control-part.current-status div.mission-control-status-container div.mission-control-status-field.time {
+		font-size: 30px !important;
+	}
+	div.mission-control-part.current-status div.mission-control-status-container div.mission-control-status-field.event {
+		font-size: 25px !important;
+	}
+	nav.navbar a.navbar-title {
+		font-size: 20px;
+	}
+
+	nav.navbar .nav-btns-inner li {
+		padding-right: 7px;
+	}
+}
+
+@media only screen and (max-width: 949px) {
+	div.gridded-items {
+		grid-template-columns: auto;
+	}
+	div.gridded-items div.gridded-item-part {
+		margin-bottom: calc(var(--main-content-padding) / 2);
+	}
+	div.gridded-items div.gridded-item-part:first-child {
+		margin-bottom: none;
+	}
+
+	div.mission-control-part.current-status div.mission-control-status-container div.mission-control-status-field.event {
+		font-size: 18px;
+	}
+}
+
+@media only screen and (min-width: 950px) {
+	div.gridded-items {
+		grid-template-columns: 29fr 21fr;
+	}
+	table.today-schedule {
+		min-height: 425px;
+	}
+	table.today-schedule tr {
+		font-size: 20px;
+	}
+
+	div.mission-control-part.current-status div.mission-control-status-container div.mission-control-status-field.event {
+		font-size: 20px;
+	}
+
+	nav.navbar a.navbar-title {
+	    left: var(--main-content-padding);
+	}
+
+	nav.navbar .nav-btns-inner li {
+		padding-right: 10px;
+	}
+}
+
+/*SPECIAL*/
+@media only screen and (max-width: 350px) {
+	div.gridded-items h1, h1.class-entry-header {
+		font-size: 22px;
+	}
+
+	table.today-schedule tr {
+		font-size: 12px;
+	}
+
+	div.mission-control-part.current-status div.mission-control-status-container div.mission-control-status-field.event {
+		font-size: 15px !important;
+	}
+
+	nav.navbar a.navbar-title {
+		font-size: 14px !important;
+	}
+}
+
+/* accessibility - screenreader styling taken from Bootstrap */
+.sr-only {
+	position: absolute;
+	width: 1px; 
+	height: 1px; 
+	padding: 0; 
+	overflow: hidden; 
+	clip: rect(0,0,0,0); 
+	white-space: nowrap; 
+	-webkit-clip-path: inset(50%); 
+	clip-path: inset(50%); 
+	border: 0; 
+}
+
+html, body {
+	font-family: 'Karla', sans-serif;
+	background: #f4f4f4;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	font-family: 'Poppins', sans-serif;
+	font-weight: 700;
+}
+
+main.content {
+	padding: var(--main-content-padding);
+	z-index: 0;
+}
+
+main.content.page-loaded {
+	margin-top: var(--navbar-height);
+}
+
+main.content.no-extra-margin-top {
+	margin-top: 0 !important;
+}
+
+h1.today-heading, h1.mission-control-heading {
+	margin-top: 0;
+	margin-bottom: 12px;
+}
+
+.fix-border-radius {
+	mask-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAA5JREFUeNpiYGBgAAgwAAAEAAGbA+oJAAAAAElFTkSuQmCC);
+	overflow: hidden;
+}
+
+table.today-schedule {
+	background: #fff;
+	border-collapse: collapse;
+	border-radius: var(--today-table-border-radius);
+
+	width: 100%;
+	height: auto;
+	/*min-height: 425px;*/
+
+	table-layout: fixed; /* keeps all boxes equal */
+}
+
+table.today-schedule tr {
+	border-top: 1px solid #ccc;
+	position: relative;
+}
+
+table.today-schedule tr:first-child {
+	border-top: none;
+}
+
+table.today-schedule tr.event-dark {
+	color: #fff;
+}
+
+table.today-schedule tr.event-light {
+	color: #000;
+}
+
+table.today-schedule tr.event-has-link {
+	cursor: pointer;
+	user-select: none;
+	-webkit-user-select: none;
+}
+
+table.today-schedule tr td {
+	padding-top: var(--today-schedule-row-padding-tb);
+	padding-bottom: var(--today-schedule-row-padding-tb);
+	padding-right: var(--today-schedule-row-padding-lr);
+}
+
+table.today-schedule tr td:first-child {
+	padding-left: var(--today-schedule-row-padding-lr);
+	padding-right: 0;
+}
+
+/*table.today-schedule tr td.left {*/
+td.left, th.left {
+	text-align: left;
+}
+
+table.today-schedule tr td.signifier {
+	font-weight: 700;
+	font-family: 'Poppins', sans-serif;
+}
+
+/*table.today-schedule tr td.center {*/
+td.center, th.center {
+	text-align: center;
+}
+
+/*table.today-schedule tr td.right {*/
+td.right, th.right {
+	text-align: right;
+}
+
+p.zoom-link-hint {
+	margin-bottom: 6px;
+	margin-left: calc(var(--today-table-border-radius) / 2);
+	font-weight: 700;
+}
+
+div.gridded-items {
+	display: grid;
+	/*grid-template-columns: 31fr 17fr;*/
+	/*grid-template-columns: auto;*/
+	grid-gap: var(--main-content-padding);
+}
+
+div.mission-control-outer div.gridded-mission-control {
+	display: grid;
+	/*grid-template-rows: 25fr 20fr 55fr;*/
+	grid-template-rows: 3fr auto 5fr;
+	border-radius: var(--today-table-border-radius);
+	min-height: 425px;
+}
+
+div.mission-control-part {
+	border-top: 1px solid #ccc;
+}
+
+div.mission-control-part:first-child {
+	border-top: none;
+}
+
+div.mission-control-part.qotd {
+	background: #fff;
+	padding: 10px;
+}
+
+div.mission-control-part.qotd div.quote-content {
+	font-size: 20px;
+}
+
+div.mission-control-part.qotd div.quote-author {
+	font-weight: 700;
+}
+
+div.mission-control-part.current-status {
+	background: #fff;
+	display: grid;
+	/*grid-template-rows: auto;*/
+	grid-template-columns: repeat(2, 1fr);
+	/*grid-gap: 1px;*/
+}
+
+div.mission-control-part.current-status div.mission-control-status-container {
+	/*background-color: #f00;*/
+	/*padding: 10px;*/
+	border-right: 1px solid #ccc;
+	position: relative;
+}
+
+div.mission-control-part.current-status div.mission-control-status-container:last-child {
+	border-right: none;
+}
+
+div.mission-control-part.current-status div.mission-control-status-container div.mission-control-status-field {
+	text-align: center;
+}
+
+div.mission-control-part.current-status div.mission-control-status-container div.mission-control-status-field.time {
+	font-size: 25px;
+	font-family: 'Poppins', sans-serif;
+	font-weight: 500;
+}
+
+div.mission-control-part.current-status div.mission-control-status-container div.mission-control-status-field.event {
+	/*font-size: 20px;*/
+	/*font-family: 'Poppins', sans-serif;*/
+	font-weight: 700;
+}
+
+div.mission-control-status-field-container {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+
+	width: 100%;
+	text-align: center;
+}
+
+/*div.mission-control-part.current-status div.mission-control-status-container.now {
+	text-align: left;
+}
+
+div.mission-control-part.current-status div.mission-control-status-container.up-next {
+	text-align: right;
+}*/
+
+div.mission-control-part.current-status div h4 {
+	margin-top: 10px;
+	margin-left: 10px;
+	font-size: 0.9em;
+}
+
+div.loading-overlay {
+	width: calc(100 * var(--vw));
+	height: calc(100 * var(--vh));
+
+	position: fixed;
+	z-index: 21 !important;
+
+	background: var(--main-theme-color);
+}
+
+div.loading-overlay.hidden {
+	display: none;
+}
+
+div.loading-overlay div.loading-text {
+	color: #fff;
+	font-family: 'Poppins', sans-serif;
+	font-weight: 700;
+	font-size: calc(10.5 * var(--vw));
+
+	user-select: none;
+	-webkit-user-select: none;
+	
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+
+	text-align: left;
+	min-width: calc(52.4 * var(--vw));
+}
+
+@keyframes loadinganim {
+	0% { content: ''; }
+	33% { content: '.'; }
+	67% { content: '..'; }
+	100% { content: '...'; }
+}
+
+div.loading-overlay div.loading-text::after {
+	content: '';
+	animation: loadinganim 0.5s linear infinite;
+}
+
+/* BEGIN NAVBAR (taken from another one of my projects) */
+nav.navbar {
+    width: 100%;
+    height: var(--navbar-height);
+    position: fixed;
+
+    color: #fff;
+    background: var(--main-theme-color);
+
+    top: 0;
+    left: 0;
+
+    z-index: 2;
+
+    /*var(--special-transition);*/
+    transition: box-shadow 200ms ease;
+}
+
+nav.navbar.scrolled {
+    -webkit-box-shadow: 0px 4px 8px 1px rgba(0,0,0,0.37);
+    -moz-box-shadow: 0px 4px 8px 1px rgba(0,0,0,0.37);
+    box-shadow: 0px 4px 8px 1px rgba(0,0,0,0.37);
+}
+
+nav.navbar div.navbar-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+nav.navbar a:not([data-role=button]), nav.navbar .navbar-nav-btns {
+    text-decoration: none!important;
+
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+/*nav.navbar a.navbar-title {
+    left: var(--main-content-padding);
+}*/
+
+nav.navbar a.navbar-title h1 {
+    margin: 0px;
+    padding: 0px;
+
+    color: #fff;
+    display: inline-block;
+}
+
+nav.navbar .navbar-nav-btns {
+    /*font-weight: 500;
+    color: #fff;*/
+    /*right: calc((2 * var(--main-content-padding)) + 5px);*/
+    right: var(--main-content-padding);
+}
+
+nav.navbar .navbar-nav-btns a[data-role=button] {
+	font-size: 30px;
+	cursor: pointer;
+	color: #fff;
+}
+
+nav.navbar .nav-btns-inner {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+
+nav.navbar .nav-btns-inner li a {
+	border-radius: 50%;
+	width: 1em;
+	height: 1em;
+	padding: 5px;
+
+	display: inline-block;
+
+	transition: color 200ms cubic-bezier(.12,.75,.71,.93), background-color 200ms cubic-bezier(.12,.75,.71,.93);
+
+	position: relative;
+}
+
+nav.navbar .nav-btns-inner li a i {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+nav.navbar .nav-btns-inner li.link-active a , nav.navbar .nav-btns-inner li:hover a {
+	background-color: #fff;
+	color: var(--main-theme-color);
+}
+
+nav.navbar .nav-btns-inner li {
+	display: inline-block;
+	/*padding-right: 10px;*/
+}
+nav.navbar .nav-btns-inner li:last-child {
+	padding-right: 0;
+}
+/* END NAVBAR */
+
+/* CLASS ENTRY */
+h1.class-entry-header {
+	margin-top: 0px;
+}
+
+div.class-entry-table-outer {
+	/* something */
+}
+
+div.class-entry-table-outer.hidden {
+	display: none;
+}
+
+table.class-entry-table {
+	background: #fff;
+	border-radius: var(--today-table-border-radius);
+	/* keeps all boxes FIXED */
+	table-layout: fixed;
+	width: 100%;
+}
+
+table.class-entry-table tr th {
+	font-family: 'Poppins', sans-serif;
+	font-weight: 500;
+}
+
+table.class-entry-table tr td, table.class-entry-table tr th {
+	padding-top: var(--today-schedule-row-padding-tb);
+	padding-bottom: var(--today-schedule-row-padding-tb);
+	padding-right: var(--today-schedule-row-padding-lr);
+}
+
+table.class-entry-table tr td:first-child, table.class-entry-table tr th:first-child {
+	padding-left: var(--today-schedule-row-padding-lr);
+	padding-right: 0;
+}
+
+table.class-entry-table tr td.signifier {
+	font-family: 'Poppins', sans-serif;
+	font-weight: 700;
+}
+
+div.grade-select-container {
+	font-size: 20px;
+}
+
+form#class-entry-form input[type=submit] {
+	background-color: var(--main-theme-color);
+	border: none;
+	outline: none;
+	--webkit-tap-highlight-color: transparent;
+
+	color: #fff;
+	font-family: 'Poppins', sans-serif;
+	font-weight: 700;
+	font-size: 20px;
+
+	width: 100%;
+
+	margin-top: 10px;
+	padding: 10px 20px 10px 20px;
+
+	border-radius: 5px;
+
+	cursor: pointer;
+}
+
+span#freshmenWarning {
+	font-size: 1.1em;
+	font-weight: 700;
+}
+
+span#freshmenWarning.hidden {
+	display: none;
+}
+/* EMD CLASS ENTRY*/

@@ -37,12 +37,19 @@ const dbConn = mysql.createConnection({
 	}
 });
 
+logger.log("Connecting to database...");
 dbConn.connect(async err => {
 	if (err) {
 		Sentry.captureException(err);
 		//throw err;
 		logger.error(err);
 	}
+
+	logger.log("Connected to database"); // debug
+
+	// init redis client
+	let RedisStore = require("connect-redis")(session);
+	let redisClient = redis.createClient();
 
 	const db = require("./app/core/db")({ Sentry, dbConn });
 	// MIDDLEWARE **** FOR HOME:
@@ -52,21 +59,24 @@ dbConn.connect(async err => {
 	// begin app stuff
 	const app = express();
 
-	let RedisStore = require("connect-redis")(session);
-	let redisClient = redis.createClient();
+	// general app config
+	app.set("trust proxy", "127.0.0.1"); // trust Nginx reverse proxy
+	app.disable("x-powered-by"); // hide Express headers
 
+	// init sessions
 	app.use(session({
 		store: new RedisStore({ client: redisClient }),
 		secret: process.env.SESSION_SECRET || "development_secret",
 		resave: false,
-		saveUninitialized: false
+		saveUninitialized: false,
+		expires: new Date(Date.now() + (12 * 60 * 60 * 1000)) // 12 hours session life
 	}));
 
 	// passport init
 	app.use(passport.initialize());
-	app.use(passport.session());
+	app.use(passport.session()); // tie together w/ session
 
-	// just putting in "null for now :)"
+	// just putting in "null" for now :)
 	passport.serializeUser((user, done) => {
 		done(null, user);
 	});
@@ -74,13 +84,6 @@ dbConn.connect(async err => {
 	passport.deserializeUser((userDataFromCookie, done) => {
 		done(null, userDataFromCookie);
 	});
-
-	//passport.serializeUser((user, done) => done(null, user));
-	//passport.deserializeUser((userDataFromCookie, done) => done(null, userDataFromCookie));
-
-	// app.enable("trust proxy"); // trust Nginx reverse proxy
-	app.set("trust proxy", "127.0.0.1"); // trust Nginx reverse proxy
-	app.disable("x-powered-by"); // hide Express headers
 
 	// Set up passport strategy
 	passport.use(new GoogleStrategy(
@@ -100,23 +103,18 @@ dbConn.connect(async err => {
 
 	app.use("/api", require("./app/routes/api")({ Sentry, passport, logger, db }));
 
-	// app.get("/rand", (req, res) => res.status(200).send(RAND));
-
-	// app.get("/test", (req, res) => res.status(200).send(`Look what you found!! Backend is working! Server time ${Date.now()}`));
-
-	// app.get("/test_db", async (req, res) => res.status(200).send(await db.doesStudentExist("test")));
-
-	// ROUTES
+	/* BEGIN ROUTES */
 	app.get("/", slashAuthCheck);
 
 	app.get("/login", loginAuthCheck, (req, res) => res.status(200).send(`<a href="/api/auth/google">Log In with Google (WW account)</a>`));
 
 	// PROTECTED ROUTES
-	app.get("/setup", generalAuthCheck, setupCheck, (req, res) => res.status(200).send("Set up your account (WIP)"));
-	app.get("/home", homeAuthCheck, (req, res) => res.status(200).send("Welcome to homepage!"));
+	app.get("/setup", generalAuthCheck, setupCheck, (req, res) => res.status(200).render("setup", { layout: false }));
+	app.get("/home", homeAuthCheck, (req, res) => res.status(200).render("home"));
 
 	// CATCH-ALL ROUTE (must go at end) 404
 	app.all("*", (req, res) => res.status(404).send("Error - Not Found"));
+	/* END ROUTES */
 
 	app.listen(PORT, () => logger.log(`Server listening on port ${PORT}`));
 });
