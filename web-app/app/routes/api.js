@@ -1,6 +1,7 @@
 const bodyParser = require("body-parser");
 const rateLimit = require("express-rate-limit");
 const accessProtectionMiddleware = require("../middleware/access-protection");
+const getQotd = require("../../getQotd");
 
 const urlencodedParser = bodyParser.urlencoded({ extended: true }); // using qs
 
@@ -57,6 +58,9 @@ module.exports = imports => {
 	const passport = imports.passport;
 	const logger = imports.logger;
 	const db = imports.db; // database
+	const redisClient = imports.redisClient; // Redis client
+
+	const redisGetAsync = require("util").promisify(redisClient.get).bind(redisClient); // set async function for redis
 
 	const limiter = rateLimit({
 		windowMs: 60 * 1000, // 1 minute
@@ -91,6 +95,24 @@ module.exports = imports => {
 				// unsuccessful
 				res.status(500).send("Internal Server Error - We were unable to add your classes.");
 			}
+		}
+	});
+	// home
+	router.get("/qotd", accessProtectionMiddleware, async (req, res) => {
+		try {
+			let qotdFromRedis = await redisGetAsync("schoop:qotd");
+			let qotdToSend;
+			if (qotdFromRedis === null) {
+				qotdToSend = await getQotd();
+			} else {
+				qotdToSend = JSON.parse(qotdFromRedis);
+			}
+			res.status(200).send(qotdToSend);
+		} catch (e) {
+			res.status(500).send({
+				status: "error",
+				message: "Could not get quote of the day"
+			});
 		}
 	});
 

@@ -109,7 +109,7 @@ dbConn.connect(async err => {
 	app.use(express.static(`${__dirname}/static`));
 
 	// API ROUTES
-	app.use("/api", require("./app/routes/api")({ Sentry, passport, logger, db }));
+	app.use("/api", require("./app/routes/api")({ Sentry, passport, logger, db, redisClient }));
 
 	/* BEGIN ROUTES */
 	app.get("/", slashAuthCheck);
