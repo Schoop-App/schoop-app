@@ -101,6 +101,10 @@ dbConn.connect(async err => {
 		}
 	));
 
+	// HANDLEBARS VIEW ENGINE SETUP
+	app.engine("handlebars", require("express-handlebars")());
+	app.set("view engine", "handlebars");
+
 	app.use("/api", require("./app/routes/api")({ Sentry, passport, logger, db }));
 
 	/* BEGIN ROUTES */
