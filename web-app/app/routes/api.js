@@ -80,6 +80,7 @@ module.exports = imports => {
 	// });
 
 	// PROTECTED ENDPOINTS
+	// setup
 	router.put("/classes", accessProtectionMiddleware, urlencodedParser, async (req, res) => {
 		let studentGradYear = gradeToGradYear(parseInt(req.body.studentGrade));
 		let studentPeriods = PERIODS[getDivision(req.body.studentGrade)];
@@ -97,7 +98,13 @@ module.exports = imports => {
 			}
 		}
 	});
+
 	// home
+	router.get("/classes", accessProtectionMiddleware, async (req, res) => {
+		let classes = await db.getClasses(req.user.id);
+		res.status(200).send(classes);
+	});
+
 	router.get("/qotd", accessProtectionMiddleware, async (req, res) => {
 		try {
 			let qotdDataFromRedis = await redisGetAsync("schoop:qotd");
