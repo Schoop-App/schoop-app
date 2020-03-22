@@ -118,6 +118,7 @@ module.exports = imports => {
 		doesStudentExist,
 		getStudentInfo,
 		studentDidSetup,
+		getClasses,
 		addStudent,
 		addClass,
 		setSeminarZoomLink,
