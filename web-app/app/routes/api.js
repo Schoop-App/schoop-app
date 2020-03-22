@@ -156,7 +156,7 @@ module.exports = imports => {
 		"#60B2A1"
 	])); // for now......... Maybe I should store this in a file or in Redis. We will see...
 	// misc:
-	router.get("/me", accessProtectionMiddleware, async (req, res) => {
+	router.get("/me", accessProtectionMiddleware, endpointNoCacheMiddleware, async (req, res) => {
 		let info = await db.getStudentInfo(req.user.id);
 		res.status(200).send(info);
 	});
