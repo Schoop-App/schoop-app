@@ -109,11 +109,13 @@ module.exports = imports => {
 	});
 
 	// home
-	router.get("/schedule/:division/:day", accessProtectionMiddleware, endpointNoCacheMiddleware, (req, res) => {
-		if ((req.params.divison === Division.MIDDLE || req.params.divison === Division.UPPER) && SCHEDULE_TEMPLATE_DAYS.includes(req.params.day)) {
+	router.get("/schedule/:division/:day", accessProtectionMiddleware, endpointNoCacheMiddleware, async (req, res) => {
+		if ((req.params.division === Division.MIDDLE || req.params.division === Division.UPPER) && SCHEDULE_TEMPLATE_DAYS.includes(req.params.day)) {
 			try {
-				let x = await readFileAsync(`${__dirname}/../../../schedules/${req.params.division}/${req.params.day}`);
+				let scheduleFile = await readFileAsync(`${__dirname}/../../../schedules/${req.params.division}/${req.params.day}.json`);
+				res.status(200).send(JSON.parse(scheduleFile.toString()));
 			} catch (e) {
+				logger.error(e);
 				res.status(500).send(INTERNAL_SERVER_ERROR_RESPONSE);
 			}
 		} else {
