@@ -1,7 +1,9 @@
 const bodyParser = require("body-parser");
 const rateLimit = require("express-rate-limit");
 const accessProtectionMiddleware = require("../middleware/access-protection");
+const endpointNoCacheMiddleware = require("../middleware/endpoint-no-cache");
 const getQotd = require("../../getQotd");
+const readFileAsync = require("fs").promises.readFile;
 
 const urlencodedParser = bodyParser.urlencoded({ extended: true }); // using qs
 
@@ -10,6 +12,8 @@ const Division = {
 	MIDDLE: "MIDDLE",
 	UPPER: "UPPER"
 };
+
+const SCHEDULE_TEMPLATE_DAYS = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
 
 const PERIODS = {
 	MIDDLE: [1, 2, 3, 4, 5, 6, 8],
@@ -50,6 +54,11 @@ const getDivision = grade => {
 			division = Division.UPPER;
 			break;
 	}
+};
+
+const INTERNAL_SERVER_ERROR_RESPONSE = {
+	status: "error",
+	message: "Internal Server Error"
 };
 
 /* API ROUTES */
@@ -100,11 +109,25 @@ module.exports = imports => {
 	});
 
 	// home
-	router.get("/classes", accessProtectionMiddleware, async (req, res) => {
+	router.get("/schedule/:division/:day", accessProtectionMiddleware, endpointNoCacheMiddleware, (req, res) => {
+		if ((req.params.divison === Division.MIDDLE || req.params.divison === Division.UPPER) && SCHEDULE_TEMPLATE_DAYS.includes(req.params.day)) {
+			try {
+				let x = await readFileAsync(`${__dirname}/../../../schedules/${req.params.division}/${req.params.day}`);
+			} catch (e) {
+				res.status(500).send(INTERNAL_SERVER_ERROR_RESPONSE);
+			}
+		} else {
+			res.status(400).send({
+				status: "error",
+				message: "Invalid Request – malformed schedule template query"
+			});
+		}
+	});
+	router.get("/classes", accessProtectionMiddleware, endpointNoCacheMiddleware, async (req, res) => {
 		let classes = await db.getClasses(req.user.id);
 		res.status(200).send(classes);
 	});
-
+	// QUESTION: should this be no-cache?
 	router.get("/qotd", accessProtectionMiddleware, async (req, res) => {
 		try {
 			let qotdDataFromRedis = await redisGetAsync("schoop:qotd");
@@ -116,12 +139,20 @@ module.exports = imports => {
 			}
 			res.status(200).send(quoteToSend);
 		} catch (e) {
-			res.status(500).send({
-				status: "error",
-				message: "Internal Server Error"
-			});
+			res.status(500).send(INTERNAL_SERVER_ERROR_RESPONSE);
 		}
 	});
+	router.get("/class_colors", accessProtectionMiddleware, (req, res) => res.status(200).send([
+		"#9CE87B",
+		"#89BBEF",
+		"#FEF486",
+		"#F1D483",
+		"#BABABC",
+		"#B198E6",
+		"#82C2E5",
+		"#EE9DC2",
+		"#60B2A1"
+	])); // for now......... Maybe I should store this in a file or in Redis. We will see...
 
 	// routes here
 

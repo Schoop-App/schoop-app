@@ -69,6 +69,7 @@ dbConn.connect(async err => {
 		secret: process.env.SESSION_SECRET || "development_secret",
 		resave: false,
 		saveUninitialized: false,
+		//                               h    m    s     ms
 		expires: new Date(Date.now() + (12 * 60 * 60 * 1000)) // 12 hours session life
 	}));
 
