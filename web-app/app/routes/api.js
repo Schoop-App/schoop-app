@@ -90,7 +90,7 @@ module.exports = imports => {
 
 	// PROTECTED ENDPOINTS
 	// setup
-	router.put("/classes", accessProtectionMiddleware, urlencodedParser, async (req, res) => {
+	router.post("/classes", accessProtectionMiddleware, urlencodedParser, async (req, res) => {
 		let studentGradYear = gradeToGradYear(parseInt(req.body.studentGrade));
 		let studentPeriods = PERIODS[getDivision(req.body.studentGrade)];
 
@@ -155,6 +155,11 @@ module.exports = imports => {
 		"#EE9DC2",
 		"#60B2A1"
 	])); // for now......... Maybe I should store this in a file or in Redis. We will see...
+	// misc:
+	router.get("/me", accessProtectionMiddleware, async (req, res) => {
+		let info = await db.getStudentInfo(req.user.id);
+		res.status(200).send(info);
+	});
 
 	// routes here
 
