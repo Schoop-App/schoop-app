@@ -100,18 +100,18 @@ module.exports = imports => {
 	// home
 	router.get("/qotd", accessProtectionMiddleware, async (req, res) => {
 		try {
-			let qotdFromRedis = await redisGetAsync("schoop:qotd");
-			let qotdToSend;
-			if (qotdFromRedis === null) {
-				qotdToSend = await getQotd();
+			let qotdDataFromRedis = await redisGetAsync("schoop:qotd");
+			let quoteToSend;
+			if (qotdDataFromRedis === null) {
+				quoteToSend = await getQotd();
 			} else {
-				qotdToSend = JSON.parse(qotdFromRedis);
+				quoteToSend = JSON.parse(qotdDataFromRedis);
 			}
-			res.status(200).send(qotdToSend);
+			res.status(200).send(quoteToSend);
 		} catch (e) {
 			res.status(500).send({
 				status: "error",
-				message: "Could not get quote of the day"
+				message: "Internal Server Error"
 			});
 		}
 	});
