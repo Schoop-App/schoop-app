@@ -50,17 +50,22 @@ module.exports = imports => {
 		let studentGradYear = gradeToGradYear(parseInt(req.body.studentGrade));
 		let studentPeriods = PERIODS[getDivision(req.body.studentGrade)];
 
+		let addedClassesSuccessfully = true;
 		for (const periodNumber in studentPeriods) {
 			// ARGS ORDER: studentId, periodNumber, className, zoomLink
 			let classQuery = await db.addClass(req.user.id, periodNumber, req.body[`className_P${periodNumber}`], req.body[`zoomLink_P${periodNumber}`]);
-			if (classQuery) {
-				// class query successful
-				await db.setSetupState(req.user.id, 1);
-				res.redirect("/home");
-			} else {
-				// unsuccessful
-				res.status(500).send("Internal Server Error - We were unable to add your classes.");
+			if (!classQuery) {
+				addedClassesSuccessfully = false;
+				break;
 			}
+		}
+		if (addedClassesSuccessfully) {
+			// class query successful
+			await db.setSetupState(req.user.id, 1);
+			res.redirect("/home");
+		} else {
+			// unsuccessful
+			res.status(500).send("Internal Server Error - We were unable to add your classes.");
 		}
 	});
 
