@@ -104,7 +104,7 @@ module.exports = imports => {
 	};
 
 	const setSetupState = async (studentId, setupState) => {
-		if (state === 0 || state === 1) {
+		if (setupState === 0 || setupState === 1) {
 			let querySql = `UPDATE students SET student_did_setup=${dbConn.escape(setupState)} WHERE google_oauth_id = ${dbConn.escape(studentId)}`;
 			let query = await dbConnAsync.query(querySql);
 		} else {
