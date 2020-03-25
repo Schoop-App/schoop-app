@@ -1,3 +1,4 @@
+const fs = require("fs");
 const mysql = require("mysql");
 
 const PRIVATE_CONFIG = require("./private-config.json"); // private info
@@ -9,7 +10,7 @@ const dbConn = mysql.createConnection({
 	database: PRIVATE_CONFIG.database.database,
 	port: PRIVATE_CONFIG.database.port,
 	ssl: {
-		ca: fs.readFileSync(process.env.DATABASE_CERT_PATH)
+		ca: fs.readFileSync(process.env.DATABASE_CERT_PATH || "/home/zanestjohn/ca-certificate.crt")
 	}
 });
 
