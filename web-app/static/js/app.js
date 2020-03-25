@@ -162,7 +162,8 @@ const setIntervalAdjusted = (fnct, time) => {
 					window.location.href = "/";
 				return json;
 			} catch (e) {
-				window.location.href = "/";
+				// window.location.href = "/";
+				alert("ERROR (tell Zane):\n\n" + e.toString());
 			}
 		}
 	};
