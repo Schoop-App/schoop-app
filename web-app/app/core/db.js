@@ -122,6 +122,7 @@ module.exports = imports => {
 		addStudent,
 		addClass,
 		setSeminarZoomLink,
-		setStudentGradYear
+		setStudentGradYear,
+		setSetupState
 	};
 };
