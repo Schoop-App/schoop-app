@@ -188,7 +188,7 @@ const setIntervalAdjusted = (fnct, time) => {
 
 		if (typeof SCHEDULE_TEMPLATES[scheduleTemplatesKeyName] === "undefined") {
 			// let schedule = await getJSON(`http://localhost:3001/${division}/${daySymbol}.json`, true);
-			let schedule = await getJSON(`/schedule/${division}/${daySymbol}`, true);
+			let schedule = await getJSON(`/schedule/${division}/${daySymbol}`);
 			SCHEDULE_TEMPLATES[scheduleTemplatesKeyName] = schedule; // for in-memory cache ;)
 			return schedule;
 		} else {
