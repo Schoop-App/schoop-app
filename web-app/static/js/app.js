@@ -156,6 +156,8 @@ const setIntervalAdjusted = (fnct, time) => {
 		} else {
 			try {
 				let apiHost = overrideHost ? "" : API_HOST;
+				console.log("apiHost: " + apiHost);
+				console.log("path: " + path);
 				let req = await fetch(apiHost + path);
 				let json = await req.json();
 				if (json.status === "error")
