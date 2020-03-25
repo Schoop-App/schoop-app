@@ -159,10 +159,10 @@ const setIntervalAdjusted = (fnct, time) => {
 				let req = await fetch(apiHost + path);
 				let json = await req.json();
 				if (json.status === "error")
-					window.location.redirect("/");
+					window.location.href = "/";
 				return json;
 			} catch (e) {
-				window.location.redirect("/");
+				window.location.href = "/";
 			}
 		}
 	};
