@@ -124,8 +124,8 @@ dbConn.connect(async err => {
 	app.get("/setup", generalAuthCheck, setupCheck, (req, res) => res.status(200).render("setup", { layout: false }));
 	app.get("/home", homeAuthCheck, async (req, res) => {
 		let studentInfo = await db.getStudentInfo(req.user.id);
-		studentInfo.division = getDivision(gradYearToGrade(studentInfo.graduation_year)); // MIDDLE or UPPER
-		res.status(200).render("home", { studentInfo });
+		let studentDivision = getDivision(gradYearToGrade(studentInfo.graduation_year)); // MIDDLE or UPPER
+		res.status(200).render("home", { studentInfo, studentDivision });
 	});
 
 	// CATCH-ALL ROUTE (must go at end) 404

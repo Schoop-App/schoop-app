@@ -53,7 +53,7 @@ module.exports = imports => {
 		let addedClassesSuccessfully = true;
 		for (const periodNumber in studentPeriods) {
 			// ARGS ORDER: studentId, periodNumber, className, zoomLink
-			let classQuery = await db.addClass(req.user.id, periodNumber, req.body[`className_P${periodNumber}`], req.body[`zoomLink_P${periodNumber}`]);
+			let classQuery = await db.addClass(req.user.id, periodNumber, req.body[`className_P${periodNumber}`].trim(), req.body[`zoomLink_P${periodNumber}`].trim());
 			if (!classQuery) {
 				addedClassesSuccessfully = false;
 				break;
@@ -88,6 +88,9 @@ module.exports = imports => {
 	});
 	router.get("/classes", accessProtectionMiddleware, endpointNoCacheMiddleware, async (req, res) => {
 		let classes = await db.getClasses(req.user.id);
+		for (let i = 0; i < classes.length; i++) {
+			delete classes[i]["student_oauth_id"]; // probably best to hide this
+		}
 		res.status(200).send(classes);
 	});
 	// QUESTION: should this be no-cache?
