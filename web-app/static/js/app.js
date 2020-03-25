@@ -523,7 +523,8 @@ const setIntervalAdjusted = (fnct, time) => {
 		window.addEventListener("resize", handleWindowResize);
 
 		// title would look something like "Today - Monday"
-		document.querySelector(".today-heading").innerHTML = `Today&nbsp;<span style="font-weight: 500;">&ndash;&nbsp;<strong>${DAYS_FULL[initialDate.getDay()]}</strong>,&nbsp;${MONTHS_FOR_TODAY_VIEW[initialDate.getMonth()]} ${initialDate.getDate()}</span>`;
+		// document.querySelector(".today-heading").innerHTML = `Today&nbsp;<span style="font-weight: 500;">&ndash;&nbsp;<strong>${DAYS_FULL[initialDate.getDay()]}</strong>,&nbsp;${MONTHS_FOR_TODAY_VIEW[initialDate.getMonth()]} ${initialDate.getDate()}</span>`;
+		document.getElementById("daySpan").innerHTML = DAYS_FULL[initialDate.getDay()]; // easier
 
 		handleScroll(); // refresh document scroll feature (navbar shadow)
 		document.addEventListener("scroll", handleScroll);

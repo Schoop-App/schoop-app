@@ -34,7 +34,7 @@
             	<ul class="nav-btns-inner">
 	            	<li><a data-role="button" class="home-btn" href="/" title="Home"><span class="sr-only">Home</span><i class="las la-home"></i></a></li>
 	            	<!--<li><a data-role="button" class="user-btn" href="/user" title="User Settings"><i class="las la-user"></i></a></li>-->
-	            	<li><a data-role="button" class="user-btn" href="/api/logout" title="Log Out"><span class="sr-only">Log Out</span><i class="las la-sign-out-alt"></i></a></li>
+	            	<li><a data-role="button" class="user-btn" href="/api/auth/logout" title="Log Out"><span class="sr-only">Log Out</span><i class="las la-sign-out-alt"></i></a></li>
             	</ul>
             </div>
         </div>
@@ -44,7 +44,7 @@
 		<div class="gridded-items">
 			<!-- today and dashboard are gridded -->
 			<div class="gridded-item-part today-container">
-				<h1 class="today-heading">Today</h1>
+				<h1 class="today-heading">{{studentInfo.first_name}}&apos;s&nbsp;<span id="daySpan">Day</span></h1> <!-- e.g. Zane's Day -->
 				<div class="today-schedule-outer">
 					<p class="zoom-link-hint">Click on an event to open its Zoom link.</p>
 					<table class="today-schedule fix-border-radius">
@@ -57,7 +57,7 @@
 	</main>
 
 	<!-- scripts -->
-	<script>const STUDENT_DIVISION = "{{{studentDivision}}}";</script>
+	<script>const STUDENT_DIVISION = "{{{studentInfo.division}}}";</script>
 	<script src="/js/app.js" defer></script>
 </body>
 </html>

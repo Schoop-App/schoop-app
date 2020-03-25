@@ -20,6 +20,9 @@ const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const mysql = require("mysql");
 const logger = require("./app/core/logger");
 
+// STUDENT CORE
+const { gradYearToGrade, getDivision } = require("./app/core/student-core");
+
 // IMPORTANT MIDDLEWARES
 // const homeAuthCheck = require("./app/middleware/home-auth-check");
 const generalAuthCheck = require("./app/middleware/general-auth-check");
@@ -119,7 +122,11 @@ dbConn.connect(async err => {
 
 	// PROTECTED ROUTES
 	app.get("/setup", generalAuthCheck, setupCheck, (req, res) => res.status(200).render("setup", { layout: false }));
-	app.get("/home", homeAuthCheck, (req, res) => res.status(200).render("home"));
+	app.get("/home", homeAuthCheck, async (req, res) => {
+		let studentInfo = await db.getStudentInfo(req.user.id);
+		studentInfo.division = getDivision(gradYearToGrade(studentInfo.graduation_year)); // MIDDLE or UPPER
+		res.status(200).render("home", { studentInfo });
+	});
 
 	// CATCH-ALL ROUTE (must go at end) 404
 	app.all("*", (req, res) => res.status(404).send("Error - Not Found"));

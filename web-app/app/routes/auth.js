@@ -26,5 +26,11 @@ module.exports = imports => {
 		}
 	);
 
+	router.get("/logout", (req, res) => {
+		// signs user out
+		req.logout();
+		res.redirect("/");;
+	});
+
 	return router;
 };
