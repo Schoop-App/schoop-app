@@ -125,7 +125,7 @@ dbConn.connect(async err => {
 	app.get("/home", homeAuthCheck, async (req, res) => {
 		let studentInfo = await db.getStudentInfo(req.user.id);
 		let studentDivision = getDivision(gradYearToGrade(studentInfo.graduation_year)); // MIDDLE or UPPER
-		res.status(200).render("home", { studentInfo, studentDivision || "UNKNOWN" });
+		res.status(200).render("home", { studentInfo, studentDivision: studentDivision || "UNKNOWN" });
 	});
 
 	// CATCH-ALL ROUTE (must go at end) 404
