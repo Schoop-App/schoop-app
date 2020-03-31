@@ -50,9 +50,11 @@ module.exports = imports => {
 		logger.log("Called /classes in API endpoints");
 		// let studentGradYear = gradeToGradYear(parseInt(req.body.studentGrade));
 		let studentPeriods = PERIODS[getDivision(req.body.studentGrade)];
+		logger.log(`studentPeriods: ${studentPeriods}`);
 
 		// let addedClassesSuccessfully = true;
 		try {
+			logger.log("Trying to add classes...");
 			for (const periodNumber in studentPeriods) {
 				// ARGS ORDER: studentId, periodNumber, className, zoomLink
 				logger.log("Try for periodNumber " + periodNumber);
@@ -64,6 +66,8 @@ module.exports = imports => {
 			res.redirect("/home");
 		} catch (e) {
 			// unsuccessful
+			logger.log("oops, error:");
+			logger.error(e);
 			res.status(500).send(`We were not able to register you. Please try again.<br><br><em>SERVER ERROR: ${e.toString()}</em>`);
 		}
 	});
