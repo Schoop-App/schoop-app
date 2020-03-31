@@ -147,7 +147,7 @@ const setIntervalAdjusted = (fnct, time) => {
 
 	// USER LOGOUT
 	const logOutUser = async () => {
-		let logoutReq = await fetch(API_HOST + "/auth/logout");
+		let logoutReq = await fetch(API_HOST + "/auth/logout", { method: "POST" });
 		let logoutJson = await logoutReq.json();
 		if (logoutJson.status === "ok") {
 			window.location.href = "/";
