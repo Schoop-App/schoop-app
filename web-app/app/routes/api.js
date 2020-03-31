@@ -47,25 +47,23 @@ module.exports = imports => {
 	// PROTECTED ENDPOINTS
 	// setup
 	router.post("/classes", accessProtectionMiddleware, urlencodedParser, async (req, res) => {
-		let studentGradYear = gradeToGradYear(parseInt(req.body.studentGrade));
+		// let studentGradYear = gradeToGradYear(parseInt(req.body.studentGrade));
 		let studentPeriods = PERIODS[getDivision(req.body.studentGrade)];
 
-		let addedClassesSuccessfully = true;
-		for (const periodNumber in studentPeriods) {
-			// ARGS ORDER: studentId, periodNumber, className, zoomLink
-			let classQuery = await db.addClass(req.user.id, periodNumber, req.body[`className_P${periodNumber}`].trim(), req.body[`zoomLink_P${periodNumber}`].trim());
-			if (!classQuery) {
-				addedClassesSuccessfully = false;
-				break;
+		// let addedClassesSuccessfully = true;
+		try {
+			for (const periodNumber in studentPeriods) {
+				// ARGS ORDER: studentId, periodNumber, className, zoomLink
+				logger.log("Try for periodNumber " + periodNumber);
+				let classQuery = await db.addClass(req.user.id, periodNumber, req.body[`className_P${periodNumber}`].trim(), req.body[`zoomLink_P${periodNumber}`].trim());
+				logger.log(classQuery);
 			}
-		}
-		if (addedClassesSuccessfully) {
 			// class query successful
 			await db.setSetupState(req.user.id, 1);
 			res.redirect("/home");
-		} else {
+		} catch (e) {
 			// unsuccessful
-			res.status(500).send("Internal Server Error - We were unable to add your classes.");
+			res.status(500).send(`We were not able to register you. Please try again.<br><br><em>SERVER ERROR: ${e.toString()}</em>`);
 		}
 	});
 

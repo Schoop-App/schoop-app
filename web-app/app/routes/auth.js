@@ -16,20 +16,30 @@ module.exports = imports => {
 	router.get("/google", passport.authenticate("google", { hostedDomain: "windwardschool.org" }));
 
 	router.get("/google/callback",
-		passport.authenticate("google", { failureRedirect: "/?failed=1", session: true }),
+		passport.authenticate("google", { failureRedirect: "/login?failed=1", session: true }),
 		authCallbackMiddleware,
 		(req, res) => {
 			if (req.isNewStudent)
-				res.redirect("/setup")
+				res.redirect("/setup");
 			else
-				res.redirect("/home")
+				res.redirect("/home");
 		}
 	);
 
-	router.get("/logout", (req, res) => {
+	router.post("/logout", (req, res) => {
 		// signs user out
-		req.logout();
-		res.redirect("/");;
+		try {
+			req.logout();
+			res.status(200).send({
+				"status": "ok"
+			});
+		} catch (e) {
+			res.status(500).send({
+				"status": "error",
+				"message": "logout failed"
+			});
+		}
+		// res.redirect("/");
 	});
 
 	return router;

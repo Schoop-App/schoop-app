@@ -12,18 +12,25 @@ module.exports = db => {
 		} else {
 			// studentId, firstName, lastName, email, profilePicUrl
 			 // returns boolean
-			let studentRegistryQuery = await db.addStudent(req.user.id,
-														 	req.user.name.givenName,
-														 	req.user.name.familyName,
-														 	req.user.emails[0].value,
-														 	req.user.photos[0].value);
+			 try {
+				let studentRegistryQuery = await db.addStudent(req.user.id,
+															 	req.user.name.givenName,
+															 	req.user.name.familyName,
+															 	req.user.emails[0].value,
+															 	req.user.photos[0].value);
 
-			if (studentRegistryQuery) {
-				// successfully registered
 				req.isNewStudent = true;
 				next();
-			} else {
-				res.status(500).send("We were not able to register you. Please try again.");
+
+				// if (studentRegistryQuery) {
+				// 	// successfully registered
+				// 	req.isNewStudent = true;
+				// 	next();
+				// } else {
+				// 	res.status(500).send("We were not able to register you. Please try again.");
+				// }
+			} catch (e) {
+				res.status(500).send(`We were not able to register you. Please try again.<br><br><em>SERVER ERROR: ${e.toString()}</em>`);
 			}
 		}
 

@@ -26,7 +26,6 @@ module.exports = imports => {
 		return query.results[0].student_did_setup;
 	};
 
-	// LEFT OFF HERE
 	const getClasses = async studentId => {
 		let query = await dbConnAsync.query(`SELECT * FROM classes where student_oauth_id = ${dbConn.escape(studentId)}`);
 		return query.results;
@@ -44,9 +43,10 @@ module.exports = imports => {
 			let query = await dbConnAsync.query(querySql);
 			return true;
 		} catch (e) {
-			logger.error(e);
+			// logger.error(e);
 			Sentry.captureException(e); // for me to see what exactly went wrong
-			return false;
+			throw e;
+			// return false;
 		}
 	};
 

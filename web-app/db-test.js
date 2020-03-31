@@ -21,7 +21,7 @@ dbConn.connect(async err => {
 	}
 	console.log("Connected to database");
 
-	// db client
+	// db client with faked Sentry client
 	const db = require("./app/core/db")({
 		Sentry: {
 			captureException: e => console.error(e)
@@ -29,6 +29,6 @@ dbConn.connect(async err => {
 		dbConn
 	});
 
-	let classQuery = await db.addClass("101538478513395768684", 4, "PreCalc Honors", "https://windwardschool.zoom.us/j/4242891086");
+	let classQuery = await db.addClass("101538478513395768684", 1, "PreCalc Honors", "https://windwardschool.zoom.us/j/4242891086");
 	console.log(classQuery);
 });

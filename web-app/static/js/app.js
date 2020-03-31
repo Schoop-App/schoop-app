@@ -150,7 +150,7 @@ const setIntervalAdjusted = (fnct, time) => {
 
 	const generateTimespan = (startArr, endArr) => `${generateTimeFromArr(startArr)}-${generateTimeFromArr(endArr)}`;
 
-	const getJSON = async (path, overrideHost=false) => {
+	const getJSON = async (path, overrideHost=false, validateReqs=true) => {
 		if (typeof CANCEL_API_REQS !== "undefined" && CANCEL_API_REQS) {
 			return {};
 		} else {
@@ -160,7 +160,7 @@ const setIntervalAdjusted = (fnct, time) => {
 				console.log("path: " + path);
 				let req = await fetch(apiHost + path);
 				let json = await req.json();
-				if (json.status === "error")
+				if (validateReqs && json.status === "error")
 					window.location.href = "/";
 				return json;
 			} catch (e) {
