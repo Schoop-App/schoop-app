@@ -6,7 +6,7 @@
 let shouldLog = true;
 
 function log() {
-	if (shouldLog) console.log(...arguments, JSON.stringify((new Error()).stack.split(/\n/).slice(1)));
+	if (shouldLog) console.log(...arguments, (new Error()).stack.split(/\n/)[2]);
 }
 
 function error() {
