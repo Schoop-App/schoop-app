@@ -30,6 +30,7 @@ const gradYearToGrade = year => {
 };
 
 const getDivision = grade => {
+	let division;
 	switch (grade) {
 		case 7:
 		case 8:
@@ -42,6 +43,7 @@ const getDivision = grade => {
 			division = Division.UPPER;
 			break;
 	}
+	return division;
 };
 
 module.exports = {

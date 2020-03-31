@@ -23,6 +23,8 @@ const logger = require("./app/core/logger");
 // STUDENT CORE
 const { gradYearToGrade, getDivision } = require("./app/core/student-core");
 
+// logger.log(gradYearToGrade(2022));
+
 // IMPORTANT MIDDLEWARES
 // const homeAuthCheck = require("./app/middleware/home-auth-check");
 const generalAuthCheck = require("./app/middleware/general-auth-check");
@@ -124,8 +126,16 @@ dbConn.connect(async err => {
 	app.get("/setup", generalAuthCheck, setupCheck, (req, res) => res.status(200).render("setup", { layout: false }));
 	app.get("/home", homeAuthCheck, async (req, res) => {
 		let studentInfo = await db.getStudentInfo(req.user.id);
-		let studentDivision = getDivision(gradYearToGrade(studentInfo.graduation_year)); // MIDDLE or UPPER
+		let studentGrade = gradYearToGrade(studentInfo.graduation_year);
+		//logger.log(studentInfo);
+		//logger.log(studentInfo.graduation_year);
+		//logger.log(studentGrade);
+		let studentDivision = getDivision(studentGrade); // MIDDLE or UPPER
 		res.status(200).render("home", { studentInfo, studentDivision: studentDivision || "UNKNOWN" });
+	});
+
+	app.get("/test_division", (req, res) => {
+		res.status(200).send(getDivision(req.query.grade));
 	});
 
 	// CATCH-ALL ROUTE (must go at end) 404
