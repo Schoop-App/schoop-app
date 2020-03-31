@@ -47,6 +47,7 @@ module.exports = imports => {
 	// PROTECTED ENDPOINTS
 	// setup
 	router.post("/classes", accessProtectionMiddleware, urlencodedParser, async (req, res) => {
+		logger.log("Called /classes in API endpoints");
 		// let studentGradYear = gradeToGradYear(parseInt(req.body.studentGrade));
 		let studentPeriods = PERIODS[getDivision(req.body.studentGrade)];
 
