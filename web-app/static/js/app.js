@@ -145,6 +145,21 @@ const setIntervalAdjusted = (fnct, time) => {
 	// 	return `${hourAdjusted}:${minuteString}${amOrPm}`;
 	// };
 
+	// USER LOGOUT
+	const logOutUser = async () => {
+		let logoutReq = await fetch(API_HOST + "/auth/logout");
+		let logoutJson = await logoutReq.json();
+		if (logoutJson.status === "ok") {
+			window.location.href = "/";
+		} else {
+			if (logoutJson.status === "error" && typeof logoutJson.message !== "undefined") {
+				alert("Error logging you out: " + logoutJson.message);
+			} else {
+				alert("Error logging you out. Please reach out to Zane (zstjohn22@windwardschool.org) if you need any help.");
+			}
+		}
+	};
+
 	const generateTimeFromArr = (arr, space="") => generateTime(arr[0], arr[1], space);
 	const generateTimeFromDate = (d, space="") => generateTime(d.getHours(), d.getMinutes(), space);
 
@@ -504,43 +519,45 @@ const setIntervalAdjusted = (fnct, time) => {
 		// initialDate = new Date("Friday March 20 2020 2:06 PM");
 		// initialDate = new Date(Date.now() + (24 * 60 * 60 * 1000));
 		initialDate = new Date();
-		if (!(typeof CANCEL_API_REQS !== "undefined" && CANCEL_API_REQS)) {
-			// if it is okay to do API requests
-			let template = await getScheduleTemplate("UPPER", initialDate);
-			let classes = await getClasses();
-			let userSchedule = buildUserSchedule(template, classes); // built-out schedule
+		// if (!(typeof CANCEL_API_REQS !== "undefined" && CANCEL_API_REQS)) {
+		// if it is okay to do API requests
+		let template = await getScheduleTemplate("UPPER", initialDate);
+		let classes = await getClasses();
+		let userSchedule = buildUserSchedule(template, classes); // built-out schedule
 
-			let classColors = await getClassColors(); // colors for the **periods** in other words
-			console.log(classColors);
-			let scheduleHtml = buildAllScheduleItemsHTML(userSchedule, classColors);
-			document.querySelector("table.today-schedule tbody").innerHTML = scheduleHtml;
+		let classColors = await getClassColors(); // colors for the **periods** in other words
+		console.log(classColors);
+		let scheduleHtml = buildAllScheduleItemsHTML(userSchedule, classColors);
+		document.querySelector("table.today-schedule tbody").innerHTML = scheduleHtml;
 
-			// MISSION CONTROL (Your Schoop)
-			populateMissionControlStatus(initialDate, userSchedule);
+		// MISSION CONTROL (Your Schoop)
+		populateMissionControlStatus(initialDate, userSchedule);
 
-			let qotd = await getQotd();
-			document.querySelector(".quote-content span").innerText = qotd.content;
-			document.querySelector(".quote-author span").innerText = qotd.author;
-		}
-
-		handleWindowResize();
-		window.addEventListener("resize", handleWindowResize);
+		let qotd = await getQotd();
+		document.querySelector(".quote-content span").innerText = qotd.content;
+		document.querySelector(".quote-author span").innerText = qotd.author;
+		// }
 
 		// title would look something like "Today - Monday"
 		// document.querySelector(".today-heading").innerHTML = `Today&nbsp;<span style="font-weight: 500;">&ndash;&nbsp;<strong>${DAYS_FULL[initialDate.getDay()]}</strong>,&nbsp;${MONTHS_FOR_TODAY_VIEW[initialDate.getMonth()]} ${initialDate.getDate()}</span>`;
 		document.getElementById("daySpan").innerHTML = DAYS_FULL[initialDate.getDay()]; // easier
 
-		handleScroll(); // refresh document scroll feature (navbar shadow)
-		document.addEventListener("scroll", handleScroll);
-
 		selectActivePageLink(); // highlight link of current page if it exists
 
 		setTimeout(hideLoadingOverlay, 150);
 	};
-	window.renderPage = onPageReady; // for refresh
+	// window.renderPage = onPageReady; // for refresh
 
-	document.addEventListener("DOMContentLoaded", () => {
-		onPageReady();
+	document.addEventListener("DOMContentLoaded", async () => {
+		handleWindowResize(); // handle window resize for vw vh fixes
+		window.addEventListener("resize", handleWindowResize);
+
+		handleScroll(); // refresh document scroll feature (navbar shadow)
+		document.addEventListener("scroll", handleScroll);
+
+		document.querySelector(".user-btn.btn-logout").addEventListener("click", logOutUser);
+
+		await onPageReady(); // General page init/refresh instructions. This function is also called every minute by mobx state manager
 		// MOBX STATE STUFF
 		mobx.autorun(() => {
 			dateState.previousDate = dateState.currentDate;
