@@ -49,13 +49,18 @@ module.exports = imports => {
 	router.post("/classes", accessProtectionMiddleware, urlencodedParser, async (req, res) => {
 		logger.log("Called /classes in API endpoints");
 		// let studentGradYear = gradeToGradYear(parseInt(req.body.studentGrade));
-		let studentPeriods = PERIODS[getDivision(req.body.studentGrade)];
-		logger.log(`studentPeriods: ${studentPeriods}`);
+		let studentDivision = getDivision(req.body.studentGrade) || req.body.studentDivision;
+		let studentPeriods = PERIODS[studentDivision];
+		logger.log(`studentPeriods: ${studentPeriods[0]}`);
+		logger.log(`req.body: ${JSON.stringify(req.body)}`);
 
 		// let addedClassesSuccessfully = true;
 		try {
 			logger.log("Trying to add classes...");
-			for (const periodNumber in studentPeriods) {
+			let periodNumber;
+			//for (const periodNumber in studentPeriods) {
+			for (let i = 0; i < studentPeriods.length; i++) {
+				periodNumber = studentPeriods[i];
 				// ARGS ORDER: studentId, periodNumber, className, zoomLink
 				logger.log("Try for periodNumber " + periodNumber);
 				let classQuery = await db.addClass(req.user.id, periodNumber, req.body[`className_P${periodNumber}`].trim(), req.body[`zoomLink_P${periodNumber}`].trim());
