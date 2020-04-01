@@ -47,33 +47,54 @@ module.exports = imports => {
 	// PROTECTED ENDPOINTS
 	// setup
 	router.post("/classes", accessProtectionMiddleware, urlencodedParser, async (req, res) => {
-		logger.log("Called /classes in API endpoints");
-		// let studentGradYear = gradeToGradYear(parseInt(req.body.studentGrade));
-		let studentDivision = getDivision(req.body.studentGrade) || req.body.studentDivision;
-		let studentPeriods = PERIODS[studentDivision];
-		logger.log(`studentPeriods: ${studentPeriods[0]}`);
-		logger.log(`req.body: ${JSON.stringify(req.body)}`);
+		// logger.log("Called /classes in API endpoints");
+		let studentSetupState = await db.studentDidSetup(req.user.id);
+		if (studentSetupState === 0) {
+			// DID NOT SET UP
+			// let studentGradYear = gradeToGradYear(parseInt(req.body.studentGrade));
+			let studentDivision = getDivision(req.body.studentGrade) || req.body.studentDivision;
+			let studentPeriods = PERIODS[studentDivision];
+			// logger.log(`studentPeriods: ${studentPeriods[0]}`);
+			// logger.log(`req.body: ${JSON.stringify(req.body)}`);
 
-		// let addedClassesSuccessfully = true;
-		try {
-			logger.log("Trying to add classes...");
-			let periodNumber;
-			//for (const periodNumber in studentPeriods) {
-			for (let i = 0; i < studentPeriods.length; i++) {
-				periodNumber = studentPeriods[i];
-				// ARGS ORDER: studentId, periodNumber, className, zoomLink
-				logger.log("Try for periodNumber " + periodNumber);
-				let classQuery = await db.addClass(req.user.id, periodNumber, req.body[`className_P${periodNumber}`].trim(), req.body[`zoomLink_P${periodNumber}`].trim());
-				logger.log(classQuery);
+			// let addedClassesSuccessfully = true;
+			try {
+				// logger.log("Adding classes...");
+				// *** Adding classes:
+				let periodNumber;
+				//for (const periodNumber in studentPeriods) {
+				for (let i = 0; i < studentPeriods.length; i++) {
+					periodNumber = studentPeriods[i];
+					// ARGS ORDER: studentId, periodNumber, className, zoomLink
+					// logger.log("Try for periodNumber " + periodNumber);
+					/*let classQuery = */  db.addClass(req.user.id, periodNumber, req.body[`className_P${periodNumber}`].trim(), req.body[`zoomLink_P${periodNumber}`].trim());
+					// logger.log(classQuery);
+				}
+
+				// *** Setting graduation year
+				await db.setStudentGradYear(req.user.id, gradeToGradYear(req.body.studentGrade));
+
+				// *** Setting seminar Zoom link
+				await db.setSeminarZoomLink(req.user.id, req.body.zoomLink_SEMINAR);
+
+				// class query successful
+				await db.setSetupState(req.user.id, 1);
+				res.redirect("/home");
+			} catch (e) {
+				// unsuccessful
+				logger.log("oops, error:");
+				logger.error(e);
+				res.status(500).send(`We were not able to register you. Please try again.<br><br><em>SERVER ERROR: ${e.toString()}</em>`);
 			}
-			// class query successful
-			await db.setSetupState(req.user.id, 1);
-			res.redirect("/home");
-		} catch (e) {
-			// unsuccessful
-			logger.log("oops, error:");
-			logger.error(e);
-			res.status(500).send(`We were not able to register you. Please try again.<br><br><em>SERVER ERROR: ${e.toString()}</em>`);
+		} else if (studentSetupState === 1) {
+			// ALREADY SET UP
+			// TODO: move this into a file
+			res.status(400).send(`<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Already Registered</title><meta http-equiv="refresh" content="2;url=https://schoop.app/home" /></head><body><p>You have already completed setup. You will be redirected to the homepage.</p><p><em>If you are not redirected, <a href="https://schoop.app/home">click here</a> to be redirected.</em></p></body></html>`);
+		} else {
+			// UNEXPECTED VALUE
+			let errString = "Internal Server Error – Unexpected student setup state";
+			Sentry.captureException(new Error(errString)); // send it along to me!
+			res.status(500).send(errString); // send it along to the user
 		}
 	});
 

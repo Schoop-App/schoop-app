@@ -13,11 +13,11 @@ module.exports = db => {
 			// studentId, firstName, lastName, email, profilePicUrl
 			 // returns boolean
 			 try {
-				let studentRegistryQuery = await db.addStudent(req.user.id,
-															 	req.user.name.givenName,
-															 	req.user.name.familyName,
-															 	req.user.emails[0].value,
-															 	req.user.photos[0].value);
+				let studentRegistryQuery = await db.addStudent(req.user.id, // google_oauth_id
+															 	req.user.name.givenName, // first_name
+															 	req.user.name.familyName, // last_name
+															 	req.user.emails[0].value, // email
+															 	req.user.photos[0].value); // google_profile_pic_url
 
 				req.isNewStudent = true;
 				next();

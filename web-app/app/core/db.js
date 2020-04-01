@@ -50,6 +50,17 @@ module.exports = imports => {
 		}
 	};
 
+	const dbUpdateQueryGeneric = async (table, cell, primaryKeyName, primaryKeyValue, updateValue) => {
+		// UPDATE table SET cell='new_value' WHERE whatever='somevalue'
+		try {
+			let querySql = `UPDATE table SET ${cell}=${dbConn.escape(updateValue)} WHERE ${primaryKeyName}=${dbConn.escape(primaryKeyValue)}`;
+			let query = await dbConnAsync.query(querySql);
+		} catch (e) {
+			Sentry.captureException(e);
+			throw e;
+		}
+	};
+
 	// const dbWriteQueryGeneric = async query => {
 	// 	try {
 	// 		let query = await dbConnAsync.query(query);
@@ -93,15 +104,19 @@ module.exports = imports => {
 		return query;
 	};
 
-	const setSeminarZoomLink = async (studentId, zoomLink) => {
-		let querySql = `UPDATE students SET seminar_zoom_link=${dbConn.escape(zoomLink)} WHERE google_oauth_id = ${dbConn.escape(studentId)}`;
-		let query = await dbConnAsync.query(querySql);
-	};
+	// const setSeminarZoomLink = async (studentId, zoomLink) => {
+	// 	let querySql = `UPDATE students SET seminar_zoom_link=${dbConn.escape(zoomLink)} WHERE google_oauth_id = ${dbConn.escape(studentId)}`;
+	// 	let query = await dbConnAsync.query(querySql);
+	// };
 
-	const setStudentGradYear = async (studentId, gradYear) => {
-		let querySql = `UPDATE students SET graduation_year=${dbConn.escape(gradYear)} WHERE google_oauth_id = ${dbConn.escape(studentId)}`;
-		let query = await dbConnAsync.query(querySql);
-	};
+	// const setStudentGradYear = async (studentId, gradYear) => {
+	// 	let querySql = `UPDATE students SET graduation_year=${dbConn.escape(gradYear)} WHERE google_oauth_id = ${dbConn.escape(studentId)}`;
+	// 	let query = await dbConnAsync.query(querySql);
+	// };
+
+	//                                                                             (table,      cell,                primaryKeyName,   primaryKeyValue, updateValue)
+	const setSeminarZoomLink = async (studentId, zoomLink) => await dbUpdateQueryGeneric("students", "seminar_zoom_link", "google_oauth_id", studentId, zoomLink);
+	const setStudentGradYear = async (studentId, gradYear) => await dbUpdateQueryGeneric("students", "graduation_year", "google_oauth_id", studentId, gradYear);
 
 	const setSetupState = async (studentId, setupState) => {
 		if (setupState === 0 || setupState === 1) {
