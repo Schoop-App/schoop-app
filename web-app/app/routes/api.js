@@ -86,6 +86,7 @@ module.exports = imports => {
 				res.redirect("/home");
 			} catch (e) {
 				// unsuccessful
+				Sentry.captureException(e); // so I can see it hehe
 				logger.log("oops, error:");
 				logger.error(e);
 				res.status(500).send(`We were not able to register you. Please try again.<br><br><em>SERVER ERROR: ${e.toString()}</em>`);

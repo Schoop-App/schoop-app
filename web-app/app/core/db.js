@@ -53,7 +53,7 @@ module.exports = imports => {
 	const dbUpdateQueryGeneric = async (table, cell, primaryKeyName, primaryKeyValue, updateValue) => {
 		// UPDATE table SET cell='new_value' WHERE whatever='somevalue'
 		try {
-			let querySql = `UPDATE table SET ${cell}=${dbConn.escape(updateValue)} WHERE ${primaryKeyName}=${dbConn.escape(primaryKeyValue)}`;
+			let querySql = `UPDATE ${table} SET ${cell}=${dbConn.escape(updateValue)} WHERE ${primaryKeyName}=${dbConn.escape(primaryKeyValue)}`;
 			let query = await dbConnAsync.query(querySql);
 		} catch (e) {
 			Sentry.captureException(e);
