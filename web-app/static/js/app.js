@@ -562,7 +562,7 @@ const setIntervalAdjusted = (fnct, time) => {
 		mobx.autorun(() => {
 			dateState.previousDate = dateState.currentDate;
 			dateState.currentDate = new Date(appState.time);
-			console.log(dateState.currentDate.getTime() - dateState.previousDate.getTime());
+			// console.log(dateState.currentDate.getTime() - dateState.previousDate.getTime());
 
 			if (dateState.currentDate.getSeconds() === 0) {
 				// onPageReady(true); // no need for await. also says don't do reqs
