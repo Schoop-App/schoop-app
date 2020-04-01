@@ -77,6 +77,10 @@ module.exports = imports => {
 				// *** Setting seminar Zoom link
 				await db.setSeminarZoomLink(req.user.id, req.body.zoomLink_SEMINAR);
 
+				// *** Setting student email consent (or not)
+				// side note: not sure if the studentConsentedToEmail checkbox is parsed as a 0/1 binary value or as a JS boolean. But either one will work below:
+				if (req.body.studentConsentedToEmail) await db.setStudentConsentedToEmail(req.user.id);
+
 				// class query successful
 				await db.setSetupState(req.user.id, 1);
 				res.redirect("/home");
