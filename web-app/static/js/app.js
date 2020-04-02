@@ -327,8 +327,9 @@ const setIntervalAdjusted = (fnct, time) => {
 		let scheduleHTML = "";
 
 		if (typeof schedule.message === "undefined") {
+			let event; // performance fix
 			for (let i = 0; i < schedule.length; i++) {
-				const event = schedule[i];
+				event = schedule[i];
 				// scheduleHTML += buildScheduleItemHTML(event, i + 1);
 				// scheduleHTML += buildScheduleItemHTML(event, event.number);
 				scheduleHTML += buildScheduleItemHTML(event, classColors, i);
@@ -526,6 +527,7 @@ const setIntervalAdjusted = (fnct, time) => {
 		let template = await getScheduleTemplate("UPPER", initialDate);
 		let classes = await getClasses();
 		let userSchedule = buildUserSchedule(template, classes); // built-out schedule
+		console.log("USER SCHEDULE (debug): ", JSON.stringify(userSchedule));
 
 		let classColors = await getClassColors(); // colors for the **periods** in other words
 		console.log(classColors);
