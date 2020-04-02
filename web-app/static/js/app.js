@@ -230,7 +230,8 @@ const setIntervalAdjusted = (fnct, time) => {
 				if (event.type === "PERIOD") {
 					// console.log("It's a period!", event);
 					// CLASS
-					let classInfo = classes[event.number - 1];
+					// let classInfo = classes[event.number - 1];
+					let classInfo = classes.find(item => item.period === event.number);
 					if (classInfo !== null && typeof classInfo === "object") {
 						// maybe a more efficient way to do this?
 						classInfo.type = event.type;
