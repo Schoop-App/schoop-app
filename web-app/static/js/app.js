@@ -232,6 +232,7 @@ const setIntervalAdjusted = (fnct, time) => {
 					// CLASS
 					// let classInfo = classes[event.number - 1];
 					let classInfo = classes.find(item => item.period_number === event.number);
+					console.log(classInfo);
 					if (classInfo !== null && typeof classInfo === "object") {
 						// maybe a more efficient way to do this?
 						classInfo.type = event.type;
