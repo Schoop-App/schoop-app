@@ -397,7 +397,7 @@ div.loading-overlay div.loading-text {
 	transform: translate(-50%, -50%);
 
 	text-align: left;
-	min-width: calc(52.4 * var(--vw));
+	/*min-width: calc(52.4 * var(--vw));*/
 }
 
 @-webkit-keyframes loadinganim {
@@ -414,10 +414,10 @@ div.loading-overlay div.loading-text {
 	100% { content: '...'; }
 }
 
-div.loading-overlay div.loading-text::after {
+/*div.loading-overlay div.loading-text::after {
 	content: '';
 	animation: loadinganim 0.5s linear infinite;
-}
+}*/
 
 /* BEGIN NAVBAR (taken from another one of my projects) */
 nav.navbar {
