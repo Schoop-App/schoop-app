@@ -561,6 +561,7 @@ const setIntervalAdjusted = (fnct, time) => {
 
 		document.querySelector(".user-btn.btn-logout").addEventListener("click", logOutUser);
 
+		window.addEventListener("focus", onPageReady); // because silly browsers can't be trusted
 		await onPageReady(); // General page init/refresh instructions. This function is also called every minute by mobx state manager
 		// MOBX STATE STUFF
 		mobx.autorun(() => {
