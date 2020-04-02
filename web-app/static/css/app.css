@@ -400,6 +400,13 @@ div.loading-overlay div.loading-text {
 	min-width: calc(52.4 * var(--vw));
 }
 
+@-webkit-keyframes loadinganim {
+	0% { content: ''; }
+	33% { content: '.'; }
+	67% { content: '..'; }
+	100% { content: '...'; }
+}
+
 @keyframes loadinganim {
 	0% { content: ''; }
 	33% { content: '.'; }
