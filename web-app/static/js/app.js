@@ -300,10 +300,10 @@ const setIntervalAdjusted = (fnct, time) => {
 				eventColor = colors[periodNumber - 1];
 				console.log((periodNumber - 1), eventColor);
 
-				eventSignifier += `<span style="font-size: 0.93em;">${periodNumber}</span>`; // hacky as hell, sorry
-			}
+				eventSignifier += `<span style="font-size: 0.93em;">${periodNumber}</span>`; // quite hacky, sorry
+			} 
 			eventZoomLink = event.zoom_link;
-			eventName = event.class_name || NOTHING_DEMARCATOR;
+			eventName = event.class_name || event.name || NOTHING_DEMARCATOR;
 			eventTimespan = generateTimespan(event.start, event.end);
 			eventIsLightOrDark = lightOrDark(event.color);
 		} catch (e) {
