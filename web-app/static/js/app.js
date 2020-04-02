@@ -527,7 +527,7 @@ const setIntervalAdjusted = (fnct, time) => {
 		let template = await getScheduleTemplate("UPPER", initialDate);
 		let classes = await getClasses();
 		let userSchedule = buildUserSchedule(template, classes); // built-out schedule
-		console.log("USER SCHEDULE (debug): ", JSON.stringify(userSchedule));
+		console.log("USER SCHEDULE (debug): ", JSON.stringify(userSchedule, null, 4));
 
 		let classColors = await getClassColors(); // colors for the **periods** in other words
 		console.log(classColors);
