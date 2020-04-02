@@ -357,7 +357,7 @@ const setIntervalAdjusted = (fnct, time) => {
 	window.dateFitsInTimeRange = dateFitsInTimeRange;
 
 	// const generateMissionControlEventText = event => `${getEventSignifier(event)}${event.number || ""} - ${event.name}`;
-	const generateMissionControlEventText = event => event.name || NOTHING_DEMARCATOR;
+	const generateMissionControlEventText = event => event.class_name || event.name || NOTHING_DEMARCATOR;
 
 	// early or late enum
 	const EarlyOrLate = {
