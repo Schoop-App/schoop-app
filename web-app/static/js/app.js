@@ -524,7 +524,7 @@ const setIntervalAdjusted = (fnct, time) => {
 		initialDate = new Date();
 		// if (!(typeof CANCEL_API_REQS !== "undefined" && CANCEL_API_REQS)) {
 		// if it is okay to do API requests
-		let template = await getScheduleTemplate("UPPER", initialDate);
+		let template = await getScheduleTemplate(window.STUDENT_DIVISION, initialDate);
 		let classes = await getClasses();
 		let userSchedule = buildUserSchedule(template, classes); // built-out schedule
 		console.log("USER SCHEDULE (debug): ", JSON.stringify(userSchedule, null, 4));

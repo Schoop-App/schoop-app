@@ -126,12 +126,8 @@ dbConn.connect(async err => {
 	app.get("/setup", generalAuthCheck, setupCheck, (req, res) => res.status(200).render("setup", { layout: false }));
 	app.get("/home", homeAuthCheck, async (req, res) => {
 		let studentInfo = await db.getStudentInfo(req.user.id);
-		let studentGrade = gradYearToGrade(studentInfo.graduation_year);
-		//logger.log(studentInfo);
-		//logger.log(studentInfo.graduation_year);
-		//logger.log(studentGrade);
-		let studentDivision = getDivision(studentGrade); // MIDDLE or UPPER
-		res.status(200).render("home", { studentInfo, studentDivision: studentDivision || "UNKNOWN" });
+		let studentDivision = getDivision(gradYearToGrade(studentInfo.graduation_year)); // MIDDLE or UPPER
+		res.status(200).render("home", { studentInfo, studentDivision });
 	});
 
 	app.get("/test_division", (req, res) => {
