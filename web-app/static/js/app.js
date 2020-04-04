@@ -256,20 +256,6 @@ const setIntervalAdjusted = (fnct, time) => {
 		}
 	};
 
-	// {
- //        "name": "PreCalc Honors",
- //        "zoom_link": "https://zoom.us",
- //        "type": "PERIOD",
- //        "start": [
- //            8,
- //            0
- //        ],
- //        "end": [
- //            9,
- //            15
- //        ]
- //    }
-
  	const getEventSignifier = (event, addPeriod=false) => {
  		let signifierToReturn;
  		if (typeof event.overrideSignifier === "undefined") {
@@ -542,7 +528,7 @@ const setIntervalAdjusted = (fnct, time) => {
 		document.querySelector(".quote-author span").innerText = qotd.author;
 		// }
 
-		// title would look something like "Today - Monday"
+		// title would look something like "Today - Monday" (NOW: "{{name}}'s {{day}}")
 		// document.querySelector(".today-heading").innerHTML = `Today&nbsp;<span style="font-weight: 500;">&ndash;&nbsp;<strong>${DAYS_FULL[initialDate.getDay()]}</strong>,&nbsp;${MONTHS_FOR_TODAY_VIEW[initialDate.getMonth()]} ${initialDate.getDate()}</span>`;
 		document.getElementById("daySpan").innerHTML = DAYS_FULL[initialDate.getDay()]; // easier
 

@@ -64,6 +64,8 @@ dbConn.connect(async err => {
 	// begin app stuff
 	const app = express();
 
+	app.use(require("helmet")()); // helmet security headers (good to have here)
+
 	// general app config
 	app.set("trust proxy", "127.0.0.1"); // trust Nginx reverse proxy
 	app.disable("x-powered-by"); // hide Express headers
