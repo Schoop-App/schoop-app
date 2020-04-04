@@ -556,6 +556,7 @@ const setIntervalAdjusted = (fnct, time) => {
 			// console.log(dateState.currentDate.getTime() - dateState.previousDate.getTime());
 
 			if (dateState.currentDate.getSeconds() === 0) {
+				// TODO: make this more efficient. Calls on the server every minute just to "make sure," but this could become a bandwidth-heavy practice.
 				// onPageReady(true); // no need for await. also says don't do reqs
 				onPageReady(); // no need for await
 			}

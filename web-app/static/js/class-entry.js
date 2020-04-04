@@ -1,13 +1,6 @@
 (window => {
-	let PERIODS = {
-		MIDDLE: [1, 2, 3, 4, 5, 6, 8],
-		UPPER: [1, 2, 3, 4, 5, 6, 7, 8, 9]
-	};
-
-	let Division = {
-		MIDDLE: "MIDDLE",
-		UPPER: "UPPER"
-	};
+	let Division = window.DIVISIONS || DIVISIONS;
+	let PERIODS = window.DIVISION_PERIODS || DIVISION_PERIODS;
 
 	let CLASS_ENTRY_TEMPLATE = Handlebars.compile(
 `<tr>

@@ -21,7 +21,7 @@ const mysql = require("mysql");
 const logger = require("./app/core/logger");
 
 // STUDENT CORE
-const { gradYearToGrade, getDivision } = require("./app/core/student-core");
+const { gradYearToGrade, getDivision, PERIODS, Division } = require("./app/core/student-core");
 
 // logger.log(gradYearToGrade(2022));
 
@@ -125,15 +125,15 @@ dbConn.connect(async err => {
 	app.get("/login", loginAuthCheck, (req, res) => res.status(200).send(`<a href="/api/auth/google">Log In with Google (WW account)</a>`));
 
 	// PROTECTED ROUTES
-	app.get("/setup", generalAuthCheck, setupCheck, (req, res) => res.status(200).render("setup", { layout: false }));
+	app.get("/setup", generalAuthCheck, setupCheck, (req, res) => res.status(200).render("setup", {
+		layout: false,
+		divisionPeriods: JSON.stringify(PERIODS),
+		divisionOptions: JSON.stringify(Division)
+	}));
 	app.get("/home", homeAuthCheck, async (req, res) => {
 		let studentInfo = await db.getStudentInfo(req.user.id);
 		let studentDivision = getDivision(gradYearToGrade(studentInfo.graduation_year)); // MIDDLE or UPPER
 		res.status(200).render("home", { studentInfo, studentDivision });
-	});
-
-	app.get("/test_division", (req, res) => {
-		res.status(200).send(getDivision(req.query.grade));
 	});
 
 	// CATCH-ALL ROUTE (must go at end) 404

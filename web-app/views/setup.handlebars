@@ -6,9 +6,9 @@
 	<meta name="viewport" content="width=device-width,initial-scale=1.0">
 
 	<!-- Sentry error reporting (uncomment for prod) -->
-	<!-- <script src="https://browser.sentry-cdn.com/5.14.1/bundle.min.js" integrity="sha384-uNLty2kYRXkczv6MLytto1fP/VzNBKjYpUNIpNa3yvW0CYZrzJE4TyvUBDHtbMmq" crossorigin="anonymous">
+	<script src="https://browser.sentry-cdn.com/5.14.1/bundle.min.js" integrity="sha384-uNLty2kYRXkczv6MLytto1fP/VzNBKjYpUNIpNa3yvW0CYZrzJE4TyvUBDHtbMmq" crossorigin="anonymous">
 </script>
-	<script>Sentry.init({ dsn: 'https://43a95a26c1254748aba194baa7b53194@sentry.io/4719620' });</script> -->
+	<script>Sentry.init({ dsn: 'https://43a95a26c1254748aba194baa7b53194@sentry.io/4719620' });</script>
 
 	<!-- vendor script -->
 	<script src="/js/vendor.js"></script>
@@ -64,6 +64,10 @@
 	</main>
 
 	<!-- scripts -->
+	<script>
+		const DIVISIONS = {{{divisionOptions}}};
+		const DIVISION_PERIODS = {{{divisionPeriods}}};
+	</script>
 	<script src="/js/class-entry.js"></script>
 </body>
 </html>

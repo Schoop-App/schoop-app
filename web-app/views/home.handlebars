@@ -1,37 +1,50 @@
-<div class="gridded-item-part mission-control-container">
-	<!-- <h1 class="mission-control-heading">Mission Control</h1> -->
-	<h1 class="mission-control-heading">Your Schoop</h1>
-	<div class="mission-control-outer">
-		<!-- reused the same class. I'm lazy like that ;) -->
-		<!-- <p class="zoom-link-hint">See what's happening right now.</p> -->
-		<p class="zoom-link-hint">Get the Schoop on what's happening right now.</p>
-		<div class="gridded-mission-control fix-border-radius">
-			<div class="mission-control-part current-status">
-				<!-- Current Status -->
-				<div class="mission-control-status-container now">
-					<h4>Now:&nbsp;&nbsp;<span class="event-signifier"></span></h4>
-					<div class="mission-control-status-field-container">
-						<div class="mission-control-status-field time"></div>
-						<div class="mission-control-status-field event"></div>
+<!-- today and dashboard are gridded -->
+<div class="gridded-items">
+	<div class="gridded-item-part today-container">
+		<h1 class="today-heading">{{studentInfo.first_name}}&apos;s&nbsp;<span id="daySpan">Day</span></h1> <!-- e.g. Zane's Monday -->
+		<div class="today-schedule-outer">
+			<p class="zoom-link-hint">Click on an event to open its Zoom link.</p>
+			<table class="today-schedule fix-border-radius">
+				<tbody></tbody>
+			</table>
+		</div>
+	</div>
+	<!-- mission control -->
+	<div class="gridded-item-part mission-control-container">
+		<!-- <h1 class="mission-control-heading">Mission Control</h1> -->
+		<h1 class="mission-control-heading">Your Schoop</h1>
+		<div class="mission-control-outer">
+			<!-- reused the same class. I'm lazy like that ;) -->
+			<!-- <p class="zoom-link-hint">See what's happening right now.</p> -->
+			<p class="zoom-link-hint">Get the Schoop on what's happening right now.</p>
+			<div class="gridded-mission-control fix-border-radius">
+				<div class="mission-control-part current-status">
+					<!-- Current Status -->
+					<div class="mission-control-status-container now">
+						<h4>Now:&nbsp;&nbsp;<span class="event-signifier"></span></h4>
+						<div class="mission-control-status-field-container">
+							<div class="mission-control-status-field time"></div>
+							<div class="mission-control-status-field event"></div>
+						</div>
+					</div>
+					<div class="mission-control-status-container up-next">
+						<h4>Up Next:&nbsp;&nbsp;<span class="event-signifier"></span></h4>
+						<div class="mission-control-status-field-container">
+							<div class="mission-control-status-field time"></div>
+							<div class="mission-control-status-field event"></div>
+						</div>
 					</div>
 				</div>
-				<div class="mission-control-status-container up-next">
-					<h4>Up Next:&nbsp;&nbsp;<span class="event-signifier"></span></h4>
-					<div class="mission-control-status-field-container">
-						<div class="mission-control-status-field time"></div>
-						<div class="mission-control-status-field event"></div>
-					</div>
+				<div class="mission-control-part qotd">
+					<!-- Quote of the Day -->
+					<!-- the sleepier I get, the more this turns into div soup -->
+					<div class="quote-content">&ldquo;<span></span>&rdquo;</div>
+					<div class="quote-author">&ndash;<span></span></div>
 				</div>
-			</div>
-			<div class="mission-control-part qotd">
-				<!-- Quote of the Day -->
-				<!-- the sleepier I get, the more this turns into div soup -->
-				<div class="quote-content">&ldquo;<span></span>&rdquo;</div>
-				<div class="quote-author">&ndash;<span></span></div>
-			</div>
-			<div class="mission-control-part twitter-feed">
-				<!-- Windward Twitter feed -->
-				<iframe width="100%" height="100%" frameborder="0" src="/ww-twitter.html"></iframe>
+				<div class="mission-control-part twitter-feed">
+					<!-- Windward Twitter feed -->
+					<iframe width="100%" height="100%" frameborder="0" src="/ww-twitter.html"></iframe>
+				</div>
 			</div>
 		</div>
 	</div>
