@@ -3,9 +3,15 @@ const Division = {
 	UPPER: "UPPER"
 };
 
+// const PERIODS = {
+// 	MIDDLE: [1, 2, 3, 4, 5, 6, 8],
+// 	UPPER: [1, 2, 3, 4, 5, 6, 7, 8, 9]
+// };
+
+// new schedule prep!
 const PERIODS = {
-	MIDDLE: [1, 2, 3, 4, 5, 6, 8],
-	UPPER: [1, 2, 3, 4, 5, 6, 7, 8, 9]
+	MIDDLE: [1, 2, 3, 4, 5, 6, 7, 8],
+	UPPER: [1, 2, 3, 4, 5, 6, 7, 8]
 };
 
 const gradeToGradYear = grade => {

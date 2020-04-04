@@ -54,21 +54,16 @@ module.exports = imports => {
 			// let studentGradYear = gradeToGradYear(parseInt(req.body.studentGrade));
 			let studentDivision = getDivision(req.body.studentGrade) || req.body.studentDivision;
 			let studentPeriods = PERIODS[studentDivision];
-			// logger.log(`studentPeriods: ${studentPeriods[0]}`);
-			// logger.log(`req.body: ${JSON.stringify(req.body)}`);
-
-			// let addedClassesSuccessfully = true;
 			try {
-				// logger.log("Adding classes...");
-				// *** Adding classes:
-				let periodNumber;
+				let periodNumber, className, zoomLink;
 				//for (const periodNumber in studentPeriods) {
 				for (let i = 0; i < studentPeriods.length; i++) {
 					periodNumber = studentPeriods[i];
-					// ARGS ORDER: studentId, periodNumber, className, zoomLink
-					// logger.log("Try for periodNumber " + periodNumber);
-					/*let classQuery = */  db.addClass(req.user.id, periodNumber, req.body[`className_P${periodNumber}`].trim(), req.body[`zoomLink_P${periodNumber}`].trim());
-					// logger.log(classQuery);
+					className = req.body[`className_P${periodNumber}`].trim();
+					zoomLink = req.body[`zoomLink_P${periodNumber}`].trim();
+					// if (!(className === "" && zoomLink === ""))
+					if (className !== "" || zoomLink !== "") // DeMorgan's Law coming in handy ;)
+						db.addClass(req.user.id, periodNumber, className, zoomLink);
 				}
 
 				// *** Setting graduation year
@@ -79,7 +74,8 @@ module.exports = imports => {
 
 				// *** Setting student email consent (or not)
 				// side note: not sure if the studentConsentedToEmail checkbox is parsed as a 0/1 binary value or as a JS boolean. But either one will work below:
-				if (req.body.studentConsentedToEmail) await db.setStudentConsentedToEmail(req.user.id);
+				if (req.body.studentConsentedToEmail) await db.setStudentConsentedToEmail(req.user.id, 1);
+				if (req.body.studentWantsDailyEmail) await db.setStudentWantsDailyEmail(req.user.id, 1);
 
 				// class query successful
 				await db.setSetupState(req.user.id, 1);
