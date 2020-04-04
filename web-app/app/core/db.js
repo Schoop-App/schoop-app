@@ -117,9 +117,9 @@ module.exports = imports => {
 	//                                                                             (table,      cell,                primaryKeyName,   primaryKeyValue, updateValue)
 	const setSeminarZoomLink = async (studentId, zoomLink) => await dbUpdateQueryGeneric("students", "seminar_zoom_link", "google_oauth_id", studentId, zoomLink);
 	const setStudentGradYear = async (studentId, gradYear) => await dbUpdateQueryGeneric("students", "graduation_year", "google_oauth_id", studentId, gradYear);
-	// sets true for email consent
+	// sets value for email consent
 	const setStudentConsentedToEmail = async (studentId, newState) => await dbUpdateQueryGeneric("students", "did_consent_to_email", "google_oauth_id", studentId, newState);
-	// sets true for user wanting daily email (if they do)
+	// sets value for user wanting daily email (if they do)
 	const setStudentWantsDailyEmail = async (studentId, newState) => await dbUpdateQueryGeneric("students", "did_consent_to_email", "google_oauth_id", studentId, newState);
 
 	const setSetupState = async (studentId, setupState) => {
