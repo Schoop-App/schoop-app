@@ -7,7 +7,7 @@ module.exports = {
 
     // Options reference: https://pm2.keymetrics.io/docs/usage/application-declaration/
     args: 'one two',
-    instances: 4,
+    instances: 5,
     autorestart: true,
     watch: true,
     ignore_watch: ["static"],
