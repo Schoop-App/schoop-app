@@ -14,7 +14,7 @@ module.exports = {
     max_memory_restart: '4G',
     exp_backoff_restart_delay: 100,
     //instances: -1,
-    instances: 4,
+    //instances: 4,
     exec_mode: 'cluster',
     env: {
       NODE_ENV: 'development',
