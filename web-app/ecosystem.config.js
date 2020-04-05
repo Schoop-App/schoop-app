@@ -10,7 +10,7 @@ module.exports = {
     instances: 5,
     autorestart: true,
     watch: true,
-    ignore_watch: ["static"],
+    ignore_watch: ["static", "views"],
     max_memory_restart: '4G',
     exp_backoff_restart_delay: 100,
     //instances: -1,
