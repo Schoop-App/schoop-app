@@ -130,14 +130,16 @@ dbConn.connect(async err => {
 	app.get("/setup", generalAuthCheck, setupCheck, (req, res) => res.status(200).render("setup", {
 		layout: false,
 		divisionPeriods,
-		divisionOptions
+		divisionOptions,
+		pageJS: "class-entry"
 	}));
 	app.get("/home", homeAuthCheck, async (req, res) => {
 		let studentInfo = await db.getStudentInfo(req.user.id);
 		let studentDivision = getDivision(gradYearToGrade(studentInfo.graduation_year)); // MIDDLE or UPPER
 		res.status(200).render("home", {
 			studentInfo,
-			studentDivision
+			studentDivision,
+			pageJS: "home"
 		});
 	});
 	// NOTE: homeAuthCheck works here (it doesn't redirect anywhere if the user has set up)
@@ -148,7 +150,8 @@ dbConn.connect(async err => {
 			studentInfo, // used to render
 			studentDivision, // either MIDDLE or UPPER
 			divisionPeriods, // arrays w/ periods for MIDDLE and UPPER
-			divisionOptions // MIDDLE or UPPER
+			divisionOptions, // MIDDLE or UPPER
+			pageJS: "user"
 		})
 	});
 
