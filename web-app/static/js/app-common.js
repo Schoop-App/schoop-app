@@ -196,5 +196,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 	handleScroll(); // refresh document scroll feature (navbar shadow)
 	document.addEventListener("scroll", handleScroll);
 
+	selectActivePageLink(); // highlight link of current page if it exists
+
 	document.querySelector(".user-btn.btn-logout").addEventListener("click", logOutUser);
 });
