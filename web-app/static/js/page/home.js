@@ -1,3 +1,14 @@
+// On window resize, fix height of Mission Control to new height of today schedule
+const handleWindowResize = () => {
+	let winWidth = window.innerWidth;
+	let winHeight = window.innerHeight;
+	if (winWidth > 949) {
+		document.querySelector(".gridded-mission-control").style.height = document.querySelector("table.today-schedule").offsetHeight + "px";
+	} else {
+		document.querySelector(".gridded-mission-control").style.height = 0.8 * winHeight + "px";
+	}
+};
+
 (window => {
 	// STARTING DATE
 	let initialDate = new Date();

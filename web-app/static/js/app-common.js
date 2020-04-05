@@ -169,17 +169,6 @@ const getJSON = async (path, overrideHost=false, validateReqs=true) => {
 	}
 };
 
-// On window resize, fix height of Mission Control to new height of today schedule
-const handleWindowResize = () => {
-	let winWidth = window.innerWidth;
-	let winHeight = window.innerHeight;
-	if (winWidth > 949) {
-		document.querySelector(".gridded-mission-control").style.height = document.querySelector("table.today-schedule").offsetHeight + "px";
-	} else {
-		document.querySelector(".gridded-mission-control").style.height = 0.8 * winHeight + "px";
-	}
-};
-
 // highlights the active page link if it exists
 const activateLink = elem => {
 	try {
@@ -200,7 +189,8 @@ const selectActivePageLink = () => {
 };
 
 document.addEventListener("DOMContentLoaded", async () => {
-	handleWindowResize(); // handle window resize for vw vh fixes
+	if (typeof handleWindowResize !== "undefined")
+		handleWindowResize(); // handle window resize for vw vh fixes
 	window.addEventListener("resize", handleWindowResize);
 
 	handleScroll(); // refresh document scroll feature (navbar shadow)
