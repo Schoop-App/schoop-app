@@ -22,6 +22,8 @@ const logger = require("./app/core/logger");
 
 // STUDENT CORE
 const { gradYearToGrade, getDivision, PERIODS, Division } = require("./app/core/student-core");
+const divisionPeriods = JSON.stringify(PERIODS),
+      divisionOptions = JSON.stringify(Division);
 
 // logger.log(gradYearToGrade(2022));
 
@@ -127,13 +129,27 @@ dbConn.connect(async err => {
 	// PROTECTED ROUTES
 	app.get("/setup", generalAuthCheck, setupCheck, (req, res) => res.status(200).render("setup", {
 		layout: false,
-		divisionPeriods: JSON.stringify(PERIODS),
-		divisionOptions: JSON.stringify(Division)
+		divisionPeriods,
+		divisionOptions
 	}));
 	app.get("/home", homeAuthCheck, async (req, res) => {
 		let studentInfo = await db.getStudentInfo(req.user.id);
 		let studentDivision = getDivision(gradYearToGrade(studentInfo.graduation_year)); // MIDDLE or UPPER
-		res.status(200).render("home", { studentInfo, studentDivision });
+		res.status(200).render("home", {
+			studentInfo,
+			studentDivision
+		});
+	});
+	// NOTE: homeAuthCheck works here (it doesn't redirect anywhere if the user has set up)
+	app.get("/user", homeAuthCheck, async (req, res) => {
+		let studentInfo = await db.getStudentInfo(req.user.id);
+		let studentDivision = getDivision(gradYearToGrade(studentInfo.graduation_year)); // MIDDLE or UPPER
+		res.status(200).render("user", {
+			studentInfo, // used to render
+			studentDivision, // either MIDDLE or UPPER
+			divisionPeriods, // arrays w/ periods for MIDDLE and UPPER
+			divisionOptions // MIDDLE or UPPER
+		})
 	});
 
 	// CATCH-ALL ROUTE (must go at end) 404
