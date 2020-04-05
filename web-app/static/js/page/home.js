@@ -373,15 +373,7 @@
 	// window.renderPage = onPageReady; // for refresh
 
 	document.addEventListener("DOMContentLoaded", async () => {
-		handleWindowResize(); // handle window resize for vw vh fixes
-		window.addEventListener("resize", handleWindowResize);
-
-		handleScroll(); // refresh document scroll feature (navbar shadow)
-		document.addEventListener("scroll", handleScroll);
-
-		document.querySelector(".user-btn.btn-logout").addEventListener("click", logOutUser);
-
-		window.addEventListener("focus", onPageReady); // because silly browsers can't be trusted
+		indow.addEventListener("focus", onPageReady); // because silly browsers can't be trusted
 		await onPageReady(); // General page init/refresh instructions. This function is also called every minute by mobx state manager
 		// MOBX STATE STUFF
 		mobx.autorun(() => {

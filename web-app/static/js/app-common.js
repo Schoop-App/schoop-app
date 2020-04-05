@@ -156,3 +156,13 @@ const getJSON = async (path, overrideHost=false, validateReqs=true) => {
 		}
 	}
 };
+
+document.addEventListener("DOMContentLoaded", async () => {
+	handleWindowResize(); // handle window resize for vw vh fixes
+	window.addEventListener("resize", handleWindowResize);
+
+	handleScroll(); // refresh document scroll feature (navbar shadow)
+	document.addEventListener("scroll", handleScroll);
+
+	document.querySelector(".user-btn.btn-logout").addEventListener("click", logOutUser);
+});
