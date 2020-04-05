@@ -5,6 +5,12 @@
 	<title>Schoop &ndash; Home</title>
 	<meta name="viewport" content="width=device-width,initial-scale=1.0">
 
+	<!-- CONFIG (rendered server-side) -->
+	<script>
+		const STUDENT_DIVISION = "{{{studentDivision}}}";
+		const SEMINAR_ZOOM_LINK = "{{{studentInfo.seminar_zoom_link}}}";
+	</script>
+
 	<!-- Sentry error reporting (uncomment for prod) -->
 	<script src="https://browser.sentry-cdn.com/5.14.1/bundle.min.js" integrity="sha384-uNLty2kYRXkczv6MLytto1fP/VzNBKjYpUNIpNa3yvW0CYZrzJE4TyvUBDHtbMmq" crossorigin="anonymous">
 </script>
@@ -49,10 +55,6 @@
 	</main>
 
 	<!-- scripts -->
-	<script>
-		const STUDENT_DIVISION = "{{{studentDivision}}}";
-		const SEMINAR_ZOOM_LINK = "{{{studentInfo.seminar_zoom_link}}}";
-	</script>
 	<script src="/js/app-common.js"></script> <!-- common elements -->
 	<script src="/js/page/{{{pageJS}}}.js" defer></script> <!-- loads after the other stuff lol -->
 </body>
