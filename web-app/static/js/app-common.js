@@ -160,7 +160,7 @@ const getJSON = async (path, overrideHost=false, validateReqs=true) => {
 			let req = await fetch(apiHost + path);
 			let json = await req.json();
 			if (validateReqs && json.status === "error")
-				window.location.href = "/";
+				window.location.href = "/login?expired=1";
 			return json;
 		} catch (e) {
 			// window.location.href = "/";
