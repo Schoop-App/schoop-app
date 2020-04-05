@@ -340,7 +340,7 @@ const handleWindowResize = () => {
 	// window.renderPage = onPageReady; // for refresh
 
 	document.addEventListener("DOMContentLoaded", async () => {
-		indow.addEventListener("focus", onPageReady); // because silly browsers can't be trusted
+		window.addEventListener("focus", onPageReady); // because silly browsers can't be trusted
 		await onPageReady(); // General page init/refresh instructions. This function is also called every minute by mobx state manager
 		// MOBX STATE STUFF
 		mobx.autorun(() => {
