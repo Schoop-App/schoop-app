@@ -8,6 +8,7 @@ Sentry.init({ dsn: 'https://b7ca5bed93fc4dd791eff38ce5db1185@sentry.io/4547846' 
 const PRIVATE_CONFIG = require("./private-config.json");
 
 // const RAND = Math.random().toString();
+const SCHOOP_HOST = process.env.SCHOOP_HOST || "https://schoop.app";
 const PORT = process.env.SCHOOP_PORT || 3060;
 
 const fs = require("fs");
@@ -100,7 +101,7 @@ dbConn.connect(async err => {
 		{
 			clientID: PRIVATE_CONFIG.googleOAuth.web.client_id,
 			clientSecret: PRIVATE_CONFIG.googleOAuth.web.client_secret,
-			callbackURL: (process.env.SCHOOP_HOST || "https://schoop.app") + "/api/auth/google/callback",
+			callbackURL: `${SCHOOP_HOST}/api/auth/google/callback`,
 			scope: ["email", "profile"]
 		},
 		// This is a "verify" function required by all Passport strategies
@@ -126,6 +127,14 @@ dbConn.connect(async err => {
 
 	app.get("/login", loginAuthCheck, (req, res) => res.status(200).send(`<a href="/api/auth/google">Log In with Google (WW account)</a>`));
 
+	// default includes (maybe change location of this? idk)
+	app.use((req, res, next) => {
+		req.includeDefaults = {
+			apiHost: `${SCHOOP_HOST}/api`
+		};
+		next();
+	});
+
 	// PROTECTED ROUTES
 	app.get("/setup", generalAuthCheck, setupCheck, (req, res) => res.status(200).render("setup", {
 		layout: false,
@@ -139,7 +148,8 @@ dbConn.connect(async err => {
 		res.status(200).render("home", {
 			studentInfo,
 			studentDivision,
-			pageJS: "home"
+			pageJS: "home",
+			defaults: req.includeDefaults
 		});
 	});
 	// NOTE: homeAuthCheck works here (it doesn't redirect anywhere if the user has set up)
@@ -151,8 +161,9 @@ dbConn.connect(async err => {
 			studentDivision, // either MIDDLE or UPPER
 			divisionPeriods, // arrays w/ periods for MIDDLE and UPPER
 			divisionOptions, // MIDDLE or UPPER
-			pageJS: "user"
-		})
+			pageJS: "user",
+			defaults: req.includeDefaults
+		});
 	});
 
 	// CATCH-ALL ROUTE (must go at end) 404

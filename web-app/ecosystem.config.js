@@ -18,7 +18,8 @@ module.exports = {
     exec_mode: 'cluster',
     env: {
       NODE_ENV: 'development',
-      DATABASE_CERT_PATH: '/Users/zooza310/ca-certificate.crt'
+      DATABASE_CERT_PATH: '/Users/zooza310/ca-certificate.crt',
+      SCHOOP_HOST: "http://localhost:3060"
     },
     env_production: {
       NODE_ENV: 'production',

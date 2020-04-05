@@ -1,5 +1,5 @@
 // CONTSTANTS //
-const API_HOST = "https://schoop.app/api"; // json-server testing
+// const API_HOST = "https://schoop.app/api";
 const NOTHING_DEMARCATOR = "-----"; // when there is NOTHING for an event or time
 
 // enums for object mapping (prolly)
