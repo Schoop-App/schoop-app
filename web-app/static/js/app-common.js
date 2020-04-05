@@ -164,7 +164,7 @@ const getJSON = async (path, overrideHost=false, validateReqs=true) => {
 			return json;
 		} catch (e) {
 			// window.location.href = "/";
-			alert("ERROR (tell Zane):\n\n" + e.toString());
+			console.log("ERROR (tell Zane):\n\n" + e.toString());
 		}
 	}
 };
