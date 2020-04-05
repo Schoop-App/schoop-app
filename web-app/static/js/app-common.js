@@ -189,9 +189,10 @@ const selectActivePageLink = () => {
 };
 
 document.addEventListener("DOMContentLoaded", async () => {
-	if (typeof handleWindowResize !== "undefined")
+	if (typeof handleWindowResize !== "undefined") {
 		handleWindowResize(); // handle window resize for vw vh fixes
-	window.addEventListener("resize", handleWindowResize);
+		window.addEventListener("resize", handleWindowResize);
+	}
 
 	handleScroll(); // refresh document scroll feature (navbar shadow)
 	document.addEventListener("scroll", handleScroll);
