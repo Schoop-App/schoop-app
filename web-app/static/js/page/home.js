@@ -162,20 +162,6 @@
 		}
 	};
 
-	// SEES WHETHER DATE FITS IN TIME RANGE
-	const convertHoursAndMinsToMins = (hours, mins) => (hours * 60) + mins;
-	const convertArrToMins = arr => convertHoursAndMinsToMins(arr[0], arr[1]); // for time arrays
-	const convertDateToMins = d => convertHoursAndMinsToMins(d.getHours(), d.getMinutes());
-	const dateFitsInTimeRange = (d, timeArr1, timeArr2) => {
-		// This is for seeing what event is current.
-		let dateMinutes = convertHoursAndMinsToMins(d.getHours(), d.getMinutes());
-		let timeArr1Minutes = convertHoursAndMinsToMins(timeArr1[0], timeArr1[1]);
-		let timeArr2Minutes = convertHoursAndMinsToMins(timeArr2[0], timeArr2[1]);
-
-		return (dateMinutes >= timeArr1Minutes && dateMinutes < timeArr2Minutes);
-	};
-	window.dateFitsInTimeRange = dateFitsInTimeRange;
-
 	// const generateMissionControlEventText = event => `${getEventSignifier(event)}${event.number || ""} - ${event.name}`;
 	const generateMissionControlEventText = event => event.class_name || event.name || NOTHING_DEMARCATOR;
 
@@ -292,17 +278,6 @@
 		}
 	};
 
-	// On window resize, fix height of Mission Control to new height of today schedule
-	const handleWindowResize = () => {
-		let winWidth = window.innerWidth;
-		let winHeight = window.innerHeight;
-		if (winWidth > 949) {
-			document.querySelector(".gridded-mission-control").style.height = document.querySelector("table.today-schedule").offsetHeight + "px";
-		} else {
-			document.querySelector(".gridded-mission-control").style.height = 0.8 * winHeight + "px";
-		}
-	};
-
 	// const updateCurrentClass = (schedule, d) => {
 	// 	// d: DATE
 	// 	// schedule: BUILT (COMBINED) SCHEDULE
@@ -310,25 +285,6 @@
 
 
 	// window.addEventListener("twitterReady", () => console.log("twitter load"));
-
-	// highlights the active page link if it exists
-	const activateLink = elem => {
-		try {
-			elem.parentElement.classList.add("link-active");
-		} catch (e) {
-			console.log("link not present in top bar");
-		}
-	}
-	const selectActivePageLink = () => {
-		let linkUrl = window.location.pathname.replace(/\/$/, "");
-		if (linkUrl === "") {
-			linkUrl = "/";
-		}
-
-		let linkToSelect = Array.from(document.querySelectorAll("div.navbar-nav-btns ul li a")).find(k => k.getAttribute("href") === linkUrl);
-
-		activateLink(linkToSelect);
-	};
 
 	const onPageReady = async (/*CANCEL_API_REQS = false*/) => {
 		// let twitterHasLoaded = false;
