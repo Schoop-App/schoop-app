@@ -169,6 +169,19 @@ const getJSON = async (path, overrideHost=false, validateReqs=true) => {
 	}
 };
 
+const postJSON = async (path, sendBody) => {
+	let req = await fetch((API_HOST || "/api") + path, {
+		method: "POST",
+		headers: {
+			"Accept": "application/json",
+			"Content-Type": "application/json"
+		},
+		body: JSON.stringify(sendBody)
+	});
+	let res = await req.json();
+	return res;
+};
+
 // highlights the active page link if it exists
 const activateLink = elem => {
 	try {
@@ -186,6 +199,13 @@ const selectActivePageLink = () => {
 	let linkToSelect = Array.from(document.querySelectorAll("div.navbar-nav-btns ul li a")).find(k => k.getAttribute("href") === linkUrl);
 
 	activateLink(linkToSelect);
+};
+
+// GETTER METHODS
+// Okay, does this need to be a method?
+const getClasses = async () => {
+	let classes = await getJSON("/classes");
+	return classes;
 };
 
 document.addEventListener("DOMContentLoaded", async () => {

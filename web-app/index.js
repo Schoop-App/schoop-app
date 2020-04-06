@@ -130,7 +130,9 @@ dbConn.connect(async err => {
 	// default includes (maybe change location of this? idk)
 	app.use((req, res, next) => {
 		req.includeDefaults = {
-			apiHost: `${SCHOOP_HOST}/api`
+			divisionPeriods,
+			divisionOptions,
+			apiHost: `${SCHOOP_HOST}/api`,
 		};
 		next();
 	});
@@ -147,8 +149,10 @@ dbConn.connect(async err => {
 		let studentDivision = getDivision(gradYearToGrade(studentInfo.graduation_year)); // MIDDLE or UPPER
 		res.status(200).render("home", {
 			studentInfo,
+			studentGrade: gradYearToGrade(studentInfo.graduation_year), // we NEED THIS!!!
 			studentDivision,
 			pageJS: "home",
+			pageTitle: "Home",
 			defaults: req.includeDefaults
 		});
 	});
@@ -158,10 +162,12 @@ dbConn.connect(async err => {
 		let studentDivision = getDivision(gradYearToGrade(studentInfo.graduation_year)); // MIDDLE or UPPER
 		res.status(200).render("user", {
 			studentInfo, // used to render
+			studentGrade: gradYearToGrade(studentInfo.graduation_year), // we NEED THIS!!!
 			studentDivision, // either MIDDLE or UPPER
 			divisionPeriods, // arrays w/ periods for MIDDLE and UPPER
 			divisionOptions, // MIDDLE or UPPER
 			pageJS: "user",
+			pageTitle: "User Settings",
 			defaults: req.includeDefaults
 		});
 	});

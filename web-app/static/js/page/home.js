@@ -57,12 +57,6 @@ const handleWindowResize = () => {
 	};
 	window.getScheduleTemplate = getScheduleTemplate;
 
-	// Okay, does this need to be a method?
-	const getClasses = async () => {
-		let classes = await getJSON("/classes");
-		return classes;
-	};
-
 	// builds user schedule from schedule template and classes
 	const buildUserSchedule = (template, classes) => {
 		if (typeof template.message === "undefined") {

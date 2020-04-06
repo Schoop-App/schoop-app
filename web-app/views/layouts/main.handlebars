@@ -2,12 +2,18 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>Schoop &ndash; Home</title>
+	<title>Schoop &ndash; {{pageTitle}}</title>
 	<meta name="viewport" content="width=device-width,initial-scale=1.0">
 
 	<!-- CONFIG (rendered server-side) -->
 	<script>
+		// true for everyone
 		const API_HOST = "{{{defaults.apiHost}}}";
+		const DIVISIONS = {{{defaults.divisionOptions}}};
+		const DIVISION_PERIODS = {{{defaults.divisionPeriods}}};
+
+		// user-specific
+		const STUDENT_GRADE = {{{studentGrade}}};
 		const STUDENT_DIVISION = "{{{studentDivision}}}";
 		const SEMINAR_ZOOM_LINK = "{{{studentInfo.seminar_zoom_link}}}";
 	</script>
@@ -56,7 +62,7 @@
 	</main>
 
 	<!-- scripts -->
-	<script src="/js/app-common.js"></script> <!-- common elements -->
+	<script src="/js/common/app-common.js"></script> <!-- common elements -->
 	<script src="/js/page/{{{pageJS}}}.js" defer></script> <!-- loads after the other stuff lol -->
 </body>
 </html>

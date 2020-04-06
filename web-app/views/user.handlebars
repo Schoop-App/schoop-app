@@ -1,8 +1,9 @@
 <div class="user-info">
-	<h1 class="no-extra-margin-top">User Settings</h1>
-	<h2>{{studentInfo.first_name}} {{studentInfo.last_name}}</h2>
-	<img src="{{{studentInfo.google_profile_pic_url}}}=s100" alt="{{studentInfo.first_name}} {{studentInfo.last_name}}'s Profile Picture" />
-	<h2>Your Classes:</h2>
+	<h1 class="no-margin-top">User Settings</h1>
+	<h2>{{studentInfo.first_name}} {{studentInfo.last_name}} ({{studentGrade}}th Grade, {{studentInfo.graduation_year}})</h2>
+	<img src="{{{studentInfo.google_profile_pic_url}}}=s110" style="width: 110px;" alt="{{studentInfo.first_name}} {{studentInfo.last_name}}'s Profile Picture" />
+	<!-- Section 1: Classes -->
+	<h3>Classes</h2>
 	<table class="class-entry-table fix-border-radius">
 		<tbody>
 			<tr>
@@ -12,4 +13,13 @@
 			</tr>
 		</tbody>
 	</table>
+	<button type="button" class="btn submit-btn" id="update-classes">Update Info</button>
+	<!-- end Section 1 -->
+	<!-- Section 2: Privacy -->
+	<h3>Privacy</h3>
+	<p>In compliance with California privacy laws, Schoop allows students to completely wipe all data stored on our servers, though it may be stored for up to four weeks in a backup performed by our hosting provider to ensure the safety and security of user data. If you have any issue with this, please <a href="mailto:zstjohn22@windwardschool.org">let me know</a>, and I will try to help you to the best of my ability. <strong>Deleting your account irreversible, and we will not be able to restore your data once you have done so.</strong></p>
+	<button type="button" class="btn delete-btn">Delete All Data</button>
+	<!-- end Section 2 -->
 </div>
+<!-- special common script for class entry -->
+<script src="/js/common/class-entry-common.js"></script>

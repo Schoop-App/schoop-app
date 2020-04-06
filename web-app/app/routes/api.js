@@ -6,6 +6,7 @@ const getQotd = require("../../getQotd");
 const readFileAsync = require("fs").promises.readFile;
 
 const urlencodedParser = bodyParser.urlencoded({ extended: true }); // using qs
+const jsonParser = bodyParser.json();
 
 // STUDENT CORE
 const { Division, PERIODS, gradeToGradYear, gradYearToGrade, getDivision } = require("../core/student-core.js");
@@ -120,6 +121,7 @@ module.exports = imports => {
 		let classes = await db.getClasses(req.user.id);
 		for (let i = 0; i < classes.length; i++) {
 			delete classes[i]["student_oauth_id"]; // probably best to hide this
+			delete classes[i]["bound_for_deletion"]; // unneeded
 		}
 		res.status(200).send(classes);
 	});
@@ -151,8 +153,52 @@ module.exports = imports => {
 	])); // for now......... Maybe I should store this in a file or in Redis. We will see...
 	// misc:
 	router.get("/me", accessProtectionMiddleware, endpointNoCacheMiddleware, async (req, res) => {
-		let info = await db.getStudentInfo(req.user.id);
-		res.status(200).send(info);
+		let studentInfo = await db.getStudentInfo(req.user.id);
+		res.status(200).send(studentInfo);
+	});
+
+	// USER PAGE APIs (for now, that's just for updating classes and deleting account)
+	router.post("/update_classes", accessProtectionMiddleware, jsonParser, async (req, res) => {
+		try {
+			await db.updateClasses(req.user.id, req.body.classes);
+			res.status(200).send({
+				status: "ok"
+			});
+		} catch (e) {
+			logger.error(e);
+			res.status(500).send({
+				status: "error",
+				message: "Internal Server Error (maybe tell Zane!)",
+				error: e.toString() // maybe best not to leave this here
+			});
+		}
+	});
+	router.post("/delete_account", accessProtectionMiddleware, jsonParser, async (req, res) => {
+		try {
+			let studentInfo = await db.getStudentInfo(req.user.id);
+			if (studentInfo.email === req.body.email) {
+				// user successfully initiated account deletion
+				await db.deleteAccount(req.user.id);
+				req.session.destroy(err => {
+					res.status(200).send({
+						status: "ok"
+					});
+				});
+			} else {
+				// res.status(400).send({
+				res.status(200).send({ // because...
+					status: "error",
+					message: "We were not able to delete your account because you did not type your email in correctly. Please try again."
+				});
+			}
+		} catch (e) {
+			logger.error(e);
+			res.status(500).send({
+				status: "error",
+				message: "Internal Server Error (maybe tell Zane!)",
+				error: e.toString() // maybe best not to leave this here
+			});
+		}
 	});
 
 	// routes here

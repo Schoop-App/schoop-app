@@ -43,7 +43,7 @@
 			</div>
 			<div class="class-entry-table-outer hidden">
 				<h2>Enter Class Info</h2>
-				<p>If you have a free period or empty class, feel free to leave it blank.<span id="freshmenWarning">&nbsp;9TH GRADERS (FRESHMEN): Please mark your normal athletics period in the column furthest to the right.</span></p>
+				<p>If you have free periods or empty classes, feel free to leave fields blank.<span id="freshmenWarning">&nbsp;9TH GRADERS (FRESHMEN): Please mark your normal athletics period in the column furthest to the right.</span></p>
 				<table class="class-entry-table fix-border-radius">
 					<tbody>
 						<tr>
@@ -55,15 +55,15 @@
 				</table>
 				<div style="margin-top: 10px;">
 					<!-- consent, y'all! do this! -->
-					<input type="checkbox" name="studentConsentedToEmail" id="studentConsentedToEmail" checked>
-					<label for="studentConsentedToEmail">I agree that Schoop can send me important emails (e.g. updates, certain notifications, etc.) though it will <strong>never</strong> sell my information to anyone.</label>
+					<input type="checkbox" name="studentConsentedToEmail" id="studentConsentedToEmail" required>
+					<label for="studentConsentedToEmail"><strong>**BRIEF AGREEMENT:</strong> By checking this box, I agree that Schoop can store basic profile information (my email, Google ID, name, and profile picturepicture) as well as information about my classes (names, periods, and Zoom connection information). The database containing this information will only be accessible to Windward personnel and students for the sole purpose of the delivery of services. I also agree that Schoop can send me important emails (e.g. updates, certain notifications, etc.) though I know that it will <strong>never</strong> sell my information to anyone.</label>
 				</div>
 				<div style="margin-top: 10px;">
 					<!-- consent, y'all! do this! -->
 					<input type="checkbox" name="studentWantsDailyEmail" id="studentWantsDailyEmail" checked>
-					<label for="studentWantsDailyEmail">I would like to receive a daily email with my schedule for the day</label>
+					<label for="studentWantsDailyEmail">I would like to receive a daily email with my schedule for the day <strong>(Recommended)</strong></label>
 				</div>
-				<input type="submit" value="Confirm" />
+				<input type="submit" value="Confirm" class="btn" />
 			</div>
 		</form>
 	</main>
@@ -73,6 +73,7 @@
 		const DIVISIONS = {{{divisionOptions}}};
 		const DIVISION_PERIODS = {{{divisionPeriods}}};
 	</script>
-	<script src="/js/page/{{{pageJS}}}.js"></script>
+	<script src="/js/common/class-entry-common.js"></script>
+	<script src="/js/page/{{{pageJS}}}.js" defer></script>
 </body>
 </html>

@@ -27,7 +27,8 @@ module.exports = imports => {
 	};
 
 	const getClasses = async studentId => {
-		let query = await dbConnAsync.query(`SELECT * FROM classes where student_oauth_id = ${dbConn.escape(studentId)}`);
+		// added bound_for_deletion. this feature was added to protect data from deletion
+		let query = await dbConnAsync.query(`SELECT * FROM classes where student_oauth_id = ${dbConn.escape(studentId)} AND bound_for_deletion = 0`);
 		return query.results;
 	};
 	/* END READ DB */
@@ -131,6 +132,46 @@ module.exports = imports => {
 		}
 	};
 
+	// ***HELPER*** - mark classes bound for deletion
+	const markClassesBoundForDeletion = async studentId => {
+		let setBoundForDeletionStateQuery = `UPDATE classes SET bound_for_deletion=1 WHERE student_oauth_id=${dbConn.escape(studentId)}`;
+		await dbConnAsync.query(setBoundForDeletionStateQuery); // do this to flag bound_for_deletion ones ASAP
+	};
+	// ***HELPER*** - delete classes marked bound for deletion
+	const deleteClassesBoundForDeletion = async studentId => {
+		let deleteClassesQuery = `DELETE FROM classes WHERE student_oauth_id=${dbConn.escape(studentId)} AND bound_for_deletion=1`;
+		await dbConnAsync.query(deleteClassesQuery); // deletes all of student's classes
+	};
+	const updateClasses = async (studentId, classesJson) => {
+		await markClassesBoundForDeletion(studentId); // mark all currently existing classes for deletion
+		// classesJson example:
+		/*
+			{
+				"period": 2
+				"name": "AP Euro",
+				"zoomLink": "https://windwardschool.zoom.us/j/1234567890"
+			}
+		*/
+		let currentClassObj;
+		for (let i = 0; i < classesJson.length; i++) {
+			currentClassObj = classesJson[i];
+			if (currentClassObj.name !== "" || currentClassObj.zoomLink !== "") // DeMorgan's Law coming in handy ;)
+				await addClass(studentId, currentClassObj.period, currentClassObj.name, currentClassObj.zoomLink);
+		}
+		await deleteClassesBoundForDeletion(studentId); // now tht new classes are in the DB, delete classes previosuly marked for deletion
+	};
+	// BIG ONE: DELETE STUDENT RECORD
+	const deleteAccount = async studentId => {
+		// STEPS: mark classes for deletion, delete those marked classes, and then delete the student's record in DB
+		let studentIdEscaped = dbConn.escape(studentId);
+
+		await markClassesBoundForDeletion(studentId);
+		await deleteClassesBoundForDeletion(studentId);
+
+		let deleteStudentRecordQuery = `DELETE FROM students WHERE google_oauth_id=${studentIdEscaped}`;
+		await dbConnAsync.query(deleteStudentRecordQuery);
+	};
+
 	/* END WRITE DB */
 
 	return {
@@ -143,6 +184,9 @@ module.exports = imports => {
 		setSeminarZoomLink,
 		setStudentGradYear,
 		setStudentConsentedToEmail,
-		setSetupState
+		setStudentWantsDailyEmail,
+		setSetupState,
+		updateClasses,
+		deleteAccount
 	};
 };

@@ -28,17 +28,19 @@ module.exports = imports => {
 
 	router.post("/logout", (req, res) => {
 		// signs user out
-		try {
-			req.logout();
-			res.status(200).send({
-				"status": "ok"
-			});
-		} catch (e) {
-			res.status(500).send({
-				"status": "error",
-				"message": "logout failed"
-			});
-		}
+		// TODO: async/await this mofo!
+		req.session.destroy(err => {
+			if (err) {
+				res.status(500).send({
+					"status": "error",
+					"message": "logout failed"
+				});
+			} else {
+				res.status(200).send({
+					"status": "ok"
+				});
+			}
+		});
 		// res.redirect("/");
 	});
 

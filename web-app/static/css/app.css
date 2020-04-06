@@ -187,7 +187,7 @@ main.content.page-loaded {
 	margin-top: var(--navbar-height);
 }
 
-main.content.no-extra-margin-top {
+main.content.no-extra-margin-top, .no-margin-top {
 	margin-top: 0 !important;
 }
 
@@ -568,25 +568,33 @@ div.grade-select-container {
 	font-size: 20px;
 }
 
-form#class-entry-form input[type=submit] {
-	background-color: var(--main-theme-color);
+.btn {
 	border: none;
 	outline: none;
 	--webkit-tap-highlight-color: transparent;
 
-	color: #fff;
 	font-family: 'Poppins', sans-serif;
 	font-weight: 700;
 	font-size: 20px;
 
 	width: 100%;
 
-	margin-top: 10px;
 	padding: 10px 20px 10px 20px;
 
 	border-radius: 5px;
 
 	cursor: pointer;
+}
+
+form#class-entry-form input[type=submit].btn, .btn.submit-btn {
+	background-color: var(--main-theme-color);
+	color: #fff;
+	margin-top: 15px;
+}
+
+.btn.delete-btn {
+	background-color: #c7371e;
+	color: #fff;
 }
 
 span#freshmenWarning {
