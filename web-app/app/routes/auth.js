@@ -10,7 +10,7 @@ module.exports = imports => {
 	const router = require("express").Router();
 
 	const authCallbackMiddleware = AuthCallback(db);
-	console.log(authCallbackMiddleware.toString());
+	// console.log(authCallbackMiddleware.toString());
 
 	// routes here
 	router.get("/google", passport.authenticate("google", { hostedDomain: "windwardschool.org" }));
