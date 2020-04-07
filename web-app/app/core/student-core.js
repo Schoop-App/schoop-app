@@ -17,7 +17,7 @@ const PERIODS = {
 const gradeToGradYear = grade => {
 	if (grade >= 0 && grade <= 12) {
 		let date = new Date(); // current date
-		let yearTimeAdded = (date.getMonth() > 6 && date.getMonth() <= 11) ? 1 : 0;
+		let yearTimeAdded = (date.getMonth() >= 7 && date.getMonth() <= 11) ? 1 : 0;
 		let adjustedYear = date.getFullYear() + yearTimeAdded;
 
 		return adjustedYear + (12 - grade);
@@ -28,11 +28,12 @@ const gradeToGradYear = grade => {
 
 const gradYearToGrade = year => {
 	let date = new Date(); // current date
-	// let yearTimeDeducted = !(date.getMonth() > 6 && date.getMonth() <= 11) ? 1 : 0;
-	let yearTimeDeducted = (date.getMonth() <= 6 || date.getMonth() > 11) ? 1 : 0;
-	let adjustedYear = date.getFullYear() - yearTimeDeducted;
+	let yearTimeAdded = (date.getMonth() >= 7 && date.getMonth() <= 11) ? 1 : 0;
+	// let yearTimeDeducted = (date.getMonth() <= 6 || date.getMonth() > 11) ? 1 : 0;
+	let adjustedYear = date.getFullYear() + yearTimeAdded;
 
-	return (year - adjustedYear) + 7;
+	// return (year - adjustedYear) + 7;
+	return adjustedYear - year + 12;
 };
 
 const getDivision = grade => {

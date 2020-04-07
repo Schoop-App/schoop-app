@@ -3,6 +3,10 @@ const mysql = require("mysql");
 
 const PRIVATE_CONFIG = require("./private-config.json"); // private info
 
+const STUDENT_ID = "110473812488285706817";
+
+const codeToWindwardLink = code => `https://windwardschool.zoom.us/j/${code.replace(/-/g, "")}`;
+
 const dbConn = mysql.createConnection({
 	host: PRIVATE_CONFIG.database.host,
 	user: PRIVATE_CONFIG.database.user,
@@ -29,6 +33,24 @@ dbConn.connect(async err => {
 		dbConn
 	});
 
-	let classQuery = await db.addClass("101538478513395768684", 1, "PreCalc Honors", "https://windwardschool.zoom.us/j/4242891086");
-	console.log(classQuery);
+	// let classQuery = await db.addClass("101538478513395768684", 1, "PreCalc Honors", "https://windwardschool.zoom.us/j/4242891086");
+	// console.log(classQuery);
+	let classes = await db.getClasses(STUDENT_ID);
+	classes = classes.map(k => {
+		// classesJson example:
+		/*
+			{
+				"period": 2
+				"name": "AP Euro",
+				"zoomLink": "https://windwardschool.zoom.us/j/1234567890"
+			}
+		*/
+		return {
+			period: k.period_number,
+			name: k.class_name,
+			zoomLink: codeToWindwardLink(k.zoom_link)
+		};
+	});
+
+	await db.updateClasses(STUDENT_ID, classes);
 });

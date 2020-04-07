@@ -19,7 +19,11 @@ const session = require("express-session"); // session handling middleware
 const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const mysql = require("mysql");
+const csrf = require("csurf"); // CSRF Protection
 const logger = require("./app/core/logger");
+
+// INIT CSRF PROTECTION
+const csrfProtection = csrf({ cookie: true });
 
 // STUDENT CORE
 const { gradYearToGrade, getDivision, PERIODS, Division } = require("./app/core/student-core");

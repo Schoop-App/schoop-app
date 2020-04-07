@@ -189,7 +189,7 @@ const activateLink = elem => {
 	} catch (e) {
 		console.log("link not present in top bar");
 	}
-}
+};
 const selectActivePageLink = () => {
 	let linkUrl = window.location.pathname.replace(/\/$/, "");
 	if (linkUrl === "") {
