@@ -161,7 +161,8 @@ dbConn.connect(async err => {
 		});
 	});
 	// NOTE: homeAuthCheck works here (it doesn't redirect anywhere if the user has set up)
-	app.get("/user", homeAuthCheck, async (req, res) => {
+	app.get("/user", (req, res) => res.redirect("/profile"));
+	app.get("/profile", homeAuthCheck, async (req, res) => {
 		let studentInfo = await db.getStudentInfo(req.user.id);
 		let studentDivision = getDivision(gradYearToGrade(studentInfo.graduation_year)); // MIDDLE or UPPER
 		res.status(200).render("user", {
@@ -171,7 +172,7 @@ dbConn.connect(async err => {
 			divisionPeriods, // arrays w/ periods for MIDDLE and UPPER
 			divisionOptions, // MIDDLE or UPPER
 			pageJS: "user",
-			pageTitle: "User Settings",
+			pageTitle: "Profile",
 			defaults: req.includeDefaults
 		});
 	});
