@@ -1,6 +1,5 @@
 (window => {
 	// USER STUFF:
-	// ooh, object mapping! fun!!
 	const getClassTableElement = (type, period) => document.getElementsByName(`${type}_P${period}`)[0] || null;
 	const updateClasses = async () => {
 		let periods = DIVISION_PERIODS[STUDENT_DIVISION];
@@ -27,6 +26,7 @@
 		}
 		let updateClassesRes = await postJSON("/update_classes", { classes: updatedClassesJson }); // send it off to server
 	};
+	// ooh, object mapping! fun!!
 	let ACCOUNT_DELETION_STATUS_OPTIONS = message => { // FOR deleteAccount FUNCTION
 		return {
 			"ok": () => { window.location.href = "/login?deleted_account=1" },
@@ -42,7 +42,7 @@
 					showLoadingOverlay();
 					let deleteAccountRes = await postJSON("/delete_account", { email: userEmailPrompt });
 					hideLoadingOverlay();
-					ACCOUNT_DELETION_STATUS_OPTIONS(deleteAccountRes.message || null)[deleteAccountRes.status ](); // object mapping tingzzz
+					ACCOUNT_DELETION_STATUS_OPTIONS(deleteAccountRes.message || null)[deleteAccountRes.status](); // object mapping tingzzz
 				} catch (e) {
 					// alert(e.toString());
 					hideLoadingOverlay();

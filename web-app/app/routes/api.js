@@ -9,7 +9,7 @@ const urlencodedParser = bodyParser.urlencoded({ extended: true }); // using qs
 const jsonParser = bodyParser.json();
 
 // STUDENT CORE
-const { Division, PERIODS, gradeToGradYear, gradYearToGrade, getDivision } = require("../core/student-core.js");
+const { Division, PERIODS, gradeToGradYear, gradYearToGrade, getDivision } = require("../core/student-core");
 
 const SCHEDULE_TEMPLATE_DAYS = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
 
