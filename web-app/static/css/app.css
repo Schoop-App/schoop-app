@@ -605,4 +605,8 @@ span#freshmenWarning {
 span#freshmenWarning.hidden {
 	display: none;
 }
-/* EMD CLASS ENTRY*/
+
+input.invalid-input-entered {
+	border: 2px solid #f00;
+}
+/* END CLASS ENTRY*/

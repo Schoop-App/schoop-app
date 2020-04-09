@@ -1,0 +1,6 @@
+[
+	{
+		"mutate_name": "wants_daily_email",
+		"db_method_name": "setStudentWantsDailyEmail"
+	}
+]

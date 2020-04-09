@@ -1,25 +1,33 @@
 <div class="user-info">
 	<h1 class="no-margin-top">Profile</h1>
 	<h2>{{studentInfo.first_name}} {{studentInfo.last_name}} ({{studentGrade}}th Grade, {{studentInfo.graduation_year}})</h2>
-	<img src="{{{studentInfo.google_profile_pic_url}}}=s110" style="width: 110px;" alt="{{studentInfo.first_name}} {{studentInfo.last_name}}'s Profile Picture" />
-	<!-- Section 1: Classes -->
-	<h3>Classes</h2>
-	<table class="class-entry-table fix-border-radius">
-		<tbody>
-			<tr>
-				<th class="left">Period</th>
-				<th class="center">Class Name</th>
-				<th class="right">Zoom Link</th>
-			</tr>
-		</tbody>
-	</table>
-	<button type="button" class="btn submit-btn" id="update-classes">Update Classes</button>
+	<img src="{{{studentInfo.google_profile_pic_url}}}" style="width: 110px;" alt="{{studentInfo.first_name}} {{studentInfo.last_name}}'s Profile Picture" />
+	<!-- Section 1: General -->
+	<div class="user-settings-section">
+		<h3>General</h3>
+		<aside><strong>Changes made in this section will be updated upon change (automatically).</strong></aside>
+		<div class="user-settings-group">
+			<label for="wants-daily-email">Daily schedule email</label>
+			<input type="checkbox" class="user-settings-mutator" data-mutates="wants_daily_email" {{#if studentWantsDailyEmail}}checked{{/if}} />
+		</div>
+	</div>
 	<!-- end Section 1 -->
-	<!-- Section 2: Privacy -->
-	<h3>Privacy</h3>
-	<p>In compliance with California privacy laws, Schoop allows students to completely wipe all data stored on our servers, though it may be stored for up to one week in a backup performed by our hosting provider to ensure the safety and security of user data. If you have any issue with this, please <a href="mailto:zstjohn22@windwardschool.org">let me know</a>, and I will try to help you to the best of my ability. <strong>Deleting your account irreversible, and we will not be able to restore your data once you have done so.</strong></p>
-	<button type="button" class="btn delete-btn">Delete All Data</button>
+	<!-- Section 2: Classes -->
+	<div class="user-settings-section">
+	<h3>Classes</h3>
+		<table class="class-entry-table fix-border-radius">
+			<tbody></tbody>
+		</table>
+		<button type="button" class="btn submit-btn" id="update-classes">Update Classes</button>
+	</div>
 	<!-- end Section 2 -->
+	<!-- Section 3: Privacy -->
+	<div class="user-settings-section">
+		<h3>Privacy</h3>
+		<p>In compliance with California privacy laws, Schoop allows students to completely wipe all data stored on our servers, though it may be stored for up to one week in a backup performed by our hosting provider to ensure the safety and security of user data. If you have any issue with this, please <a href="mailto:zstjohn22@windwardschool.org">let me know</a>, and I will try to help you to the best of my ability. <strong>Deleting your account irreversible, and we will not be able to restore your data once you have done so.</strong></p>
+		<button type="button" class="btn delete-btn">Delete All Data</button>
+	</div>
+	<!-- end Section 3 -->
 </div>
 <!-- special common script for class entry -->
 <script src="/js/common/class-entry-common.js"></script>

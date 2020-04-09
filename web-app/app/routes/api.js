@@ -28,14 +28,15 @@ module.exports = imports => {
 
 	const redisGetAsync = require("util").promisify(redisClient.get).bind(redisClient); // set async function for redis
 
-	const limiter = rateLimit({
-		windowMs: 60 * 1000, // 1 minute
-		max: 100 // limit each IP to 100 req/min (too much? too little?)
-	});
+	// const limiter = rateLimit({
+	// 	windowMs: 60 * 1000, // 1 minute
+	// 	max: 100 // limit each IP to 100 req/min (too much? too little?)
+	// });
 
 	const router = require("express").Router();
 
 	router.use("/auth", require("./auth")({ Sentry, passport, logger, db })); // hee hee
+	router.use("/mutate", require("./mutate")({ Sentry, db }));
 
 	// protected endpoint test
 	// router.get("/test_login", accessProtectionMiddleware, (req, res) => {

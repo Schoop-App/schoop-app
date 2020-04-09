@@ -121,7 +121,7 @@ module.exports = imports => {
 	// sets value for email consent
 	const setStudentConsentedToEmail = async (studentId, newState) => await dbUpdateQueryGeneric("students", "did_consent_to_email", "google_oauth_id", studentId, newState);
 	// sets value for user wanting daily email (if they do)
-	const setStudentWantsDailyEmail = async (studentId, newState) => await dbUpdateQueryGeneric("students", "did_consent_to_email", "google_oauth_id", studentId, newState);
+	const setStudentWantsDailyEmail = async (studentId, newState) => await dbUpdateQueryGeneric("students", "wants_daily_email", "google_oauth_id", studentId, newState);
 
 	const setSetupState = async (studentId, setupState) => {
 		if (setupState === 0 || setupState === 1) {

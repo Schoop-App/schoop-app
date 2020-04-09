@@ -168,6 +168,7 @@ dbConn.connect(async err => {
 		res.status(200).render("user", {
 			studentInfo, // used to render
 			studentGrade: gradYearToGrade(studentInfo.graduation_year), // we NEED THIS!!!
+			studentWantsDailyEmail: Boolean(studentInfo.wants_daily_email), // wrapped int as boolean
 			studentDivision, // either MIDDLE or UPPER
 			divisionPeriods, // arrays w/ periods for MIDDLE and UPPER
 			divisionOptions, // MIDDLE or UPPER

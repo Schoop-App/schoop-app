@@ -12,7 +12,10 @@ let getQotd = async () => {
 	} catch (e) {
 		logger.log("Error getting quote:");
 		logger.error(e);
-		return;
+		return {
+			content: "Error fetching quote. Sorry for the inconvenience.",
+			author: "Systen Administrator"
+		};
 	}
 };
 
