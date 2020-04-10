@@ -29,8 +29,8 @@
 	// ooh, object mapping! fun!!
 	let ACCOUNT_DELETION_STATUS_OPTIONS = message => { // FOR deleteAccount FUNCTION
 		return {
-			"ok": () => { window.location.href = "/login?deleted_account=1" },
-			"error": () => { alert("There was an error deleting your account:\n" + message); }
+			ok: () => { window.location.href = "/login?deleted_account=1" },
+			error: () => { alert("There was an error deleting your account:\n" + message); }
 		};
 	};
 	const deleteAccount = async () => {
