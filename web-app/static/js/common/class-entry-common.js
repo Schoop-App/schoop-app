@@ -5,8 +5,8 @@
 	let CLASS_ENTRY_TEMPLATE = Handlebars.compile(
 `<tr>
 <td class="signifier left">P<span style="font-size: 0.93em;">{{{period}}}</span></td>
-<td class="center" style="font-weight: 700;"><input data-period="{{{period}}}" type="text" placeholder="Period {{{period}}} Name" name="className_P{{{period}}}" class="class-entry-class-name"/></td>
-<td class="{{#if showNinthSeminar}}center{{else}}right{{/if}}"><input data-period="{{{period}}}" type="text" placeholder="Zoom Link or Code" name="zoomLink_P{{{period}}}" class="class-entry-class-zoom-link" onblur="checkZoomLinkOrCodeValidity(this);" /></td>
+<td class="center" style="font-weight: 700;"><input data-period="{{{period}}}" type="text" placeholder="Period {{{period}}} Name" name="className_P{{{period}}}" class="class-entry-input class-entry-class-name"/></td>
+<td class="{{#if showNinthSeminar}}center{{else}}right{{/if}}"><input data-period="{{{period}}}" type="text" placeholder="Zoom Link or Code" name="zoomLink_P{{{period}}}" class="class-entry-input class-entry-class-zoom-link" onblur="checkZoomLinkOrCodeValidity(this);" /></td>
 {{#if showNinthSeminar}}<td class="right"><input data-period="{{{period}}}" type="radio" name="athleticsPeriod" value="{{{period}}}" /></td>{{/if}}
 </tr>`
 	);
@@ -67,8 +67,8 @@
 		tableBodyElem.innerHTML += Handlebars.compile(
 `<tr>
 <td class="signifier left">SEMINAR</td>
-<td class="center" style="font-weight: 700;"><input type="text" value="Seminar" name="className_SEMINAR" disabled /></td>
-<td class="{{#if showNinthSeminar}}center{{else}}right{{/if}}"><input type="text" placeholder="Zoom Link or Code" name="zoomLink_SEMINAR" onblur="checkZoomLinkOrCodeValidity(this);" /></td>
+<td class="center" style="font-weight: 700;"><input type="text" value="Seminar" name="className_SEMINAR" disabled class="class-entry-input class-entry-class-name" /></td>
+<td class="{{#if showNinthSeminar}}center{{else}}right{{/if}}"><input type="text" placeholder="Zoom Link or Code" name="zoomLink_SEMINAR" class="class-entry-input class-entry-class-zoom-link" onblur="checkZoomLinkOrCodeValidity(this);" /></td>
 {{#if showNinthSeminar}}<td class="right">&nbsp;</td>{{/if}}
 </tr>`
 		)({ showNinthSeminar });

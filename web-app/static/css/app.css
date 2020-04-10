@@ -548,6 +548,10 @@ table.class-entry-table tr th {
 	font-weight: 500;
 }
 
+table.class-entry-table tr th:first-child {
+	width: 85px;
+}
+
 table.class-entry-table tr td, table.class-entry-table tr th {
 	padding-top: var(--today-schedule-row-padding-tb);
 	padding-bottom: var(--today-schedule-row-padding-tb);
@@ -562,6 +566,10 @@ table.class-entry-table tr td:first-child, table.class-entry-table tr th:first-c
 table.class-entry-table tr td.signifier {
 	font-family: 'Poppins', sans-serif;
 	font-weight: 700;
+}
+
+input.class-entry-input {
+	width: 100%;
 }
 
 div.grade-select-container {
