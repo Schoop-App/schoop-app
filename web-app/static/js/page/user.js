@@ -71,6 +71,13 @@
 		}
 	};
 
+	const handleMutator = async event => {
+		let mutateName = event.target.getAttribute("data-mutates");
+		let mutateValue = Number(event.target.checked);
+
+		await postJSON(`/mutate/${mutateName}`, { mutateValue });
+	};
+
 	const onPageReady = async () => {
 		document.querySelector("#update-classes").addEventListener("click", async () => {
 			try {
@@ -82,6 +89,14 @@
 			}
 		});
 		document.querySelector(".btn.delete-btn").addEventListener("click", deleteAccount);
+
+		let mutatorElems = document.querySelectorAll(".user-settings-mutator");
+		let mutatorElem;
+		for (let i = 0; i < mutatorElems.length; i++) {
+			mutatorElem = mutatorElems[i];
+			mutatorElem.addEventListener("change", handleMutator);
+		}
+
 		showEntryTableForGrade(STUDENT_GRADE, async (a, b, c) => {
 			let userClasses = await getClasses();
 			populateClassesTable(userClasses, SEMINAR_ZOOM_LINK);
