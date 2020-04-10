@@ -36,7 +36,7 @@ module.exports = imports => {
 	const router = require("express").Router();
 
 	router.use("/auth", require("./auth")({ Sentry, passport, logger, db })); // hee hee
-	router.use("/mutate", require("./mutate")({ Sentry, db }));
+	router.use("/mutate", require("./mutate")({ Sentry, db, accessProtectionMiddleware }));
 
 	// protected endpoint test
 	// router.get("/test_login", accessProtectionMiddleware, (req, res) => {

@@ -7,10 +7,11 @@ const MUTATE_ITEMS = require("../core/mutate-items.json");
 module.exports = imports => {
 	const Sentry = imports.Sentry;
 	const db = imports.db;
+	const accessProtectionMiddleware = imports.accessProtectionMiddleware; // PROTECT
 
 	const router = require("express").Router();
 
-	router.post("/:mutateName", jsonParser, async (req, res) => {
+	router.post("/:mutateName", accessProtectionMiddleware, jsonParser, async (req, res) => {
 		try {
 			let mutator = MUTATE_ITEMS.find(k => k.mutate_name === req.params.mutateName);
 			if (typeof mutator === "undefined") {
