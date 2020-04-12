@@ -15,6 +15,7 @@ module.exports = imports => {
 	// routes here
 	router.get("/google", (req, res, next) => {
 		req.session.redirect = req.query.redirect;
+		next();
 	}, passport.authenticate("google", { hostedDomain: "windwardschool.org" }));
 
 	router.get("/google/callback",
