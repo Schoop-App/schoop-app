@@ -130,7 +130,10 @@ dbConn.connect(async err => {
 	/* BEGIN ROUTES */
 	app.get("/", slashAuthCheck);
 
-	app.get("/login", loginAuthCheck, (req, res) => res.status(200).send(`<a href="/api/auth/google">Click here to log in with Google (WW account)</a>`));
+	app.get("/login", loginAuthCheck, (req, res) => {
+		let redirectString = (typeof req.query.redirect === "undefined") ? "" : `?redirect=${encodeURIComponent(req.query.redirect)}`;
+		res.status(200).send(`<a href="/api/auth/google${redirectString}">Click here to log in with Google (WW account)</a>`);
+	});
 
 	// default includes (maybe change location of this? idk)
 	app.use((req, res, next) => {

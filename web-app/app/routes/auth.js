@@ -13,16 +13,19 @@ module.exports = imports => {
 	// console.log(authCallbackMiddleware.toString());
 
 	// routes here
-	router.get("/google", passport.authenticate("google", { hostedDomain: "windwardschool.org" }));
+	router.get("/google", (req, res, next) => {
+		req.session.redirect = req.query.redirect;
+	}, passport.authenticate("google", { hostedDomain: "windwardschool.org" }));
 
 	router.get("/google/callback",
 		passport.authenticate("google", { failureRedirect: "/login?failed=1", session: true }),
 		authCallbackMiddleware,
 		(req, res) => {
-			if (req.isNewStudent)
+			if (req.isNewStudent) {
 				res.redirect("/setup");
-			else
-				res.redirect("/home");
+			} else {
+				res.redirect(req.session.redirect || "/home");
+			}
 		}
 	);
 
