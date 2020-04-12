@@ -14,7 +14,7 @@ module.exports = imports => {
 			else
 				res.redirect(classLink);
 		} else {
-			res.status(401).send("You're not logged in, so you can't access this. ");
+			res.status(401).send(`You're not logged in, so you can't access this. <a href="/login?redirect=${encodeURIComponent(req.url)}"></a>`);
 		}
 	});
 
