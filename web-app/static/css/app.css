@@ -13,13 +13,13 @@
 }
 
 /* NAVBAR RULES */
-@media only screen and (max-width: 949px) {
+/*@media only screen and (max-width: 949px) {
 	nav.navbar a.navbar-title {
 		text-align: center;
 		left: 50%;
 		transform: translate(-50%, -50%) !important;
 	}
-}
+}*/
 
 @media only screen and (max-width: 350px) {
 	nav.navbar .nav-btns-inner li {
@@ -47,13 +47,13 @@
 		font-size: 16px;
 	}
 
-	nav.navbar a.navbar-title {
+	/*nav.navbar a.navbar-title {
 		font-size: 15px;
 	}
 
 	nav.navbar .nav-btns-inner li {
 		padding-right: 5px;
-	}
+	}*/
 }
 
 @media only screen and (min-width: 600px) and (max-width: 779px) {
@@ -63,13 +63,13 @@
 	div.mission-control-part.current-status div.mission-control-status-container div.mission-control-status-field.event {
 		font-size: 17px;
 	}
-	nav.navbar a.navbar-title {
+	/*nav.navbar a.navbar-title {
 		font-size: 16px;
-	}
+	}*/
 
-	nav.navbar .nav-btns-inner li {
+	/*nav.navbar .nav-btns-inner li {
 		padding-right: 6px;
-	}
+	}*/
 }
 
 /*SPECIAL*/
@@ -86,13 +86,13 @@
 	div.mission-control-part.current-status div.mission-control-status-container div.mission-control-status-field.event {
 		font-size: 25px !important;
 	}
-	nav.navbar a.navbar-title {
+	/*nav.navbar a.navbar-title {
 		font-size: 20px;
 	}
 
 	nav.navbar .nav-btns-inner li {
 		padding-right: 7px;
-	}
+	}*/
 }
 
 @media only screen and (max-width: 949px) {
@@ -126,13 +126,13 @@
 		font-size: 20px;
 	}
 
-	nav.navbar a.navbar-title {
+	/*nav.navbar a.navbar-title {
 	    left: var(--main-content-padding);
 	}
 
 	nav.navbar .nav-btns-inner li {
 		padding-right: 10px;
-	}
+	}*/
 }
 
 /*SPECIAL*/
@@ -149,9 +149,9 @@
 		font-size: 15px !important;
 	}
 
-	nav.navbar a.navbar-title {
+	/*nav.navbar a.navbar-title {
 		font-size: 14px !important;
-	}
+	}*/
 }
 
 /* accessibility - screenreader styling taken from Bootstrap */
@@ -189,6 +189,10 @@ main.content.page-loaded {
 
 main.content.no-extra-margin-top, .no-margin-top {
 	margin-top: 0 !important;
+}
+
+.no-margin-bottom {
+	margin-bottom: 0 !important;
 }
 
 h1.today-heading, h1.mission-control-heading {
@@ -467,6 +471,7 @@ nav.navbar a.navbar-title h1 {
 
     color: #fff;
     display: inline-block;
+    margin-left: var(--main-content-padding);
 }
 
 nav.navbar .navbar-nav-btns {
@@ -486,6 +491,10 @@ nav.navbar .nav-btns-inner {
 	list-style-type: none;
 	margin: 0;
 	padding: 0;
+}
+
+nav.navbar .nav-btns-inner li {
+	padding-right: 10px;
 }
 
 nav.navbar .nav-btns-inner li a {
@@ -618,3 +627,8 @@ input.invalid-input-entered {
 	border: 2px solid #f00;
 }
 /* END CLASS ENTRY*/
+
+aside.user-settings-general-aside {
+	margin-top: 10px;
+	margin-bottom: 5px;
+}

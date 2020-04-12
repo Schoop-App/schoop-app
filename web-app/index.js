@@ -161,7 +161,7 @@ dbConn.connect(async err => {
 		});
 	});
 	// NOTE: homeAuthCheck works here (it doesn't redirect anywhere if the user has set up)
-	app.get("/user", (req, res) => res.redirect("/profile"));
+	app.get("/user", (req, res) => res.redirect("/profile")); // changed location
 	app.get("/profile", homeAuthCheck, async (req, res) => {
 		let studentInfo = await db.getStudentInfo(req.user.id);
 		let studentDivision = getDivision(gradYearToGrade(studentInfo.graduation_year)); // MIDDLE or UPPER
