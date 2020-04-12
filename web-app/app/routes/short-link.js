@@ -9,7 +9,7 @@ module.exports = imports => {
 	router.get("/:classId", async (req, res) => {
 		if (req.isAuthenticated()) {
 			let classLink = await db.getClassLink(req.params.classId);
-			if (typeof classLink === "undefined" || classLink === "null")
+			if (typeof classLink === "undefined" || classLink === null)
 				res.status(404).send("Error - Not Found");
 			else
 				res.redirect(classLink);
