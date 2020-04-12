@@ -1,5 +1,6 @@
 const util = require("util");
-const uniqid = require("uniqid");
+// const uniqid = require("uniqid");
+const shortid = require("shortid");
 const logger = require("./logger");
 const MysqlPromisified = require("./mysql-promisified");
 const DBUtil = require("./db-util");
@@ -30,6 +31,12 @@ module.exports = imports => {
 		// added bound_for_deletion. this feature was added to protect data from deletion
 		let query = await dbConnAsync.query(`SELECT * FROM classes where student_oauth_id = ${dbConn.escape(studentId)} AND bound_for_deletion = 0`);
 		return query.results;
+	};
+
+	// return class link for...purposes
+	const getClassLink = async classId => {
+		let query = await dbConnAsync.query(`SELECT zoom_link FROM classes WHERE class_id = ${dbConn.escape(classId)}`);
+		return query.results[0].zoom_link;
 	};
 	/* END READ DB */
 
@@ -94,7 +101,7 @@ module.exports = imports => {
 	};
 
 	const addClass = async (studentId, periodNumber, className, zoomLink) => {
-		let classId = uniqid(); // unique identifier for class
+		let classId = shortid.generate(); // unique identifier for class
 		let query = await dbInsertQueryGeneric("classes", {
 			student_oauth_id: studentId,
 			class_id: classId,
@@ -102,6 +109,11 @@ module.exports = imports => {
 			class_name: className,
 			zoom_link: zoomLink
 		});
+		return query;
+	};
+	const deleteClass = async classId => {
+		let deleteClassRecordQuery = `DELETE FROM classes WHERE class_id=${dbConn.escape(classId)}`;
+		let query = await dbConnAsync.query(deleteClassRecordQuery);
 		return query;
 	};
 
@@ -160,6 +172,29 @@ module.exports = imports => {
 		}
 		await deleteClassesBoundForDeletion(studentId); // now tht new classes are in the DB, delete classes previosuly marked for deletion
 	};
+	const updateClassesNew = async (studentId, classesJson) => {
+		let classesInfoQuerySql = `SELECT class_id, period_number FROM classes WHERE student_oauth_id=${dbConn.escape(studentId)}`;
+		let classesInfoQuery = await dbConnAsync.query(classesInfoQuerySql);
+		let classesInfo = classesInfoQuery.results;
+
+		let currentClassObj, currentDatabaseArticle, classIsEmpty;
+		for (let i = 0; i < classesJson.length; i++) {
+			currentClassObj = classesJson[i];
+			currentDatabaseArticle = classesInfo.find(k => k.period_number === currentClassObj.period);
+			classIsEmpty = currentClassObj.name === "" && currentClassObj.zoomLink === "";
+			if (classIsEmpty) {
+				// if the database article is not undefined and the class is NOT empty
+				if (typeof currentDatabaseArticle !== "undefined")
+					await deleteClass(currentDatabaseArticle.class_id);
+			} else {
+				//typeof currentDatabaseArticle === "undefined" && !
+				if (typeof currentDatabaseArticle === "undefined") // there's no class here. so create it
+					await addClass(studentId, currentClassObj.period, currentClassObj.name, currentClassObj.zoomLink);
+				else // update instead of creating a class
+					await dbConnAsync.query(`UPDATE classes SET class_name = ${dbConn.escape(currentClassObj.name)}, zoom_link = ${dbConn.escape(currentClassObj.zoomLink)} WHERE class_id = ${dbConn.escape(currentDatabaseArticle.class_id)}`);
+			}
+		}
+	};
 	// BIG ONE: DELETE STUDENT RECORD
 	const deleteAccount = async studentId => {
 		// STEPS: mark classes for deletion, delete those marked classes, and then delete the student's record in DB
@@ -179,6 +214,7 @@ module.exports = imports => {
 		getStudentInfo,
 		studentDidSetup,
 		getClasses,
+		getClassLink,
 		addStudent,
 		addClass,
 		setSeminarZoomLink,
@@ -186,7 +222,8 @@ module.exports = imports => {
 		setStudentConsentedToEmail,
 		setStudentWantsDailyEmail,
 		setSetupState,
-		updateClasses,
+		// updateClasses,
+		updateClasses: updateClassesNew, // NEW FUNCTION TO UPDATE. DOES NOT OVERWRITE, SO IDS ARE PRESERVED
 		deleteAccount
 	};
 };

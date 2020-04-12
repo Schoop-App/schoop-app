@@ -1,5 +1,6 @@
 const fs = require("fs");
 const mysql = require("mysql");
+const shortid = require("shortid");
 
 const PRIVATE_CONFIG = require("./private-config.json"); // private info
 
@@ -24,19 +25,34 @@ dbConn.connect(async err => {
 	}
 	console.log("Connected to database");
 
-	// db client with faked Sentry client
-	const db = require("./app/core/db")({
-		Sentry: {
-			captureException: e => console.error(e)
-		},
-		dbConn
-	});
+	const queryAsync = require("./app/core/mysql-promisified")(dbConn).query;
 
-	await db.setStudentWantsDailyEmail("101538478513395768684", 1);
+	let classQuery = await queryAsync("SELECT class_id FROM classes");
+	let classList = classQuery.results.map(k => k.class_id);
+
+	let currentClassId;
+	for (let i = 0; i < classList.length; i++) {
+		currentClassId = classList[i];
+		console.log(`Fixing ${currentClassId}...`);
+		await queryAsync(`UPDATE classes SET class_id=${dbConn.escape(shortid.generate())} WHERE class_id=${dbConn.escape(currentClassId)}`);
+		console.log(`Fixed ${currentClassId}!`);
+	}
 
 	dbConn.end();
-	// process.exit(0);
 });
+	// // db client with faked Sentry client
+	// const db = require("./app/core/db")({
+	// 	Sentry: {
+	// 		captureException: e => console.error(e)
+	// 	},
+	// 	dbConn
+	// });
+
+	// await db.setStudentWantsDailyEmail("101538478513395768684", 1);
+
+	// dbConn.end();
+	// // process.exit(0);
+// });
 
 	// // let classQuery = await db.addClass("101538478513395768684", 1, "PreCalc Honors", "https://windwardschool.zoom.us/j/4242891086");
 	// // console.log(classQuery);
