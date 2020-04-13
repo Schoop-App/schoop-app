@@ -39,8 +39,12 @@ module.exports = imports => {
 		return query.results[0].zoom_link;
 	};
 	const getClassLinkForStudent = async (classId, studentId) => {
-		let query = await dbConnAsync.query(`SELECT zoom_link FROM classes WHERE class_id = ${dbConn.escape(classId)} AND student_oauth_id = ${dbConn.escape(studentId)}`);
-		return query.results[0].zoom_link;
+		try {
+			let query = await dbConnAsync.query(`SELECT zoom_link FROM classes WHERE class_id = ${dbConn.escape(classId)} AND student_oauth_id = ${dbConn.escape(studentId)}`);
+			return query.results[0].zoom_link;
+		} catch (e) {
+			return null;
+		}
 	};
 	/* END READ DB */
 
