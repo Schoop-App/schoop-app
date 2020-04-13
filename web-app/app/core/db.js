@@ -38,6 +38,10 @@ module.exports = imports => {
 		let query = await dbConnAsync.query(`SELECT zoom_link FROM classes WHERE class_id = ${dbConn.escape(classId)}`);
 		return query.results[0].zoom_link;
 	};
+	const getClassLinkForStudent = async (classId, studentId) => {
+		let query = await dbConnAsync.query(`SELECT zoom_link FROM classes WHERE class_id = ${dbConn.escape(classId)} AND student_oauth_id = ${dbConn.escape(studentId)}`);
+		return query.results[0].zoom_link;
+	};
 	/* END READ DB */
 
 	/* WRITE DB */
@@ -214,7 +218,8 @@ module.exports = imports => {
 		getStudentInfo,
 		studentDidSetup,
 		getClasses,
-		getClassLink,
+		// getClassLink,
+		getClassLinkForStudent, // user-specific
 		addStudent,
 		addClass,
 		setSeminarZoomLink,

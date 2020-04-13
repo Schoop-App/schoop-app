@@ -8,7 +8,7 @@ module.exports = imports => {
 
 	router.get("/:classId", async (req, res) => {
 		if (req.isAuthenticated()) {
-			let classLink = await db.getClassLink(req.params.classId);
+			let classLink = await db.getClassLinkForStudent(req.params.classId, req.user.id);
 			if (typeof classLink === "undefined" || classLink === null)
 				res.status(404).send("Error - Not Found");
 			else
