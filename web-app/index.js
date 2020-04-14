@@ -127,14 +127,6 @@ dbConn.connect(async err => {
 	app.use("/api", require("./app/routes/api")({ Sentry, passport, logger, db, redisClient }));
 	app.use("/s", require("./app/routes/short-link")({ Sentry, db }));
 
-	/* BEGIN ROUTES */
-	app.get("/", slashAuthCheck);
-
-	app.get("/login", loginAuthCheck, (req, res) => {
-		let redirectString = (typeof req.query.redirect === "undefined") ? "" : `?redirect=${encodeURIComponent(req.query.redirect)}`;
-		res.status(200).send(`<a href="/api/auth/google${redirectString}">Click here to log in with Google (WW account)</a>`);
-	});
-
 	// default includes (maybe change location of this? idk)
 	app.use((req, res, next) => {
 		req.includeDefaults = {
@@ -143,6 +135,17 @@ dbConn.connect(async err => {
 			apiHost: `${SCHOOP_HOST}/api`,
 		};
 		next();
+	});
+
+	/* BEGIN ROUTES */
+	app.get("/", slashAuthCheck);
+
+	app.get("/login", loginAuthCheck, (req, res) => {
+		let redirectString = (typeof req.query.redirect === "undefined") ? "" : `?redirect=${encodeURIComponent(req.query.redirect)}`;
+		res.status(200).render("login", {
+			layout: false,
+			redirectString
+		});
 	});
 
 	// PROTECTED ROUTES

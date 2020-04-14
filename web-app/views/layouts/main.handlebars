@@ -8,14 +8,14 @@
 	<!-- CONFIG (rendered server-side) -->
 	<script>
 		// true for everyone
-		const API_HOST = "{{{defaults.apiHost}}}";
-		const DIVISIONS = {{{defaults.divisionOptions}}};
-		const DIVISION_PERIODS = {{{defaults.divisionPeriods}}};
+		var API_HOST = "{{{defaults.apiHost}}}";
+		var DIVISIONS = {{{defaults.divisionOptions}}};
+		var DIVISION_PERIODS = {{{defaults.divisionPeriods}}};
 
 		// user-specific
-		const STUDENT_GRADE = {{{studentGrade}}};
-		const STUDENT_DIVISION = "{{{studentDivision}}}";
-		const SEMINAR_ZOOM_LINK = "{{{studentInfo.seminar_zoom_link}}}";
+		var STUDENT_GRADE = {{{studentGrade}}};
+		var STUDENT_DIVISION = "{{{studentDivision}}}";
+		var SEMINAR_ZOOM_LINK = "{{{studentInfo.seminar_zoom_link}}}";
 	</script>
 
 	<!-- Sentry error reporting (uncomment for prod) -->
@@ -47,10 +47,10 @@
             <a href="/home" class="navbar-title"><h1>Schoop</h1></a>
             <div class="navbar-nav-btns">
             	<ul class="nav-btns-inner">
-	            	<li><a data-role="button" class="home-btn" href="/home" title="Home"><span class="sr-only">Home</span><i class="las la-home"></i></a></li>
-	            	<li><a data-role="button" class="user-btn" href="/profile" title="Profile"><i class="las la-user"></i></a></li>
+	            	<li><a role="button" data-role="button" class="home-btn" href="/home" title="Home"><span class="sr-only">Home</span><i class="las la-home"></i></a></li>
+	            	<li><a role="button" data-role="button" class="user-btn" href="/profile" title="Profile"><i class="las la-user"></i></a></li>
 	            	<!-- void(0) is quick an dirty. fix this later! -->
-	            	<li><a data-role="button" class="user-btn btn-logout" href="javascript:void(0);" title="Log Out"><span class="sr-only">Log Out</span><i class="las la-sign-out-alt"></i></a></li>
+	            	<li><a role="button" data-role="button" class="user-btn btn-logout" href="javascript:void(0);" title="Log Out"><span class="sr-only">Log Out</span><i class="las la-sign-out-alt"></i></a></li>
             	</ul>
             </div>
         </div>
