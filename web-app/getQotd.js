@@ -5,7 +5,7 @@ const logger = require("./app/core/logger");
 
 let getQotd = async () => {
 	try {
-		let qotdReq = await axios.get("https://api.quotable.io/random?maxLength=50&tags=inspirational");
+		let qotdReq = await axios.get("https://api.quotable.io/random?maxLength=85&tags=inspirational");
 		// await setAsync("schoop:qotd", JSON.stringify(qotdReq.data));
 		return qotdReq.data;
 		// process.exit(0);
