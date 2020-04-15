@@ -1,6 +1,9 @@
 (window => {
 	// USER STUFF:
-	const getClassTableElement = (type, period) => document.getElementsByName(`${type}_P${period}`)[0] || null;
+	const getClassTableElement = (type, period) => {
+		let prefix = (period === "SEMINAR") ? "" : "P";
+		document.getElementsByName(`${type}_${prefix}${period}`)[0] || null;
+	}
 	const updateClasses = async () => {
 		let periods = DIVISION_PERIODS[STUDENT_DIVISION];
 		let currentPeriod, classNameElement, classLinkElement;
@@ -69,6 +72,8 @@
 			setClassTableElementValue(classNameElement, currentClass.class_name);
 			setClassTableElementValue(classLinkElement, currentClass.zoom_link);
 		}
+		classLinkElement = getClassTableElement("className", "SEMINAR");
+		setClassTableElementValue(classLinkElement, SEMINAR_ZOOM_LINK);
 	};
 
 	const handleMutator = async event => {

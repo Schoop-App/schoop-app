@@ -11,7 +11,7 @@ module.exports = {
     autorestart: true,
     watch: true,
     ignore_watch: ["static", "views"],
-    max_memory_restart: '4G',
+    max_memory_restart: '1G',
     exp_backoff_restart_delay: 100,
     //instances: -1,
     //instances: 4,
