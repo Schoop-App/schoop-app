@@ -2,8 +2,8 @@
 	// USER STUFF:
 	const getClassTableElement = (type, period) => {
 		let prefix = (period === "SEMINAR") ? "" : "P";
-		document.getElementsByName(`${type}_${prefix}${period}`)[0] || null;
-	}
+		return document.getElementsByName(`${type}_${prefix}${period}`)[0] || null;
+	};
 	const updateClasses = async () => {
 		let periods = DIVISION_PERIODS[STUDENT_DIVISION];
 		let currentPeriod, classNameElement, classLinkElement;
