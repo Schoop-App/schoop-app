@@ -3,7 +3,7 @@
 
 // Sentry error reporting init
 const Sentry = require('@sentry/node');
-Sentry.init({ dsn: 'https://b7ca5bed93fc4dd791eff38ce5db1185@sentry.io/4547846' });
+Sentry.init({ dsn: 'https://9e300dfd5afb4c2db06743525644f742@o378464.ingest.sentry.io/5201899' });
 
 const PRIVATE_CONFIG = require("./private-config.json");
 
