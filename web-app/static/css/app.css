@@ -4,10 +4,9 @@
 	--today-schedule-row-padding-tb: 12px;
 	--today-table-border-radius: 10px;
 	--navbar-height: 78px;
-	--main-theme-color: #000;
-}
+	/*--main-theme-color: #000;*/
+	--main-theme-color: #305475; /* Windward-approved color */
 
-:root {
 	--vw: 1vw;
 	--vh: 1vh;
 }
