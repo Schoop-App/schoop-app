@@ -123,11 +123,12 @@ const handleWindowResize = () => {
 			if (event.type === "PERIOD") {
 				periodNumber = event.number;
 				eventColor = colors[periodNumber - 1];
-				console.log((periodNumber - 1), eventColor);
+				//console.log((periodNumber - 1), eventColor);
 
 				eventSignifier += `<span style="font-size: 0.93em;">${periodNumber}</span>`; // quite hacky, sorry
-			} 
-			eventZoomLink = event.zoom_link;
+			}
+
+			eventZoomLink = (event.overrideSignifier === "SEMINAR") ? SEMINAR_ZOOM_LINK : event.zoom_link;
 			eventName = event.class_name || event.name || NOTHING_DEMARCATOR;
 			eventTimespan = generateTimespan(event.start, event.end);
 			eventIsLightOrDark = lightOrDark(event.color);
