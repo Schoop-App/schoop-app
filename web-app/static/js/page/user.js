@@ -13,21 +13,17 @@
 
 			classNameElement = getClassTableElement("className", currentPeriod);
 			classLinkElement = getClassTableElement("zoomLink", currentPeriod);
-			// EXAMPLE:
-			/*
-				{
-					"period": 2
-					"name": "AP Euro",
-					"zoomLink": "https://windwardschool.zoom.us/j/1234567890"
-				}
-			*/
+
 			updatedClassesJson.push({
 				period: currentPeriod,
 				name: classNameElement.value,
 				zoomLink: classLinkElement.value
 			});
 		}
-		let updateClassesRes = await postJSON("/update_classes", { classes: updatedClassesJson }); // send it off to server
+		let updateClassesRes = await postJSON("/update_classes", {
+			classes: updatedClassesJson,
+			seminarZoomLink: getClassTableElement("zoomLink", "SEMINAR").value
+		}); // send it off to server
 	};
 	// ooh, object mapping! fun!!
 	let ACCOUNT_DELETION_STATUS_OPTIONS = message => { // FOR deleteAccount FUNCTION

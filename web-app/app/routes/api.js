@@ -162,6 +162,7 @@ module.exports = imports => {
 	router.post("/update_classes", accessProtectionMiddleware, jsonParser, async (req, res) => {
 		try {
 			await db.updateClasses(req.user.id, req.body.classes);
+			await db.setSeminarZoomLink(req.user.id, req.body.seminarZoomLink);
 			res.status(200).send({
 				status: "ok"
 			});
