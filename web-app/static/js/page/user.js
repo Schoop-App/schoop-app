@@ -72,7 +72,7 @@
 			setClassTableElementValue(classNameElement, currentClass.class_name);
 			setClassTableElementValue(classLinkElement, currentClass.zoom_link);
 		}
-		classLinkElement = getClassTableElement("className", "SEMINAR");
+		classLinkElement = getClassTableElement("zoomLink", "SEMINAR");
 		setClassTableElementValue(classLinkElement, SEMINAR_ZOOM_LINK);
 	};
 
