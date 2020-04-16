@@ -9,12 +9,14 @@ const handleWindowResize = () => {
 	}
 };
 
+const SCHOOP_REDIRECT_REF = "dashboard";
+
 (window => {
 	// STARTING DATE
 	let initialDate = new Date();
 
 	const eventRowTemplate = Handlebars.compile(
-`<tr style="background-color: {{{eventColor}}};" class="event-{{{eventIsLightOrDark}}}{{#if hasLink}} event-has-link{{/if}}"{{#if hasLink}} data-link="{{{eventZoomLink}}}" onclick="openZoomLink(this);"{{/if}} data-event-name="{{{eventName}}}">
+`<tr style="background-color: {{{eventColor}}};" class="event-{{{eventIsLightOrDark}}}{{#if hasLink}} event-has-link{{/if}}"{{#if hasLink}} data-link="{{{eventZoomLink}}}" data-link-raw="{{{eventZoomLinkRaw}}}" onclick="openZoomLink(this);"{{/if}} data-event-name="{{{eventName}}}">
 	<td class="signifier left">{{{eventSignifier}}}</td>
 	<td class="center" style="font-weight: 700;">{{eventName}}</td>
 	<td class="right">{{eventTimespan}}</td>
@@ -113,6 +115,7 @@ const handleWindowResize = () => {
 		let periodNumber,
 			eventSignifier,
 			eventZoomLink,
+			eventZoomLinkRaw,
 			eventName,
 			eventTimespan,
 			eventColor,
@@ -128,7 +131,8 @@ const handleWindowResize = () => {
 				eventSignifier += `<span style="font-size: 0.93em;">${periodNumber}</span>`; // quite hacky, sorry
 			}
 
-			eventZoomLink = (event.overrideSignifier === "SEMINAR") ? SEMINAR_ZOOM_LINK : event.zoom_link;
+			eventZoomLink = (event.overrideSignifier === "SEMINAR") ? `/s/redirect?url=${encodeURIComponent(SEMINAR_ZOOM_LINK)}&ref=${SCHOOP_REDIRECT_REF}` : `/s/${event.class_id || "empty"}`;
+			eventZoomLinkRaw = (event.overrideSignifier === "SEMINAR") ? SEMINAR_ZOOM_LINK : event.zoom_link;
 			eventName = event.class_name || event.name || NOTHING_DEMARCATOR;
 			eventTimespan = generateTimespan(event.start, event.end);
 			eventIsLightOrDark = lightOrDark(event.color);
@@ -143,6 +147,7 @@ const handleWindowResize = () => {
 			eventName,
 			eventTimespan,
 			eventZoomLink,
+			eventZoomLinkRaw,
 			eventColor: eventColor || "transparent",
 			eventIsLightOrDark: eventIsLightOrDark || "light",
 			hasLink: typeof eventZoomLink !== "undefined" && eventZoomLink !== ""

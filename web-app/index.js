@@ -132,7 +132,7 @@ dbConn.connect(async err => {
 		req.includeDefaults = {
 			divisionPeriods,
 			divisionOptions,
-			apiHost: `${SCHOOP_HOST}/api`,
+			appHost: SCHOOP_HOST
 		};
 		next();
 	});

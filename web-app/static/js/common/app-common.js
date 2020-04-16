@@ -19,7 +19,7 @@ const MONTHS_FOR_TODAY_VIEW = MONTHS_FULL.map(k => k.substring(0, 3)); // Jan, F
 
 // FUNCTIONS
 const openZoomLink = elem => {
-	let eventLink = elem.getAttribute("data-link");
+	let eventLink = elem.getAttribute("data-link-raw");
 	let eventName = elem.getAttribute("data-event-name");
 	if (confirm("Open Zoom link for " + eventName + "?\n(" + eventLink + ")")) window.open(eventLink);
 };

@@ -14,7 +14,8 @@
 	<!-- CONFIG (rendered server-side) -->
 	<script>
 		// true for everyone
-		var API_HOST = "{{{defaults.apiHost}}}";
+		var SCHOOP_HOST = "{{{defaults.appHost}}}";
+		var API_HOST = SCHOOP_HOST + "/api";
 		var DIVISIONS = {{{defaults.divisionOptions}}};
 		var DIVISION_PERIODS = {{{defaults.divisionPeriods}}};
 
