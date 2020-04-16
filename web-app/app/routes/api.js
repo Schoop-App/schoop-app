@@ -157,7 +157,7 @@ module.exports = imports => {
 		let studentInfo = await db.getStudentInfo(req.user.id);
 		res.status(200).send(studentInfo);
 	});
-	router.get("/me-session", accessProtectionMiddleware, endpointNoCacheMiddleware, (req, res) => res.status(200).send(req.user));
+	router.get("/me_session", accessProtectionMiddleware, endpointNoCacheMiddleware, (req, res) => res.status(200).send(req.user));
 
 	// USER PAGE APIs (for now, that's just for updating classes and deleting account)
 	router.post("/update_classes", accessProtectionMiddleware, jsonParser, async (req, res) => {
