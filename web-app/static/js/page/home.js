@@ -151,7 +151,7 @@ const SCHOOP_REDIRECT_REF = "dashboard";
 			eventZoomLinkRaw,
 			eventColor: eventColor || "transparent",
 			eventIsLightOrDark: eventIsLightOrDark || "light",
-			hasLink: typeof eventZoomLink !== "undefined" && eventZoomLink !== ""
+			hasLink: typeof eventZoomLinkRaw !== "undefined" && eventZoomLinkRaw !== ""
 		});
 	};
 

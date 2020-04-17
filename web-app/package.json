@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "nodemon --watch index.js --watch app index.js",
+    "test": "jest",
     "run-prod": "pm2 start ecosystem.config.js --env production"
   },
   "author": "Zane St. John",
@@ -27,5 +27,8 @@
     "redis": "^3.0.2",
     "uniqid": "^5.2.0",
     "winston": "^3.2.1"
+  },
+  "devDependencies": {
+    "jest": "^25.3.0"
   }
 }
