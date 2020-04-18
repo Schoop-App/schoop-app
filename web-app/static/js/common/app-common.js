@@ -179,12 +179,12 @@ const getClasses = async () => {
 (window => {
 	let SHOWING_LOST_COMMUNICATION_DIALOG = false;
 
-	const showLostCommunicationDialog = async (extraBlurb = "") => {
+	const showCommunicationErrorDialog = async (title, message) => {
 		if (!SHOWING_LOST_COMMUNICATION_DIALOG) {
 			SHOWING_LOST_COMMUNICATION_DIALOG = true;
 			let userChoice = await Swal.fire({
-				title: "Error - Lost Connection",
-				text: "Schoop lost communication with the server. " + extraBlurb,
+				title: "Error - " + title,
+				text: message,
 				icon: "error",
 				confirmButtonText: 'Reload Page',
 				cancelButtonText: 'Close',
@@ -195,6 +195,8 @@ const getClasses = async () => {
 		}
 	};
 
+	const showLostCommunicationDialog = async (extraBlurb = "") => await showCommunicationErrorDialog("Lost Communication", "Schoop lost communication with the server. " + extraBlurb);
+
 	const getJSON = async (path, overrideHost=false, validateReqs=true) => {
 		try {
 			let apiHost = (overrideHost === false) ? API_HOST : "";
@@ -204,7 +206,7 @@ const getClasses = async () => {
 			let json = await req.json();
 			if (validateReqs && json.status === "error") {
 				if (typeof json.status_code !== "undefined" && json.status_code === 502) {
-					window.location.reload();
+					await showCommunicationErrorDialog("Server Down", json.message);
 				} else {
 					window.location.href = "/login?expired=1";
 				}
