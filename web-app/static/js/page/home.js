@@ -25,8 +25,8 @@ const SCHOOP_REDIRECT_REF = "dashboard";
 
 	// INIT STATE
 	let dateState = {
-		currentDate: initialDate,
-		previousDate: new Date(initialDate) // copying it
+		currentDate: initialDate
+		// previousDate: new Date(initialDate) // copying it
 	};
 	let appState = mobx.observable({
 		time: initialDate.getTime()
@@ -344,7 +344,7 @@ const SCHOOP_REDIRECT_REF = "dashboard";
 		await onPageReady(); // General page init/refresh instructions. This function is also called every minute by mobx state manager
 		// MOBX STATE STUFF
 		mobx.autorun(() => {
-			dateState.previousDate = dateState.currentDate;
+			// dateState.previousDate = dateState.currentDate;
 			dateState.currentDate = new Date(appState.time);
 			// console.log(dateState.currentDate.getTime() - dateState.previousDate.getTime());
 
