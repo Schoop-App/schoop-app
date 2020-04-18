@@ -191,6 +191,7 @@ const getClasses = async () => {
 				showCancelButton: true,
 				reverseButtons: true
 			});
+			SHOWING_LOST_COMMUNICATION_DIALOG = false;
 			if (userChoice.value) window.location.reload();
 		}
 	};
