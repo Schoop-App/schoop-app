@@ -234,6 +234,9 @@ const getClasses = async () => {
 			await showLostCommunicationDialog("Close this dialog and try again, or click the button below to reload the page.");
 		}
 	};
+
+	window.getJSON = getJSON;
+	window.postJSON = postJSON;
 })(window);
 
 document.addEventListener("DOMContentLoaded", async () => {
