@@ -73,7 +73,7 @@ const SCHOOP_REDIRECT_REF = "dashboard";
 					// CLASS
 					// let classInfo = classes[event.number - 1];
 					let classInfo = classes.find(item => item.period_number === event.number);
-					console.log(classInfo);
+					// console.log(classInfo);
 					if (classInfo !== null && typeof classInfo === "object") {
 						// maybe a more efficient way to do this?
 						classInfo.type = event.type;
@@ -126,7 +126,7 @@ const SCHOOP_REDIRECT_REF = "dashboard";
 			if (event.type === "PERIOD") {
 				periodNumber = event.number;
 				eventColor = colors[periodNumber - 1];
-				//console.log((periodNumber - 1), eventColor);
+				// console.log((periodNumber - 1), eventColor);
 
 				eventSignifier += `<span style="font-size: 0.93em;">${periodNumber}</span>`; // quite hacky, sorry
 			}
@@ -139,7 +139,7 @@ const SCHOOP_REDIRECT_REF = "dashboard";
 			eventIsLightOrDark = lightOrDark(event.color);
 		} catch (e) {
 			// console.error(e);
-			console.log("something went wrong. fine because was already handled");
+			// console.log("something went wrong. fine because was already handled");
 			// eventSignifier = 
 		}
 
@@ -179,17 +179,16 @@ const SCHOOP_REDIRECT_REF = "dashboard";
 
 	// early or late enum
 	const EarlyOrLate = {
-		EARLY: "early",
-		LATE: "late"
+		EARLY: "EARLY",
+		LATE: "LATE"
 	};
 	const checkEarlyOrLate = (d, absoluteStartTime, absoluteEndTime) => {
-		// if (d.getHours() < absoluteStartTime[0])
-		// 	return EarlyOrLate.EARLY;
-		// else if (d.getHours() > absoluteEndTime[0])
-		// 	return EarlyOrLate.LATE;
-		if (convertDateToMins(d) < convertArrToMins(absoluteStartTime))
+		let mins = convertDateToMins(d); // current
+		let startMins = convertArrToMins(absoluteStartTime);
+		let endMins = convertArrToMins(absoluteEndTime);
+		if (mins < startMins) // early
 			return EarlyOrLate.EARLY;
-		else if (convertDateToMins(d) > convertArrToMins(absoluteEndTime))
+		else if (mins >= endMins) // late
 			return EarlyOrLate.LATE;
 		else
 			throw new Error("Unexpected scenario in populateMissionControlStatus. (No period/event handling)"); // debug
@@ -236,6 +235,7 @@ const SCHOOP_REDIRECT_REF = "dashboard";
 				// THERE IS A PERIOD OR EVENT OF SOME SORT NOW
 				let missionControlCurrentEvent = schedule.find(k => dateFitsInTimeRange(d, k.start, k.end));
 				if (typeof missionControlCurrentEvent === "undefined") {
+					// Passing Period (not needed for now)
 					nowEventElem.innerText = "Passing Period";
 					nowSignifierElem.innerText = "PP";
 
@@ -243,28 +243,29 @@ const SCHOOP_REDIRECT_REF = "dashboard";
 
 					populateMissionControlUpNextEvent(upNextEvent, upNextTimeElem, upNextEventElem, upNextSignifierElem);
 				} else {
+					// there's actually an event now
 					nowEventElem.innerText = generateMissionControlEventText(missionControlCurrentEvent);
 					nowSignifierElem.innerText = getEventSignifier(missionControlCurrentEvent, true);
 					try {
 						let upNextEventIndex = schedule.findIndex(k => k === missionControlCurrentEvent) + 1;
 						let upNextEvent = schedule[upNextEventIndex];
-						console.log("upNextEvent", upNextEvent);
+						// console.log("upNextEvent", upNextEvent);
 
 						populateMissionControlUpNextEvent(upNextEvent, upNextTimeElem, upNextEventElem, upNextSignifierElem);
 					} catch (e) {
-						console.error(e);
-						console.log("No upcoming event");
+						// console.error(e);
+						// console.log("No upcoming event");
 
 						upNextTimeElem.innerText = NOTHING_DEMARCATOR;
-						upNextEventElem.innerText = NOTHING_DEMARCATOR;
-						upNextSignifierElem.innerText = NOTHING_DEMARCATOR;
+						upNextEventElem.innerText = "You're free";
+						upNextSignifierElem.innerText = "FREE";
 					}
 				}
 				// tries to find up next. if there is no period next then it fails gracefully
 			} else {
 				// THERE IS ***NOT*** A PERIOD/EVENT NOW
-				nowEventElem.innerHTML = NOTHING_DEMARCATOR;
-				nowSignifierElem.innerText = NOTHING_DEMARCATOR;
+				nowEventElem.innerHTML = "You're free";
+				nowSignifierElem.innerText = "FREE";
 				switch (checkEarlyOrLate(d, absoluteSchoolStartTime, absoluteSchoolEndTime)) {
 					case EarlyOrLate.EARLY:
 						let upNextEvent = schedule[0];
@@ -272,8 +273,8 @@ const SCHOOP_REDIRECT_REF = "dashboard";
 						break;
 					case EarlyOrLate.LATE:
 						upNextTimeElem.innerText = NOTHING_DEMARCATOR;
-						upNextEventElem.innerText = NOTHING_DEMARCATOR;
-						upNextSignifierElem.innerText = NOTHING_DEMARCATOR;
+						upNextEventElem.innerText = "School is over. Have a nice evening.";
+						upNextSignifierElem.innerText = "FREE";
 						break;
 					default:
 						console.log("UNEXPECTED OUTCOME FOR EARLY OR LATE IN populateMissionControlStatus");
@@ -315,10 +316,10 @@ const SCHOOP_REDIRECT_REF = "dashboard";
 		let template = await getScheduleTemplate(window.STUDENT_DIVISION || STUDENT_DIVISION, initialDate);
 		let classes = await getClasses();
 		let userSchedule = buildUserSchedule(template, classes); // built-out schedule
-		console.log("USER SCHEDULE (debug): ", JSON.stringify(userSchedule, null, 4));
+		// console.log("USER SCHEDULE (debug): ", JSON.stringify(userSchedule, null, 4));
 
 		let classColors = await getClassColors(); // colors for the **periods** in other words
-		console.log(classColors);
+		// console.log(classColors);
 		let scheduleHtml = buildAllScheduleItemsHTML(userSchedule, classColors);
 		document.querySelector("table.today-schedule tbody").innerHTML = scheduleHtml;
 

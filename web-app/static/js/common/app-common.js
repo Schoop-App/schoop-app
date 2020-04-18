@@ -156,8 +156,8 @@ const getJSON = async (path, overrideHost=false, validateReqs=true) => {
 	} else {
 		try {
 			let apiHost = (overrideHost === false) ? API_HOST : "";
-			console.log("apiHost: " + apiHost);
-			console.log("path: " + path);
+			// console.log("apiHost: " + apiHost);
+			// console.log("path: " + path);
 			let req = await fetch(apiHost + path);
 			let json = await req.json();
 			if (validateReqs && json.status === "error") {
@@ -170,7 +170,18 @@ const getJSON = async (path, overrideHost=false, validateReqs=true) => {
 			return json;
 		} catch (e) {
 			// window.location.href = "/";
-			console.log("ERROR (tell Zane):\n\n" + e.toString());
+			// console.log("ERROR (tell Zane):\n\n" + e.toString());
+			let userChoice = await Swal.fire({
+				title: "Error - Lost Connection",
+				text: "Schoop lost communication with the server. If you would like, you can reload the page.",
+				icon: "error",
+				confirmButtonText: 'Reload Page',
+				cancelButtonText: 'Close',
+				showCancelButton: true,
+				reverseButtons: true
+			});
+			if (userChoice.value)
+				window.location.reload();
 		}
 	}
 };
@@ -193,7 +204,7 @@ const activateLink = elem => {
 	try {
 		elem.parentElement.classList.add("link-active");
 	} catch (e) {
-		console.log("link not present in top bar");
+		// console.log("link not present in top bar");
 	}
 };
 const selectActivePageLink = () => {
