@@ -150,55 +150,6 @@ const logOutUser = async () => {
 	}
 };
 
-const getJSON = async (path, overrideHost=false, validateReqs=true) => {
-	if (typeof CANCEL_API_REQS !== "undefined" && CANCEL_API_REQS) {
-		return {};
-	} else {
-		try {
-			let apiHost = (overrideHost === false) ? API_HOST : "";
-			// console.log("apiHost: " + apiHost);
-			// console.log("path: " + path);
-			let req = await fetch(apiHost + path);
-			let json = await req.json();
-			if (validateReqs && json.status === "error") {
-				if (typeof json.status_code !== "undefined" && json.status_code === 502) {
-					window.location.reload();
-				} else {
-					window.location.href = "/login?expired=1";
-				}
-			}
-			return json;
-		} catch (e) {
-			// window.location.href = "/";
-			// console.log("ERROR (tell Zane):\n\n" + e.toString());
-			let userChoice = await Swal.fire({
-				title: "Error - Lost Connection",
-				text: "Schoop lost communication with the server. If you would like, you can reload the page.",
-				icon: "error",
-				confirmButtonText: 'Reload Page',
-				cancelButtonText: 'Close',
-				showCancelButton: true,
-				reverseButtons: true
-			});
-			if (userChoice.value)
-				window.location.reload();
-		}
-	}
-};
-
-const postJSON = async (path, sendBody) => {
-	let req = await fetch((API_HOST || "/api") + path, {
-		method: "POST",
-		headers: {
-			"Accept": "application/json",
-			"Content-Type": "application/json"
-		},
-		body: JSON.stringify(sendBody)
-	});
-	let res = await req.json();
-	return res;
-};
-
 // highlights the active page link if it exists
 const activateLink = elem => {
 	try {
@@ -224,6 +175,66 @@ const getClasses = async () => {
 	let classes = await getJSON("/classes");
 	return classes;
 };
+
+(window => {
+	let SHOWING_LOST_COMMUNICATION_DIALOG = false;
+
+	const showLostCommunicationDialog = async (extraBlurb = "") => {
+		if (!SHOWING_LOST_COMMUNICATION_DIALOG) {
+			SHOWING_LOST_COMMUNICATION_DIALOG = true;
+			let userChoice = await Swal.fire({
+				title: "Error - Lost Connection",
+				text: "Schoop lost communication with the server. " + extraBlurb,
+				icon: "error",
+				confirmButtonText: 'Reload Page',
+				cancelButtonText: 'Close',
+				showCancelButton: true,
+				reverseButtons: true
+			});
+			if (userChoice.value) window.location.reload();
+		}
+	};
+
+	const getJSON = async (path, overrideHost=false, validateReqs=true) => {
+		try {
+			let apiHost = (overrideHost === false) ? API_HOST : "";
+			// console.log("apiHost: " + apiHost);
+			// console.log("path: " + path);
+			let req = await fetch(apiHost + path);
+			let json = await req.json();
+			if (validateReqs && json.status === "error") {
+				if (typeof json.status_code !== "undefined" && json.status_code === 502) {
+					window.location.reload();
+				} else {
+					window.location.href = "/login?expired=1";
+				}
+			}
+			return json;
+		} catch (e) {
+			// window.location.href = "/";
+			// console.log("ERROR (tell Zane):\n\n" + e.toString());
+			await showLostCommunicationDialog("If you would like, you can reload the page to reconnect.");
+		}
+	};
+
+	const postJSON = async (path, sendBody) => {
+		try {
+			let req = await fetch((API_HOST || "/api") + path, {
+				method: "POST",
+				headers: {
+					"Accept": "application/json",
+					"Content-Type": "application/json"
+				},
+				body: JSON.stringify(sendBody)
+			});
+			let res = await req.json();
+			return res;
+		} catch (e) {
+			// I may need to put something else here. But this will work for now...
+			await showLostCommunicationDialog("Close this dialog and try again, or click the button below to reload the page.");
+		}
+	};
+})(window);
 
 document.addEventListener("DOMContentLoaded", async () => {
 	if (typeof handleWindowResize !== "undefined") {

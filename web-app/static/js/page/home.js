@@ -264,7 +264,7 @@ const SCHOOP_REDIRECT_REF = "dashboard";
 				// tries to find up next. if there is no period next then it fails gracefully
 			} else {
 				// THERE IS ***NOT*** A PERIOD/EVENT NOW
-				nowEventElem.innerHTML = "You're free";
+				nowEventElem.innerHTML = "School is over. Have a nice evening.";
 				nowSignifierElem.innerText = "FREE";
 				switch (checkEarlyOrLate(d, absoluteSchoolStartTime, absoluteSchoolEndTime)) {
 					case EarlyOrLate.EARLY:
@@ -273,7 +273,7 @@ const SCHOOP_REDIRECT_REF = "dashboard";
 						break;
 					case EarlyOrLate.LATE:
 						upNextTimeElem.innerText = NOTHING_DEMARCATOR;
-						upNextEventElem.innerText = "School is over. Have a nice evening.";
+						upNextEventElem.innerText = "You're free";
 						upNextSignifierElem.innerText = "FREE";
 						break;
 					default:
