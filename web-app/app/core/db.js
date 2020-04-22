@@ -32,6 +32,14 @@ module.exports = imports => {
 		let query = await dbConnAsync.query(`SELECT * FROM classes where student_oauth_id = ${dbConn.escape(studentId)} AND bound_for_deletion = 0`);
 		return query.results;
 	};
+	// for schedule
+	const getClassesByStudentEmail = async studentEmail => {
+		let studentIdQuery = await dbConnAsync.query(`SELECT google_oauth_id FROM students WHERE email = ${dbConn.escape(studentEmail)}`);
+		let studentId = studentIdQuery.results[0].google_oauth_id; // get student id from email
+
+		let query = await dbConnAsync.query(`SELECT * FROM classes where student_oauth_id = ${dbConn.escape(studentId)} AND bound_for_deletion = 0`);
+		return query.results;
+	};
 
 	// return class link for...purposes
 	const getClassLink = async classId => {
@@ -222,6 +230,7 @@ module.exports = imports => {
 		getStudentInfo,
 		studentDidSetup,
 		getClasses,
+		getClassesByStudentEmail,
 		// getClassLink,
 		getClassLinkForStudent, // user-specific
 		addStudent,

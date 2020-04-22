@@ -3,15 +3,15 @@ const rateLimit = require("express-rate-limit");
 const accessProtectionMiddleware = require("../middleware/access-protection");
 const endpointNoCacheMiddleware = require("../middleware/endpoint-no-cache");
 const getQotd = require("../../getQotd");
-const readFileAsync = require("fs").promises.readFile;
 
 const urlencodedParser = bodyParser.urlencoded({ extended: true }); // using qs
 const jsonParser = bodyParser.json();
 
+// SCHEDULES
+const schedules = require("../core/schedules");
+
 // STUDENT CORE
 const { Division, PERIODS, gradeToGradYear, gradYearToGrade, getDivision } = require("../core/student-core");
-
-const SCHEDULE_TEMPLATE_DAYS = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
 
 const INTERNAL_SERVER_ERROR_RESPONSE = {
 	status: "error",
@@ -87,7 +87,7 @@ module.exports = imports => {
 				Sentry.captureException(e); // so I can see it hehe
 				logger.log("oops, error:");
 				logger.error(e);
-				res.status(500).send(`We were not able to register you. Please try again.<br><br><em>SERVER ERROR: ${e.toString()}</em>`);
+				res.status(500).send(`We were not able to register you. Please try again.<br><br><em>SERVER ERROR: ${e.message}</em>`);
 			}
 		} else if (studentSetupState === 1) {
 			// ALREADY SET UP
@@ -102,19 +102,15 @@ module.exports = imports => {
 	});
 
 	// home
+	// maybe I SHOULD be caching this...on the server side (with Redis maybe?)
 	router.get("/schedule/:division/:day", accessProtectionMiddleware, endpointNoCacheMiddleware, async (req, res) => {
-		if ((req.params.division === Division.MIDDLE || req.params.division === Division.UPPER) && SCHEDULE_TEMPLATE_DAYS.includes(req.params.day)) {
-			try {
-				let scheduleFile = await readFileAsync(`${__dirname}/../../../schedules/${req.params.division}/${req.params.day}.json`);
-				res.status(200).send(JSON.parse(scheduleFile.toString()));
-			} catch (e) {
-				logger.error(e);
-				res.status(500).send(INTERNAL_SERVER_ERROR_RESPONSE);
-			}
-		} else {
+		try {
+			let schedule = await schedules.getSchedule(req.params.division, req.params.day);
+			res.status(200).send(schedule);
+		} catch (e) {
 			res.status(400).send({
 				status: "error",
-				message: "Invalid Request – malformed schedule template query"
+				message: e.message
 			});
 		}
 	});
@@ -172,7 +168,7 @@ module.exports = imports => {
 			res.status(500).send({
 				status: "error",
 				message: "Internal Server Error (maybe tell Zane!)",
-				error: e.toString() // maybe best not to leave this here
+				error: e.message // maybe best not to leave this here
 			});
 		}
 	});
@@ -199,7 +195,7 @@ module.exports = imports => {
 			res.status(500).send({
 				status: "error",
 				message: "Internal Server Error (maybe tell Zane!)",
-				error: e.toString() // maybe best not to leave this here
+				error: e.message // maybe best not to leave this here
 			});
 		}
 	});

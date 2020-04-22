@@ -16,10 +16,14 @@
 		"user": "dbadmin",
 		"password": "password",
 		"database": "my-app",
-		"port": 12345
+		"port": 3306
 	},
 	"server": {
 		"server_home_path": "/home/admin",
 		"session_secret": "some_secret_here"
+	},
+	"mailgun": {
+		"api_key": "YOUR_API_KEY",
+		"domain_name": "example.com"
 	}
 }
