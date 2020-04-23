@@ -264,14 +264,15 @@ const SCHOOP_REDIRECT_REF = "dashboard";
 				// tries to find up next. if there is no period next then it fails gracefully
 			} else {
 				// THERE IS ***NOT*** A PERIOD/EVENT NOW
-				nowEventElem.innerHTML = "School is over. Have a nice evening.";
 				nowSignifierElem.innerText = "FREE";
 				switch (checkEarlyOrLate(d, absoluteSchoolStartTime, absoluteSchoolEndTime)) {
 					case EarlyOrLate.EARLY:
+						nowEventElem.innerHTML = `Good morning, ${STUDENT_FIRST_NAME}!`;
 						let upNextEvent = schedule[0];
 						populateMissionControlUpNextEvent(upNextEvent, upNextTimeElem, upNextEventElem, upNextSignifierElem);
 						break;
 					case EarlyOrLate.LATE:
+						nowEventElem.innerHTML = "School is over. Enjoy your evening.";
 						upNextTimeElem.innerText = NOTHING_DEMARCATOR;
 						upNextEventElem.innerText = "You're free";
 						upNextSignifierElem.innerText = "FREE";
