@@ -12,6 +12,7 @@ const SCHOOP_HOST = process.env.SCHOOP_HOST || "https://schoop.app";
 const PORT = process.env.SCHOOP_PORT || 3060;
 
 const fs = require("fs");
+const path = require("path")
 
 const express = require("express");
 const redis = require("redis");
@@ -119,9 +120,11 @@ dbConn.connect(async err => {
 	// HANDLEBARS VIEW ENGINE SETUP
 	app.engine("handlebars", require("express-handlebars")());
 	app.set("view engine", "handlebars");
+	const VIEW_PATH = (typeof process.env.VIEW_PATH === "undefined") ? "/views" : process.env.VIEW_PATH;
+	app.set("views", path.join(__dirname, VIEW_PATH)); // allows for me to change path of views later on
 
 	// STATIC FILES
-	app.use(express.static(`${__dirname}/static`));
+	app.use(express.static(path.join(__dirname, "/static"));
 
 	// EXTERNAL ROUTES
 	app.use("/api", require("./app/routes/api")({ Sentry, passport, logger, db, redisClient }));
