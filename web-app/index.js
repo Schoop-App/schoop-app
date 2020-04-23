@@ -124,7 +124,7 @@ dbConn.connect(async err => {
 	app.set("views", path.join(__dirname, VIEW_PATH)); // allows for me to change path of views later on
 
 	// STATIC FILES
-	app.use(express.static(path.join(__dirname, "/static"));
+	app.use(express.static(path.join(__dirname, "/static")));
 
 	// EXTERNAL ROUTES
 	app.use("/api", require("./app/routes/api")({ Sentry, passport, logger, db, redisClient }));
