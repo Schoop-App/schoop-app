@@ -3,9 +3,8 @@
 <head>
 	<meta charset="utf-8">
 	<title>Windward Twitter</title>
-	<link href="https://fonts.googleapis.com/css?family=Karla:400,500,700&display=swap" rel="stylesheet"> <!-- fonts -->
 	<link rel="stylesheet" href="./css/vendor.css">
-
+	<link href="https://fonts.googleapis.com/css?family=Karla:400,500,700&display=swap" rel="stylesheet">
 	<style>
 	/* width */
 	::-webkit-scrollbar {
@@ -70,23 +69,36 @@
 	<div class="loading-overlay"><h1>Loading Tweets&hellip;</h1></div>
 	<a class="twitter-timeline" href="https://twitter.com/WindwardSchool?ref_src=twsrc%5Etfw" data-tweet-limit="3">Tweets by WindwardSchool</a><script src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 	<script defer>
-		let hideLoadingOverlay = () => {
-			document.querySelector(".loading-overlay").classList.add("hidden");
-			document.body.classList.remove("notloaded");
-		};
-		document.addEventListener("DOMContentLoaded", () => {	
-			twttr.ready(twttr => {
-				twttr.events.bind(
-					'rendered',
-					event => {
-						let win = document.getElementById(event.target.id);
-						let winDoc = win.contentDocument || win.contentWindow.document;
-						winDoc.body.style.fontFamily = "Karla";
-						hideLoadingOverlay();
-					}
-				);
-			})
-		});
+		(function (document) {
+			let hideLoadingOverlay = () => {
+				document.querySelector(".loading-overlay").classList.add("hidden");
+				document.body.classList.remove("notloaded");
+			};
+			document.addEventListener("DOMContentLoaded", () => {
+				twttr.ready(twttr => {
+					twttr.events.bind(
+						'rendered',
+						event => {
+							let win = document.getElementById(event.target.id);
+							let winDoc = win.contentDocument || win.contentWindow.document;
+
+							let fontStylesheetReq = new XMLHttpRequest();
+							fontStylesheetReq.onreadystatechange = function () {
+								if (this.readyState === 4 && this.status === 200) {
+									let styleElem = winDoc.createElement("style");
+									styleElem.innerHTML = fontStylesheetReq.responseText;
+									winDoc.head.insertBefore(styleElem, winDoc.head.childNodes[ winDoc.head.childNodes.length - 1 ].nextSibling);
+									winDoc.body.style.fontFamily = "Karla";
+									setTimeout(hideLoadingOverlay, 200);
+								}
+							};
+							fontStylesheetReq.open("GET", "https://fonts.googleapis.com/css?family=Karla:400,500,700&display=swap", true);
+							fontStylesheetReq.send();
+						}
+					);
+				})
+			});
+		})(document);
 	</script>
 </body>
 </html>
