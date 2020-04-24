@@ -174,7 +174,7 @@ html, body {
 
 h1, h2, h3, h4, h5, h6 {
 	font-family: Gilroy-ExtraBold, sans-serif;
-	font-weight: 800;
+	font-weight: 400;
 }
 
 main.content {
@@ -256,7 +256,7 @@ td.left, th.left {
 }
 
 table.today-schedule tr td.signifier {
-	font-weight: 800;
+	font-weight: 400;
 	font-family: Gilroy-ExtraBold, sans-serif;
 }
 
@@ -338,13 +338,14 @@ div.mission-control-part.current-status div.mission-control-status-container div
 div.mission-control-part.current-status div.mission-control-status-container div.mission-control-status-field.time {
 	font-size: 25px;
 	font-family: Gilroy-ExtraBold, sans-serif;
-	font-weight: 800;
+	font-weight: 400;
 }
 
 div.mission-control-part.current-status div.mission-control-status-container div.mission-control-status-field.event {
 	/*font-size: 20px;*/
 	/*font-family: Gilroy-ExtraBold, sans-serif;*/
-	font-weight: 800;
+	font-weight: 4
+	00;
 }
 
 div.mission-control-status-field-container {
@@ -388,7 +389,7 @@ div.loading-overlay.hidden {
 div.loading-overlay div.loading-text {
 	color: #fff;
 	font-family: Gilroy-ExtraBold, sans-serif;
-	font-weight: 800;
+	font-weight: 400;
 	font-size: calc(10.5 * var(--vw));
 
 	user-select: none;
@@ -553,7 +554,7 @@ table.class-entry-table {
 
 table.class-entry-table tr th {
 	font-family: Gilroy-ExtraBold, sans-serif;
-	font-weight: 800;
+	font-weight: 400;
 }
 
 table.class-entry-table tr th:first-child {
@@ -573,7 +574,7 @@ table.class-entry-table tr td:first-child, table.class-entry-table tr th:first-c
 
 table.class-entry-table tr td.signifier {
 	font-family: Gilroy-ExtraBold, sans-serif;
-	font-weight: 800;
+	font-weight: 400;
 }
 
 input.class-entry-input {
