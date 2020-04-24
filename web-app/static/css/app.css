@@ -174,8 +174,7 @@ html, body {
 
 h1, h2, h3, h4, h5, h6 {
 	font-family: Gilroy-ExtraBold, sans-serif;
-	letter-spacing: 0px !important;
-	font-weight: 700;
+	font-weight: 800;
 }
 
 main.content {
@@ -257,9 +256,8 @@ td.left, th.left {
 }
 
 table.today-schedule tr td.signifier {
-	font-weight: 700;
+	font-weight: 800;
 	font-family: Gilroy-ExtraBold, sans-serif;
-	letter-spacing: 0px !important;
 }
 
 /*table.today-schedule tr td.center {*/
@@ -340,15 +338,13 @@ div.mission-control-part.current-status div.mission-control-status-container div
 div.mission-control-part.current-status div.mission-control-status-container div.mission-control-status-field.time {
 	font-size: 25px;
 	font-family: Gilroy-ExtraBold, sans-serif;
-	letter-spacing: 0px !important;
-	font-weight: 500;
+	font-weight: 800;
 }
 
 div.mission-control-part.current-status div.mission-control-status-container div.mission-control-status-field.event {
 	/*font-size: 20px;*/
-	/*font-family: Gilroy-ExtraBold, sans-serif;
-	letter-spacing: 0px !important;*/
-	font-weight: 700;
+	/*font-family: Gilroy-ExtraBold, sans-serif;*/
+	font-weight: 800;
 }
 
 div.mission-control-status-field-container {
@@ -392,8 +388,7 @@ div.loading-overlay.hidden {
 div.loading-overlay div.loading-text {
 	color: #fff;
 	font-family: Gilroy-ExtraBold, sans-serif;
-	letter-spacing: 0px !important;
-	font-weight: 700;
+	font-weight: 800;
 	font-size: calc(10.5 * var(--vw));
 
 	user-select: none;
@@ -558,8 +553,7 @@ table.class-entry-table {
 
 table.class-entry-table tr th {
 	font-family: Gilroy-ExtraBold, sans-serif;
-	letter-spacing: 0px !important;
-	font-weight: 500;
+	font-weight: 800;
 }
 
 table.class-entry-table tr th:first-child {
@@ -579,8 +573,7 @@ table.class-entry-table tr td:first-child, table.class-entry-table tr th:first-c
 
 table.class-entry-table tr td.signifier {
 	font-family: Gilroy-ExtraBold, sans-serif;
-	letter-spacing: 0px !important;
-	font-weight: 700;
+	font-weight: 800;
 }
 
 input.class-entry-input {
@@ -597,8 +590,7 @@ div.grade-select-container {
 	--webkit-tap-highlight-color: transparent;
 
 	font-family: Gilroy-ExtraBold, sans-serif;
-	letter-spacing: 0px !important;
-	font-weight: 700;
+	font-weight: 800;
 	font-size: 20px;
 
 	width: 100%;
