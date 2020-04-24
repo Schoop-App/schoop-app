@@ -173,7 +173,7 @@ html, body {
 }
 
 h1, h2, h3, h4, h5, h6 {
-	font-family: 'Poppins', sans-serif;
+	font-family: Gilroy-ExtraBold, sans-serif;
 	font-weight: 700;
 }
 
@@ -257,7 +257,7 @@ td.left, th.left {
 
 table.today-schedule tr td.signifier {
 	font-weight: 700;
-	font-family: 'Poppins', sans-serif;
+	font-family: Gilroy-ExtraBold, sans-serif;
 }
 
 /*table.today-schedule tr td.center {*/
@@ -337,13 +337,13 @@ div.mission-control-part.current-status div.mission-control-status-container div
 
 div.mission-control-part.current-status div.mission-control-status-container div.mission-control-status-field.time {
 	font-size: 25px;
-	font-family: 'Poppins', sans-serif;
+	font-family: Gilroy-ExtraBold, sans-serif;
 	font-weight: 500;
 }
 
 div.mission-control-part.current-status div.mission-control-status-container div.mission-control-status-field.event {
 	/*font-size: 20px;*/
-	/*font-family: 'Poppins', sans-serif;*/
+	/*font-family: Gilroy-ExtraBold, sans-serif;*/
 	font-weight: 700;
 }
 
@@ -387,7 +387,7 @@ div.loading-overlay.hidden {
 
 div.loading-overlay div.loading-text {
 	color: #fff;
-	font-family: 'Poppins', sans-serif;
+	font-family: Gilroy-ExtraBold, sans-serif;
 	font-weight: 700;
 	font-size: calc(10.5 * var(--vw));
 
@@ -552,7 +552,7 @@ table.class-entry-table {
 }
 
 table.class-entry-table tr th {
-	font-family: 'Poppins', sans-serif;
+	font-family: Gilroy-ExtraBold, sans-serif;
 	font-weight: 500;
 }
 
@@ -572,7 +572,7 @@ table.class-entry-table tr td:first-child, table.class-entry-table tr th:first-c
 }
 
 table.class-entry-table tr td.signifier {
-	font-family: 'Poppins', sans-serif;
+	font-family: Gilroy-ExtraBold, sans-serif;
 	font-weight: 700;
 }
 
@@ -589,7 +589,7 @@ div.grade-select-container {
 	outline: none;
 	--webkit-tap-highlight-color: transparent;
 
-	font-family: 'Poppins', sans-serif;
+	font-family: Gilroy-ExtraBold, sans-serif;
 	font-weight: 700;
 	font-size: 20px;
 
