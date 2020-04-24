@@ -72,7 +72,9 @@ const SCHOOP_REDIRECT_REF = "dashboard";
 					// console.log("It's a period!", event);
 					// CLASS
 					// let classInfo = classes[event.number - 1];
-					let classInfo = classes.find(item => item.period_number === event.number);
+					try {
+						let classInfo = classes.find(item => item.period_number === event.number);
+					} catch (e) {} // I'm doing absolutely nothing here because there haven't been problems w/ the users heh
 					// console.log(classInfo);
 					if (classInfo !== null && typeof classInfo === "object") {
 						// maybe a more efficient way to do this?
