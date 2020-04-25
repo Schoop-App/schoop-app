@@ -173,7 +173,7 @@ const SCHOOP_REDIRECT_REF = "dashboard";
 			return scheduleHTML;
 		} else {
 			// HAS MESSAGE! ALERT
-			return `<tr><td style="text-align: center; font-size: 1.07em;">${schedule.message}</td></tr>`;
+			return `<tr><td style="text-align: center; font-size: 1.07em; padding: 15px;">${schedule.message}</td></tr>`;
 		}
 	};
 

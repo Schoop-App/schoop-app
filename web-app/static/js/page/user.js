@@ -67,6 +67,9 @@
 
 			setClassTableElementValue(classNameElement, currentClass.class_name);
 			setClassTableElementValue(classLinkElement, currentClass.zoom_link);
+			// select radio button of athletics class
+			if (document.querySelector(`input[name="athleticsPeriod"]`) !== null && currentClass.is_athletics === 1)
+				document.querySelector(`input[name="athleticsPeriod"][value="${currentClass.period_number}"]`).checked = true;
 		}
 		classLinkElement = getClassTableElement("zoomLink", "SEMINAR");
 		setClassTableElementValue(classLinkElement, SEMINAR_ZOOM_LINK);
