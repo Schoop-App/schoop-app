@@ -178,11 +178,12 @@ const getClasses = async () => {
 
 (window => {
 	let SHOWING_COMMUNICATION_ERROR_DIALOG = false;
+	let userChoice;
 
 	const showCommunicationErrorDialog = async (title, message) => {
 		if (!SHOWING_COMMUNICATION_ERROR_DIALOG) {
 			SHOWING_COMMUNICATION_ERROR_DIALOG = true;
-			let userChoice = await Swal.fire({
+			userChoice = await Swal.fire({
 				title: "Error - " + title,
 				text: message,
 				icon: "error",
@@ -194,6 +195,10 @@ const getClasses = async () => {
 			SHOWING_COMMUNICATION_ERROR_DIALOG = false;
 			if (userChoice.value) window.location.reload();
 		}
+	};
+	const hideCommunicationErrorDialog = () => {
+		try { userChoice.close(); } catch (e) {}
+		if (!SHOWING_COMMUNICATION_ERROR_DIALOG) SHOWING_COMMUNICATION_ERROR_DIALOG = false;
 	};
 
 	const showLostCommunicationDialog = async (extraBlurb = "") => await showCommunicationErrorDialog("Lost Communication", "Schoop lost communication with the server. " + extraBlurb);
@@ -212,7 +217,7 @@ const getClasses = async () => {
 					window.location.href = "/login?expired=1";
 				}
 			}
-			if (!SHOWING_COMMUNICATION_ERROR_DIALOG) SHOWING_COMMUNICATION_ERROR_DIALOG = false;
+			hideCommunicationErrorDialog();
 			return json;
 		} catch (e) {
 			// window.location.href = "/";
@@ -232,7 +237,7 @@ const getClasses = async () => {
 				body: JSON.stringify(sendBody)
 			});
 			let res = await req.json();
-			if (!SHOWING_COMMUNICATION_ERROR_DIALOG) SHOWING_COMMUNICATION_ERROR_DIALOG = false;
+			hideCommunicationErrorDialog();
 			return res;
 		} catch (e) {
 			// I may need to put something else here. But this will work for now...
