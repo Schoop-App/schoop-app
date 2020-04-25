@@ -176,6 +176,22 @@ const getClasses = async () => {
 	return classes;
 };
 
+const fixAllLinksForStandalone = () => {
+	let isInWebAppiOS = (window.navigator.standalone == true);
+	let isInWebAppChrome = (window.matchMedia('(display-mode: standalone)').matches);
+
+	if (isInWebAppiOS || isInWebAppChrome) {
+		let links = Array.from(document.querySelectorAll("a")).filter(link => typeof link.href !== "undefined" && link.href !== "" && link.href.indexOf("javascript:") === -1);
+		for (let i = 0; i < links.length; i++) {
+			links[i].addEventListener("click", function (e) {
+				// regular function instead of arrow because it's not anonymous
+				window.location = this.href;
+				e.preventDefault();
+			});
+		}
+	}
+};
+
 (window => {
 	let SHOWING_COMMUNICATION_ERROR_DIALOG = false;
 
@@ -258,6 +274,12 @@ document.addEventListener("DOMContentLoaded", async () => {
 	document.addEventListener("scroll", handleScroll);
 
 	selectActivePageLink(); // highlight link of current page if it exists
+
+	try {
+		fixAllLinksForStandalone();
+	} catch (e) {
+		console.error(e);
+	}
 
 	document.querySelector(".user-btn.btn-logout").addEventListener("click", logOutUser);
 });
