@@ -18,12 +18,13 @@ const INTERNAL_SERVER_ERROR_RESPONSE = {
 	message: "Internal Server Error"
 };
 
-const parseAthleticsPeriod = athleticsPeriod => {
+const parseAthleticsPeriod = period => {
+	let athleticsPeriod;
 	try {
 		// it's parsed as a string by body-parser
-		athleticsPeriod = parseInt(req.body.athleticsPeriod);
+		athleticsPeriod = parseInt(period);
 	} catch (e) {
-		athleticsPeriod = req.body.athleticsPeriod;
+		athleticsPeriod = period;
 	}
 	athleticsPeriod = (typeof athleticsPeriod === "number" && athleticsPeriod >= 1 && athleticsPeriod <= 9) ? athleticsPeriod : -1;
 	return athleticsPeriod;
