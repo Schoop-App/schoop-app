@@ -18,6 +18,17 @@ const INTERNAL_SERVER_ERROR_RESPONSE = {
 	message: "Internal Server Error"
 };
 
+const parseAthleticsPeriod = athleticsPeriod => {
+	try {
+		// it's parsed as a string by body-parser
+		athleticsPeriod = parseInt(req.body.athleticsPeriod);
+	} catch (e) {
+		athleticsPeriod = req.body.athleticsPeriod;
+	}
+	athleticsPeriod = (typeof athleticsPeriod === "number" && athleticsPeriod >= 1 && athleticsPeriod <= 9) ? athleticsPeriod : -1;
+	return athleticsPeriod;
+};
+
 /* API ROUTES */
 module.exports = imports => {
 	const Sentry = imports.Sentry;
@@ -53,15 +64,8 @@ module.exports = imports => {
 		let studentSetupState = await db.studentDidSetup(req.user.id);
 		if (studentSetupState === 0) {
 			// DID NOT SET UP
-			let athleticsPeriod;
-			try {
-				// it's parsed as a string by body-parser
-				athleticsPeriod = parseInt(req.body.athleticsPeriod);
-			} catch (e) {
-				athleticsPeriod = req.body.athleticsPeriod;
-			}
-			// this may not even be necessary but I wanted to do some quality control
-			athleticsPeriod = (typeof athleticsPeriod === "number" && athleticsPeriod >= 1 && athleticsPeriod <= 9) ? athleticsPeriod : -1;
+			let athleticsPeriod = parseAthleticsPeriod(req.body.athleticsPeriod);
+			// this may not even be necessary but I wanted to do some quality control11
 			let studentDivision = getDivision(req.body.studentGrade) || req.body.studentDivision;
 			let studentPeriods = PERIODS[studentDivision];
 			try {
@@ -171,6 +175,7 @@ module.exports = imports => {
 		try {
 			await db.updateClasses(req.user.id, req.body.classes);
 			await db.setSeminarZoomLink(req.user.id, req.body.seminarZoomLink);
+			await db.setAthleticsPeriod(req.user.id, parseAthleticsPeriod(req.body.athleticsPeriod || -1));
 			res.status(200).send({
 				status: "ok"
 			});

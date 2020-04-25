@@ -4,6 +4,14 @@
 		let prefix = (period === "SEMINAR") ? "" : "P";
 		return document.getElementsByName(`${type}_${prefix}${period}`)[0] || null;
 	};
+	const getSelectedAthleticsRadio = () => {
+		let elems = document.querySelectorAll(`input[name="athleticsPeriod"]`);
+		for (let i = 0; i < elems.length; i++) {
+			if (elems[i].checked)
+				return parseInt(elems[i].getAttribute("data-period"));
+		}
+		return -1;
+	};
 	const updateClasses = async () => {
 		let periods = DIVISION_PERIODS[STUDENT_DIVISION];
 		let currentPeriod, classNameElement, classLinkElement;
@@ -21,6 +29,7 @@
 			});
 		}
 		let updateClassesRes = await postJSON("/update_classes", {
+			athleticsPeriod: getSelectedAthleticsRadio(),
 			classes: updatedClassesJson,
 			seminarZoomLink: getClassTableElement("zoomLink", "SEMINAR").value
 		}); // send it off to server

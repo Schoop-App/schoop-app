@@ -189,6 +189,12 @@ module.exports = imports => {
 		}
 		await deleteClassesBoundForDeletion(studentId); // now tht new classes are in the DB, delete classes previosuly marked for deletion
 	};
+	const setAthleticsPeriod = async (studentId, athleticsPeriod) => {
+		if (athleticsPeriod !== -1 && athleticsPeriod >= 1 && athleticsPeriod <= 9) {
+			await dbConnAsync.query(`UPDATE classes SET is_athletics=0 WHERE student_oauth_id=${dbConn.escape(studentId)}`);
+			await dbConnAsync.query(`UPDATE classes SET is_athletics=1 WHERE student_oauth_id=${dbConn.escape(studentId)} AND period_number=${dbConn.escape(athleticsPeriod)}`);
+		}
+	};
 	const updateClassesNew = async (studentId, classesJson) => {
 		let classesInfoQuerySql = `SELECT class_id, period_number FROM classes WHERE student_oauth_id=${dbConn.escape(studentId)}`;
 		let classesInfoQuery = await dbConnAsync.query(classesInfoQuerySql);
@@ -242,6 +248,7 @@ module.exports = imports => {
 		setStudentWantsDailyEmail,
 		setSetupState,
 		// updateClasses,
+		setAthleticsPeriod,
 		updateClasses: updateClassesNew, // NEW FUNCTION TO UPDATE. DOES NOT OVERWRITE, SO IDS ARE PRESERVED
 		deleteAccount
 	};
