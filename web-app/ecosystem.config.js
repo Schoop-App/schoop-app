@@ -22,6 +22,7 @@ module.exports = {
       SCHOOP_HOST: "http://localhost:3060"
     },
     env_production: {
+      SCHOOP_HOST: "https://schoop.app",
       NODE_ENV: 'production',
       SCHOOP_PORT: 3000,
       DATABASE_CERT_PATH: `${PRIVATE_CONFIG.server.server_home_path}/ca-certificate.crt`,

@@ -53,7 +53,13 @@ module.exports = imports => {
 		let studentSetupState = await db.studentDidSetup(req.user.id);
 		if (studentSetupState === 0) {
 			// DID NOT SET UP
-			let athleticsPeriod = req.body.athleticsPeriod;
+			let athleticsPeriod;
+			try {
+				// it's parsed as a string by body-parser
+				athleticsPeriod = parseInt(req.body.athleticsPeriod);
+			} catch (e) {
+				athleticsPeriod = req.body.athleticsPeriod;
+			}
 			// this may not even be necessary but I wanted to do some quality control
 			athleticsPeriod = (typeof athleticsPeriod === "number" && athleticsPeriod >= 1 && athleticsPeriod <= 9) ? athleticsPeriod : -1;
 			let studentDivision = getDivision(req.body.studentGrade) || req.body.studentDivision;
