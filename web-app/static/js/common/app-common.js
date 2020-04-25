@@ -176,14 +176,13 @@ const getClasses = async () => {
 	return classes;
 };
 
-let USER_CHOICE_DIALOG;
 (window => {
 	let SHOWING_COMMUNICATION_ERROR_DIALOG = false;
 
 	const showCommunicationErrorDialog = async (title, message) => {
 		if (!SHOWING_COMMUNICATION_ERROR_DIALOG) {
 			SHOWING_COMMUNICATION_ERROR_DIALOG = true;
-			window.USER_CHOICE_DIALOG = await Swal.fire({
+			let userChoice = await Swal.fire({
 				title: "Error - " + title,
 				text: message,
 				icon: "error",
@@ -193,11 +192,11 @@ let USER_CHOICE_DIALOG;
 				reverseButtons: true
 			});
 			SHOWING_COMMUNICATION_ERROR_DIALOG = false;
-			if (window.USER_CHOICE_DIALOG.value) window.location.reload();
+			if (userChoice.value) window.location.reload();
 		}
 	};
 	const hideCommunicationErrorDialog = () => {
-		try { window.USER_CHOICE_DIALOG.close(); } catch (e) {console.error(e);}
+		swal.close();
 		if (!SHOWING_COMMUNICATION_ERROR_DIALOG) SHOWING_COMMUNICATION_ERROR_DIALOG = false;
 	};
 
