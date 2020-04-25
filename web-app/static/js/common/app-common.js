@@ -197,7 +197,7 @@ const getClasses = async () => {
 		}
 	};
 	const hideCommunicationErrorDialog = () => {
-		try { userChoice.close(); } catch (e) {}
+		try { userChoice.close(); } catch (e) {console.error(e);}
 		if (!SHOWING_COMMUNICATION_ERROR_DIALOG) SHOWING_COMMUNICATION_ERROR_DIALOG = false;
 	};
 
