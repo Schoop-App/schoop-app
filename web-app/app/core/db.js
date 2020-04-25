@@ -116,14 +116,15 @@ module.exports = imports => {
 		return query;
 	};
 
-	const addClass = async (studentId, periodNumber, className, zoomLink) => {
+	const addClass = async (studentId, periodNumber, className, zoomLink, isAthletics = 0) => {
 		let classId = shortid.generate(); // unique identifier for class
 		let query = await dbInsertQueryGeneric("classes", {
 			student_oauth_id: studentId,
 			class_id: classId,
 			period_number: periodNumber,
 			class_name: className,
-			zoom_link: zoomLink
+			zoom_link: zoomLink,
+			is_athletics: isAthletics
 		});
 		return query;
 	};

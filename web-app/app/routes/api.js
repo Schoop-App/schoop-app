@@ -53,19 +53,21 @@ module.exports = imports => {
 		let studentSetupState = await db.studentDidSetup(req.user.id);
 		if (studentSetupState === 0) {
 			// DID NOT SET UP
-			// let studentGradYear = gradeToGradYear(parseInt(req.body.studentGrade));
+			let athleticsPeriod = req.body.athleticsPeriod;
+			// this may not even be necessary but I wanted to do some quality control
+			athleticsPeriod = (typeof athleticsPeriod === "number" && athleticsPeriod >= 1 && athleticsPeriod <= 9) ? athleticsPeriod : -1;
 			let studentDivision = getDivision(req.body.studentGrade) || req.body.studentDivision;
 			let studentPeriods = PERIODS[studentDivision];
 			try {
-				let periodNumber, className, zoomLink;
+				let periodNumber, className, zoomLink, isAthletics;
 				//for (const periodNumber in studentPeriods) {
 				for (let i = 0; i < studentPeriods.length; i++) {
 					periodNumber = studentPeriods[i];
 					className = req.body[`className_P${periodNumber}`].trim();
 					zoomLink = req.body[`zoomLink_P${periodNumber}`].trim();
-					// if (!(className === "" && zoomLink === ""))
+					isAthletics = periodNumber === athleticsPeriod;
 					if (className !== "" || zoomLink !== "") // DeMorgan's Law coming in handy ;)
-						db.addClass(req.user.id, periodNumber, className, zoomLink);
+						db.addClass(req.user.id, periodNumber, className, zoomLink, isAthletics);
 				}
 
 				// *** Setting graduation year
@@ -148,12 +150,15 @@ module.exports = imports => {
 		"#EE9DC2",
 		"#60B2A1"
 	])); // for now......... Maybe I should store this in a file or in Redis. We will see...
-	// misc:
-	router.get("/me", accessProtectionMiddleware, endpointNoCacheMiddleware, async (req, res) => {
-		let studentInfo = await db.getStudentInfo(req.user.id);
-		res.status(200).send(studentInfo);
-	});
-	router.get("/me_session", accessProtectionMiddleware, endpointNoCacheMiddleware, (req, res) => res.status(200).send(req.user));
+	
+	// misc (NOT for production):
+	if (typeof process.env.NODE_ENV !== "undefined" && process.env.NODE_ENV !== "production") {
+		router.get("/me", accessProtectionMiddleware, endpointNoCacheMiddleware, async (req, res) => {
+			let studentInfo = await db.getStudentInfo(req.user.id);
+			res.status(200).send(studentInfo);
+		});
+		router.get("/me_session", accessProtectionMiddleware, endpointNoCacheMiddleware, (req, res) => res.status(200).send(req.user));
+	}
 
 	// USER PAGE APIs (for now, that's just for updating classes and deleting account)
 	router.post("/update_classes", accessProtectionMiddleware, jsonParser, async (req, res) => {
