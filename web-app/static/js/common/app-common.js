@@ -177,11 +177,11 @@ const getClasses = async () => {
 };
 
 (window => {
-	let SHOWING_LOST_COMMUNICATION_DIALOG = false;
+	let SHOWING_COMMUNICATION_ERROR_DIALOG = false;
 
 	const showCommunicationErrorDialog = async (title, message) => {
-		if (!SHOWING_LOST_COMMUNICATION_DIALOG) {
-			SHOWING_LOST_COMMUNICATION_DIALOG = true;
+		if (!SHOWING_COMMUNICATION_ERROR_DIALOG) {
+			SHOWING_COMMUNICATION_ERROR_DIALOG = true;
 			let userChoice = await Swal.fire({
 				title: "Error - " + title,
 				text: message,
@@ -191,7 +191,7 @@ const getClasses = async () => {
 				showCancelButton: true,
 				reverseButtons: true
 			});
-			SHOWING_LOST_COMMUNICATION_DIALOG = false;
+			SHOWING_COMMUNICATION_ERROR_DIALOG = false;
 			if (userChoice.value) window.location.reload();
 		}
 	};
@@ -212,6 +212,7 @@ const getClasses = async () => {
 					window.location.href = "/login?expired=1";
 				}
 			}
+			if (!SHOWING_COMMUNICATION_ERROR_DIALOG) SHOWING_COMMUNICATION_ERROR_DIALOG = false;
 			return json;
 		} catch (e) {
 			// window.location.href = "/";
@@ -231,6 +232,7 @@ const getClasses = async () => {
 				body: JSON.stringify(sendBody)
 			});
 			let res = await req.json();
+			if (!SHOWING_COMMUNICATION_ERROR_DIALOG) SHOWING_COMMUNICATION_ERROR_DIALOG = false;
 			return res;
 		} catch (e) {
 			// I may need to put something else here. But this will work for now...
