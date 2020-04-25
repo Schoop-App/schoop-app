@@ -216,7 +216,7 @@ const getClasses = async () => {
 					window.location.href = "/login?expired=1";
 				}
 			}
-			hideCommunicationErrorDialog();
+			// hideCommunicationErrorDialog();
 			return json;
 		} catch (e) {
 			// window.location.href = "/";
@@ -236,7 +236,7 @@ const getClasses = async () => {
 				body: JSON.stringify(sendBody)
 			});
 			let res = await req.json();
-			hideCommunicationErrorDialog();
+			// hideCommunicationErrorDialog();
 			return res;
 		} catch (e) {
 			// I may need to put something else here. But this will work for now...
