@@ -327,7 +327,7 @@ const SCHOOP_REDIRECT_REF = "dashboard";
 	window.handleAutorunRefresh = handleAutorunRefresh;
 
 	const onPageReady = async (shouldRefreshAll=true) => {
-		localStorage.clear();
+		// localStorage.clear();
 		// let twitterHasLoaded = false;
 		// let allOtherReqsHaveLoaded = false;
 		// showLoadingOverlay();
@@ -368,6 +368,7 @@ const SCHOOP_REDIRECT_REF = "dashboard";
 	// window.renderPage = onPageReady; // for refresh
 
 	document.addEventListener("DOMContentLoaded", async () => {
+		localStorage.clear();
 		window.addEventListener("focus", () => handleAutorunRefresh(dateState)); // because silly browsers can't be trusted
 		await onPageReady(); // General page init/refresh instructions
 		// MOBX STATE STUFF
