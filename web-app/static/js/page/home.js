@@ -43,7 +43,7 @@ const SCHOOP_REDIRECT_REF = "dashboard";
 			localStorage.setItem("classColors", JSON.stringify(colors));
 			return colors;
 		} else {
-			return localStorage.getItem("classColors");
+			return JSON.parse(localStorage.getItem("classColors"));
 		}
 	};
 
@@ -53,7 +53,7 @@ const SCHOOP_REDIRECT_REF = "dashboard";
 			localStorage.setItem("qotd", JSON.stringify(qotd));
 			return qotd;
 		} else {
-			return localStorage.getItem("qotd");
+			return JSON.parse(localStorage.getItem("qotd"));
 		}
 	};
 
