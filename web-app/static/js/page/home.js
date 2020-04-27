@@ -40,7 +40,7 @@ const SCHOOP_REDIRECT_REF = "dashboard";
 	const getClassColors = async (forceUpdate=false) => {
 		if (forceUpdate) {
 			let colors = await getJSON("/class_colors?" + Date.now());
-			localStorage.setItem("studentClassList", JSON.stringify(colors));
+			localStorage.setItem("classColors", JSON.stringify(colors));
 			return colors;
 		} else {
 			return localStorage.getItem("classColors");
@@ -327,6 +327,7 @@ const SCHOOP_REDIRECT_REF = "dashboard";
 	window.handleAutorunRefresh = handleAutorunRefresh;
 
 	const onPageReady = async (shouldRefreshAll=true) => {
+		localStorage.clear();
 		// let twitterHasLoaded = false;
 		// let allOtherReqsHaveLoaded = false;
 		// showLoadingOverlay();
