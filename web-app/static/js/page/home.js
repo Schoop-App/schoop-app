@@ -25,32 +25,47 @@ const SCHOOP_REDIRECT_REF = "dashboard";
 
 	// INIT STATE
 	let dateState = {
-		currentDate: initialDate
+		currentDate: initialDate,
 		// previousDate: new Date(initialDate) // copying it
+		lastRefreshedDate: initialDate
 	};
 	let appState = mobx.observable({
 		time: initialDate.getTime()
+		// timeLastRefreshed: initialDate.getTime()
 	});
 
-	const getClassColors = async () => {
-		let colors = await getJSON("/class_colors");
-		return colors;
+	// for dates
+	let isMidnightHrsMinsOnly = d => d.getHours() === 0 && d.getMinutes() === 0;
+
+	const getClassColors = async (forceUpdate=false) => {
+		if (forceUpdate) {
+			let colors = await getJSON("/class_colors?" + Date.now());
+			localStorage.setItem("studentClassList", JSON.stringify(colors));
+			return colors;
+		} else {
+			return localStorage.getItem("classColors");
+		}
 	};
 
-	const getQotd = async () => {
-		let qotd = await getJSON("/qotd");
-		return qotd;
+	const getClassColors = async (forceUpdate=false) => {
+		if (forceUpdate) {
+			let colors = await getJSON("/class_colors?" + Date.now());
+			localStorage.setItem("studentClassList", JSON.stringify(colors));
+			return colors;
+		} else {
+			return localStorage.getItem("classColors");
+		}
 	};
 
 	let SCHEDULE_TEMPLATES = [];
-	const getScheduleTemplate = async (division, givenDate) => {
+	const getScheduleTemplate = async (division, givenDate, forceUpdate=false) => {
 		// let schedule = await getJSON(`/schedule?division=${division}&time=${Date.now()}`);
 		let daySymbol = DAYS_FOR_SCHEDULE_TEMPLATE[givenDate.getDay()]; // MON, TUE, WED, etc.
 		let scheduleTemplatesKeyName = `${daySymbol}_${division}`;
 
-		if (typeof SCHEDULE_TEMPLATES[scheduleTemplatesKeyName] === "undefined") {
+		if (typeof SCHEDULE_TEMPLATES[scheduleTemplatesKeyName] === "undefined" || forceUpdate) {
 			// let schedule = await getJSON(`http://localhost:3001/${division}/${daySymbol}.json`, true);
-			let schedule = await getJSON(`/schedule/${division}/${daySymbol}`);
+			let schedule = await getJSON(`/schedule/${division}/${daySymbol}?${Date.now()}`);
 			SCHEDULE_TEMPLATES[scheduleTemplatesKeyName] = schedule; // for in-memory cache ;)
 			return schedule;
 		} else {
@@ -303,7 +318,13 @@ const SCHOOP_REDIRECT_REF = "dashboard";
 
 	// window.addEventListener("twitterReady", () => console.log("twitter load"));
 
-	const onPageReady = async (/*CANCEL_API_REQS = false*/) => {
+	// takes dates (i.e. current and last refreshed but for testing could be anything) and checks whether it should refresh all (API requests)
+	const handleAutorunRefresh = async date => {
+		let shouldRefreshAll = isMidnightHrsMinsOnly(date.currentDate) || new Date().getDate() !== date.lastRefreshedDate.getDate();
+		await onPageReady(shouldRefreshAll);
+	};
+
+	const onPageReady = async (shouldRefreshAll=true) => {
 		// let twitterHasLoaded = false;
 		// let allOtherReqsHaveLoaded = false;
 		// showLoadingOverlay();
@@ -317,12 +338,12 @@ const SCHOOP_REDIRECT_REF = "dashboard";
 		initialDate = new Date();
 		// if (!(typeof CANCEL_API_REQS !== "undefined" && CANCEL_API_REQS)) {
 		// if it is okay to do API requests
-		let template = await getScheduleTemplate(window.STUDENT_DIVISION || STUDENT_DIVISION, initialDate);
-		let classes = await getClasses();
-		let userSchedule = buildUserSchedule(template, classes); // built-out schedule
+		let template = await getScheduleTemplate(window.STUDENT_DIVISION || STUDENT_DIVISION, initialDate, shouldRefreshAll);
+		let classes = await getClasses(shouldRefreshAll);
+		let userSchedule = buildUserSchedule(template, classes, shouldRefreshAll); // built-out schedule
 		// console.log("USER SCHEDULE (debug): ", JSON.stringify(userSchedule, null, 4));
 
-		let classColors = await getClassColors(); // colors for the **periods** in other words
+		let classColors = await getClassColors(shouldRefreshAll); // colors for the **periods** in other words
 		// console.log(classColors);
 		let scheduleHtml = buildAllScheduleItemsHTML(userSchedule, classColors);
 		document.querySelector("table.today-schedule tbody").innerHTML = scheduleHtml;
@@ -330,7 +351,7 @@ const SCHOOP_REDIRECT_REF = "dashboard";
 		// MISSION CONTROL (Your Schoop)
 		populateMissionControlStatus(initialDate, userSchedule);
 
-		let qotd = await getQotd();
+		let qotd = await getQotd(shouldRefreshAll);
 		document.querySelector(".quote-content span").innerText = qotd.content;
 		document.querySelector(".quote-author span").innerText = qotd.author;
 		// }
@@ -344,19 +365,13 @@ const SCHOOP_REDIRECT_REF = "dashboard";
 	// window.renderPage = onPageReady; // for refresh
 
 	document.addEventListener("DOMContentLoaded", async () => {
-		window.addEventListener("focus", onPageReady); // because silly browsers can't be trusted
+		window.addEventListener("focus", ()onPageReady); // because silly browsers can't be trusted
 		await onPageReady(); // General page init/refresh instructions. This function is also called every minute by mobx state manager
 		// MOBX STATE STUFF
 		mobx.autorun(() => {
 			// dateState.previousDate = dateState.currentDate;
 			dateState.currentDate = new Date(appState.time);
-			// console.log(dateState.currentDate.getTime() - dateState.previousDate.getTime());
-
-			if (dateState.currentDate.getSeconds() === 0) {
-				// TODO: make this more efficient. Calls on the server every minute just to "make sure," but this could become a bandwidth-heavy practice.
-				// onPageReady(true); // no need for await. also says don't do reqs
-				onPageReady(); // no need for await
-			}
+			handleAutorunRefresh(dateState);
 		});
 		setIntervalAdjusted(() => { appState.time = Date.now(); }, 1000);
 	});

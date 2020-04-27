@@ -111,7 +111,7 @@
 		}
 
 		showEntryTableForGrade(STUDENT_GRADE, async (a, b, c) => {
-			let userClasses = await getClasses();
+			let userClasses = await getClasses(true); // force fresh pull
 			populateClassesTable(userClasses, SEMINAR_ZOOM_LINK);
 			hideLoadingOverlay();
 		}, true); // NO LONGER empty function (maybe find a better way to express this)

@@ -171,9 +171,14 @@ const selectActivePageLink = () => {
 
 // GETTER METHODS
 // Okay, does this need to be a method?
-const getClasses = async () => {
-	let classes = await getJSON("/classes");
-	return classes;
+const getClasses = async (forceUpdate=false) => {
+	if (forceUpdate) {
+		let classes = await getJSON("/classes?" + Date.now());
+		localStorage.setItem("studentClassList", JSON.stringify(classes));
+		return classes;
+	} else {
+		return localStorage.getItem("studentClassList");
+	}
 };
 
 const fixAllLinksForStandalone = () => {
