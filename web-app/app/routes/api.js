@@ -50,14 +50,6 @@ module.exports = imports => {
 	router.use("/auth", require("./auth")({ Sentry, passport, logger, db })); // hee hee
 	router.use("/mutate", require("./mutate")({ Sentry, db, accessProtectionMiddleware }));
 
-	// protected endpoint test
-	// router.get("/test_login", accessProtectionMiddleware, (req, res) => {
-	// 	res.status(200).send({
-	// 		message: "You are authenticated. Welcome to this protected endpoint!",
-	// 		userInfo: req.user
-	// 	});
-	// });
-
 	// PROTECTED ENDPOINTS
 	// setup
 	router.post("/classes", accessProtectionMiddleware, urlencodedParser, async (req, res) => {
