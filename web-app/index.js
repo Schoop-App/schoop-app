@@ -132,13 +132,16 @@ dbConn.connect(async err => {
 
 	// default includes (maybe change location of this? idk)
 	app.use(async (req, res, next) => {
-		let studentHasSeenOnboarding = await db.studentHasSeenOnboarding(req.user.id);
-		req.includeDefaults = {
+		let includeDefaults = {
 			divisionPeriods,
 			divisionOptions,
-			studentHasSeenOnboarding: Boolean(studentHasSeenOnboarding),
 			appHost: SCHOOP_HOST
 		};
+		if (typeof req.user.id === "string") {
+			let studentHasSeenOnboarding = await db.studentHasSeenOnboarding(req.user.id);
+			includeDefaults.studentHasSeenOnboarding = Boolean(studentHasSeenOnboarding);
+		}
+		req.includeDefaults = includeDefaults;
 		next();
 	});
 
