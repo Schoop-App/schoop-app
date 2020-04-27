@@ -137,7 +137,7 @@ dbConn.connect(async err => {
 			divisionOptions,
 			appHost: SCHOOP_HOST
 		};
-		if (typeof req.user.id === "string") {
+		if (typeof req.user !== "undefined" && typeof req.user.id === "string") {
 			let studentHasSeenOnboarding = await db.studentHasSeenOnboarding(req.user.id);
 			includeDefaults.studentHasSeenOnboarding = Boolean(studentHasSeenOnboarding);
 		}
