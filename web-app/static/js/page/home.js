@@ -47,13 +47,13 @@ const SCHOOP_REDIRECT_REF = "dashboard";
 		}
 	};
 
-	const getClassColors = async (forceUpdate=false) => {
+	const getQotd = async (forceUpdate=false) => {
 		if (forceUpdate) {
-			let colors = await getJSON("/class_colors?" + Date.now());
-			localStorage.setItem("studentClassList", JSON.stringify(colors));
-			return colors;
+			let qotd = await getJSON("/class_colors?" + Date.now());
+			localStorage.setItem("qotd", JSON.stringify(colors));
+			return qotd;
 		} else {
-			return localStorage.getItem("classColors");
+			return localStorage.getItem("qotd");
 		}
 	};
 
