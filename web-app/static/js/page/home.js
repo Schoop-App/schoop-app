@@ -322,7 +322,9 @@ const SCHOOP_REDIRECT_REF = "dashboard";
 	const handleAutorunRefresh = async date => {
 		let shouldRefreshAll = isMidnightHrsMinsOnly(date.currentDate) || new Date().getDate() !== date.lastRefreshedDate.getDate();
 		await onPageReady(shouldRefreshAll);
+		dateState.lastRefreshedDate = new Date();
 	};
+	window.handleAutorunRefresh = handleAutorunRefresh;
 
 	const onPageReady = async (shouldRefreshAll=true) => {
 		// let twitterHasLoaded = false;
@@ -365,8 +367,8 @@ const SCHOOP_REDIRECT_REF = "dashboard";
 	// window.renderPage = onPageReady; // for refresh
 
 	document.addEventListener("DOMContentLoaded", async () => {
-		window.addEventListener("focus", ()onPageReady); // because silly browsers can't be trusted
-		await onPageReady(); // General page init/refresh instructions. This function is also called every minute by mobx state manager
+		window.addEventListener("focus", () => handleAutorunRefresh(dateState)); // because silly browsers can't be trusted
+		await onPageReady(); // General page init/refresh instructions
 		// MOBX STATE STUFF
 		mobx.autorun(() => {
 			// dateState.previousDate = dateState.currentDate;
