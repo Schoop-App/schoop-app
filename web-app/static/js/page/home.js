@@ -49,7 +49,7 @@ const SCHOOP_REDIRECT_REF = "dashboard";
 
 	const getQotd = async (forceUpdate=false) => {
 		if (forceUpdate) {
-			let qotd = await getJSON("/class_colors?" + Date.now());
+			let qotd = await getJSON("/qotd?" + Date.now());
 			localStorage.setItem("qotd", JSON.stringify(qotd));
 			return qotd;
 		} else {

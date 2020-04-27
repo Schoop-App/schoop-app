@@ -177,7 +177,7 @@ const getClasses = async (forceUpdate=false) => {
 		localStorage.setItem("studentClassList", JSON.stringify(classes));
 		return classes;
 	} else {
-		return localStorage.getItem("studentClassList");
+		return JSON.parse(localStorage.getItem("studentClassList"));
 	}
 };
 
