@@ -209,6 +209,16 @@ module.exports = imports => {
 		}
 	});
 
+	// ONBOARDING
+	router.post("/student_has_seen_onboarding", async (req, res) => {
+		try {
+			await db.setStudentHasSeenOnboarding(req.user.id, 1);
+			res.status(200).send({ status: "ok" });
+		} catch (e) {
+			res.status(500).send(INTERNAL_SERVER_ERROR_RESPONSE);
+		}
+	});
+
 	// routes here
 
 	return router;

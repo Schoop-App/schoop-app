@@ -20,6 +20,11 @@ module.exports = imports => {
 		let query = await dbConnAsync.query(`SELECT * FROM students WHERE google_oauth_id = ${dbConn.escape(studentId)}`);
 		return query.results[0];
 	};
+	const studentHasSeenOnboarding = async studentId => {
+		// gets onboarding state
+		let query = await dbConnAsync.query(`SELECT has_seen_onboarding FROM students WHERE google_oauth_id = ${dbConn.escape(studentId)}`);
+		return query.results[0].has_seen_onboarding;
+	};
 	const studentDidSetup = async studentId => {
 		let query = await dbConnAsync.query(`SELECT student_did_setup FROM students where google_oauth_id = ${dbConn.escape(studentId)}`);
 		//console.log(query.results[0].student_did_setup);
@@ -151,15 +156,17 @@ module.exports = imports => {
 	const setStudentConsentedToEmail = async (studentId, newState) => await dbUpdateQueryGeneric("students", "did_consent_to_email", "google_oauth_id", studentId, newState);
 	// sets value for user wanting daily email (if they do)
 	const setStudentWantsDailyEmail = async (studentId, newState) => await dbUpdateQueryGeneric("students", "wants_daily_email", "google_oauth_id", studentId, newState);
+	const setStudentHasSeenOnboarding = async (studentId, newState) => await dbUpdateQueryGeneric("students", "has_seen_onboarding", "google_oauth_id", studentId, newState);
 
 	const setSetupState = async (studentId, setupState) => {
 		if (setupState === 0 || setupState === 1) {
 			let querySql = `UPDATE students SET student_did_setup=${dbConn.escape(setupState)} WHERE google_oauth_id = ${dbConn.escape(studentId)}`;
 			let query = await dbConnAsync.query(querySql);
 		} else {
-			throw new Error(`Invalid setup state provided (given ${setupState}`);
+			throw new Error(`Invalid setup state provided (given ${setupState})`);
 		}
 	};
+
 
 	// ***HELPER*** - mark classes bound for deletion
 	const markClassesBoundForDeletion = async studentId => {
@@ -235,6 +242,7 @@ module.exports = imports => {
 	return {
 		doesStudentExist,
 		getStudentInfo,
+		studentHasSeenOnboarding,
 		studentDidSetup,
 		getClasses,
 		getClassesByStudentEmail,
@@ -246,6 +254,7 @@ module.exports = imports => {
 		setStudentGradYear,
 		setStudentConsentedToEmail,
 		setStudentWantsDailyEmail,
+		setStudentHasSeenOnboarding,
 		setSetupState,
 		// updateClasses,
 		setAthleticsPeriod,

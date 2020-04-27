@@ -131,10 +131,12 @@ dbConn.connect(async err => {
 	app.use("/s", require("./app/routes/short-link")({ Sentry, db }));
 
 	// default includes (maybe change location of this? idk)
-	app.use((req, res, next) => {
+	app.use(async (req, res, next) => {
+		let studentHasSeenOnboarding = await db.studentHasSeenOnboarding(req.user.id);
 		req.includeDefaults = {
 			divisionPeriods,
 			divisionOptions,
+			studentHasSeenOnboarding: Boolean(studentHasSeenOnboarding),
 			appHost: SCHOOP_HOST
 		};
 		next();

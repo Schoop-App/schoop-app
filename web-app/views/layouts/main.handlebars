@@ -35,6 +35,7 @@
 		var DIVISION_PERIODS = {{{defaults.divisionPeriods}}};
 
 		// user-specific
+		var STUDENT_HAS_SEEN_ONBOARDING = {{{defaults.studentHasSeenOnboarding}}};
 		var STUDENT_GRADE = {{{studentGrade}}};
 		var STUDENT_DIVISION = "{{{studentDivision}}}";
 		var STUDENT_FIRST_NAME = "{{{studentInfo.first_name}}}";
@@ -44,6 +45,7 @@
 		Sentry.configureScope(function (scope) {
 			scope.setExtra("student_grade", STUDENT_GRADE);
 			scope.setExtra("student_division", STUDENT_DIVISION);
+			scope.setExtra("student_has_seen_onboarding", STUDENT_HAS_SEEN_ONBOARDING);
 		});
 	</script>
 

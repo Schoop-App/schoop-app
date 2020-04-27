@@ -241,16 +241,19 @@ const fixAllLinksForStandalone = () => {
 		}
 	};
 
-	const postJSON = async (path, sendBody) => {
+	const postJSON = async (path, sendBody = null) => {
 		try {
-			let req = await fetch((API_HOST || "/api") + path, {
+			let reqConfig = {
 				method: "POST",
 				headers: {
 					"Accept": "application/json",
 					"Content-Type": "application/json"
 				},
-				body: JSON.stringify(sendBody)
-			});
+			};
+			if (sendBody !== null) {
+				reqConfig.body = JSON.stringify(sendBody);
+			}
+			let req = await fetch((API_HOST || "/api") + path, reqConfig);
 			let res = await req.json();
 			// hideCommunicationErrorDialog();
 			return res;
@@ -282,4 +285,15 @@ document.addEventListener("DOMContentLoaded", async () => {
 	}
 
 	document.querySelector(".user-btn.btn-logout").addEventListener("click", logOutUser);
+
+	if (typeof STUDENT_HAS_SEEN_ONBOARDING !== "undefined" && !STUDENT_HAS_SEEN_ONBOARDING) {
+		// This is naaaaasty! Sorry!
+		// I will come fix this later.
+		// Also, that's a heck of a long id for a checkbox...
+		let onboardingDialog = await Swal.fire({
+			title: "Welcome!",
+			html: "<div style=\"text-align:left;overflow:visible;\"><p>Welcome to Schoop! We hope that you find this app useful in organizing yourself during virtual learning.</p><p>There are currently two pages of interest: <strong>home</strong> (house icon), and the <strong>profile</strong> page (person icon).</p><p>On the <strong>home page</strong>, you'll find your interactive, clickable schedule for the day as well as an indicator of what the current event is and what is up next.</p><p>On the <strong>profile page</strong>, you can edit your class list and change other preferences. You can also, if you wish, delete your account on this page.</p><p>Please reach out to us if you have any other questions. Thank you for using Schoop!</p><br><div><label for=\"userDoesNotWantToSeeOnboardingAgainCheckbox\" style=\"font-style:italic;\">Don't show this to me again&nbsp;</label><input type=\"checkbox\" id=\"userDoesNotWantToSeeOnboardingAgainCheckbox\" checked /></div></div>"
+		});
+		if (document.getElementById("userDoesNotWantToSeeOnboardingAgainCheckbox").checked) await postJSON("/student_has_seen_onboarding");
+	}
 });
