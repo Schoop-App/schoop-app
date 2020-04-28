@@ -186,7 +186,7 @@ const fixAllLinksForStandalone = () => {
 	let isInWebAppChrome = (window.matchMedia('(display-mode: standalone)').matches);
 
 	if (isInWebAppiOS || isInWebAppChrome) {
-		let links = Array.from(document.querySelectorAll("a")).filter(link => typeof link.href !== "undefined" && link.href !== "" && link.href.indexOf("javascript:") === -1);
+		let links = Array.from(document.querySelectorAll("a")).filter(link => typeof link.href !== "undefined" && link.href !== "" && && link.href !== "#" link.href.indexOf("javascript:") === -1);
 		for (let i = 0; i < links.length; i++) {
 			links[i].addEventListener("click", function (e) {
 				// regular function instead of arrow because it's not anonymous
@@ -195,6 +195,23 @@ const fixAllLinksForStandalone = () => {
 			});
 		}
 	}
+};
+
+const fixAllHashLinks = () => {
+	let hashLinks = document.querySelectorAll(`a[href="#"]`);
+	for (let i = 0; i < hashLinks.length; i++) {
+		hashLinks[i].addEventListener("click", e => e.preventDefault());
+	}
+};
+
+const showFeedbackDialog = async () => {
+	await Swal.fire({
+	    title: "Feedback",
+	    html: `<iframe src="https://docs.google.com/forms/d/e/1FAIpQLSeizoox2wrgSho0275fQCDTzHRcq6eyKcVGxMiWHqtRYbVggg/viewform?embedded=true" style="width:100%;height:70vh;border:none;" frameborder="0" marginheight="0" marginwidth="0">Loading...</iframe>`,
+	    showCloseButton: true,
+	    showConfirmButton: false,
+	    width: "80vw"
+	});
 };
 
 (window => {
@@ -284,12 +301,14 @@ document.addEventListener("DOMContentLoaded", async () => {
 	selectActivePageLink(); // highlight link of current page if it exists
 
 	try {
-		fixAllLinksForStandalone();
+		fixAllLinksForStandalone(); // fixes all links in standalone app to stay in
+		fixAllHashLinks(); // links with href="#"
 	} catch (e) {
 		console.error(e);
 	}
 
-	document.querySelector(".user-btn.btn-logout").addEventListener("click", logOutUser);
+	document.querySelector(".logout-btn").addEventListener("click", logOutUser);
+	document.querySelector(".feedback-btn").addEventListener("click", showFeedbackDialog);
 
 	if (typeof STUDENT_HAS_SEEN_ONBOARDING !== "undefined" && !STUDENT_HAS_SEEN_ONBOARDING) {
 		// This is naaaaasty! Sorry!
