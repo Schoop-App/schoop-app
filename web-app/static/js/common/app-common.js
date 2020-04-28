@@ -307,8 +307,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 		console.error(e);
 	}
 
-	document.querySelector(".logout-btn").addEventListener("click", logOutUser);
-	document.querySelector(".feedback-btn").addEventListener("click", showFeedbackDialog);
+	// document.querySelector(".logout-btn").addEventListener("click", logOutUser);
+	// document.querySelector(".feedback-btn").addEventListener("click", showFeedbackDialog);
 
 	if (typeof STUDENT_HAS_SEEN_ONBOARDING !== "undefined" && !STUDENT_HAS_SEEN_ONBOARDING) {
 		// This is naaaaasty! Sorry!
