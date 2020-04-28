@@ -206,11 +206,11 @@ const fixAllHashLinks = () => {
 
 const showFeedbackDialog = async () => {
 	await Swal.fire({
-	    title: "Feedback",
-	    html: `<iframe src="https://docs.google.com/forms/d/e/1FAIpQLSeizoox2wrgSho0275fQCDTzHRcq6eyKcVGxMiWHqtRYbVggg/viewform?embedded=true" style="width:100%;height:70vh;border:none;" frameborder="0" marginheight="0" marginwidth="0">Loading...</iframe>`,
-	    showCloseButton: true,
-	    showConfirmButton: false,
-	    width: "80vw"
+		title: "Submit Feedback",
+		html: `<div style="width:100%;text-align:center;">Having trouble viewing the form? <a href="https://docs.google.com/forms/d/e/1FAIpQLSeizoox2wrgSho0275fQCDTzHRcq6eyKcVGxMiWHqtRYbVggg/viewform" target="_blank">Open it in a new tab.</a></div><iframe src="https://docs.google.com/forms/d/e/1FAIpQLSeizoox2wrgSho0275fQCDTzHRcq6eyKcVGxMiWHqtRYbVggg/viewform?embedded=true" style="width:100%;height:70vh;border:none;" frameborder="0" marginheight="0" marginwidth="0">Loading...</iframe>`,
+		showCloseButton: true,
+		showConfirmButton: false,
+		width: "80vw"
 	});
 };
 
@@ -314,10 +314,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 		// This is naaaaasty! Sorry!
 		// I will come fix this later.
 		// Also, that's a heck of a long id for a checkbox...
-		let studentNamePart = (typeof STUDENT_FIRST_NAME !== "undefined") ? `, ${STUDENT_FIRST_NAME}` : ""
+		let studentNamePart = (typeof STUDENT_FIRST_NAME !== "undefined") ? `, ${STUDENT_FIRST_NAME}` : "";
 		let onboardingDialog = await Swal.fire({
 			title: `Welcome${studentNamePart}!`,
-			html: "<div style=\"text-align:left;overflow:visible;\"><p>Welcome to Schoop! We hope that you find this app useful in organizing yourself during virtual learning.</p><p>There are currently two pages of interest: <strong>home</strong> (house icon), and the <strong>profile</strong> page (person icon).</p><p>On the <strong>home page</strong>, you'll find your interactive, clickable schedule for the day as well as an indicator of what the current event is and what is up next.</p><p>On the <strong>profile page</strong>, you can edit your class list and change other preferences. You can also, if you wish, delete your account on this page.</p><p>Please reach out to us if you have any other questions. Thank you for using Schoop!</p><br><div><label for=\"userDoesNotWantToSeeOnboardingAgainCheckbox\" style=\"font-style:italic;\">Don't show this to me again&nbsp;</label><input type=\"checkbox\" id=\"userDoesNotWantToSeeOnboardingAgainCheckbox\" checked /></div></div>"
+			html: `<div style="text-align:left;overflow:visible;"><p>Welcome to Schoop! We hope that you find this app useful in organizing yourself during virtual learning.</p><p>There are currently two pages of interest: <strong>home</strong> (house icon), and the <strong>profile</strong> page (person icon).</p><p>On the <strong>home page</strong>, you'll find your interactive, clickable schedule for the day as well as an indicator of what the current event is and what is up next.</p><p>On the <strong>profile page</strong>, you can edit your class list and change other preferences. You can also, if you wish, delete your account on this page.</p><p><strong>If you have any feedback or concerns, feel free to click the comment icon in the top bar to do so.</strong> You will be presented with a Google Form in which you can let us know of what you think.</p><p>Please reach out to us if you have any other questions. Thank you for using Schoop!</p><div><label for="userDoesNotWantToSeeOnboardingAgainCheckbox" style="font-style:italic;">Don't show this to me again&nbsp;&nbsp;</label><input type="checkbox" id="userDoesNotWantToSeeOnboardingAgainCheckbox" checked/></div></div>`
 		});
 		if (document.getElementById("userDoesNotWantToSeeOnboardingAgainCheckbox").checked) await postJSON("/student_has_seen_onboarding");
 	}
