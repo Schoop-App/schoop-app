@@ -632,3 +632,7 @@ aside.user-settings-general-aside {
 	margin-top: 10px;
 	margin-bottom: 5px;
 }
+
+.swal2-close {
+	outline: none;
+}
