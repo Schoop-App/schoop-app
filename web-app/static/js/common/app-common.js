@@ -186,7 +186,7 @@ const fixAllLinksForStandalone = () => {
 	let isInWebAppChrome = (window.matchMedia('(display-mode: standalone)').matches);
 
 	if (isInWebAppiOS || isInWebAppChrome) {
-		let links = Array.from(document.querySelectorAll("a")).filter(link => typeof link.href !== "undefined" && link.href !== "" && && link.href !== "#" link.href.indexOf("javascript:") === -1);
+		let links = Array.from(document.querySelectorAll("a")).filter(link => typeof link.href !== "undefined" && link.href !== "" && link.href !== "#" link.href.indexOf("javascript:") === -1);
 		for (let i = 0; i < links.length; i++) {
 			links[i].addEventListener("click", function (e) {
 				// regular function instead of arrow because it's not anonymous
