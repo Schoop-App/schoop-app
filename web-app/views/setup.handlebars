@@ -15,7 +15,7 @@
 </script>
 
 	<!-- vendor script -->
-	<script src="/js/vendor.js"></script>
+	<script src="/js/vendor.js?{{defaults.jsLastRevised}}"></script>
 
 	<!-- styles -->
 	<!-- FONTS -->
@@ -90,7 +90,7 @@
 		var DIVISIONS = {{{divisionOptions}}};
 		var DIVISION_PERIODS = {{{divisionPeriods}}};
 	</script>
-	<script src="/js/common/class-entry-common.js"></script>
-	<script src="/js/page/{{{pageJS}}}.js" defer></script>
+	<script src="/js/common/class-entry-common.js?{{defaults.jsLastRevised}}"></script>
+	<script src="/js/page/{{{pageJS}}}.js?{{defaults.jsLastRevised}}" defer></script>
 </body>
 </html>

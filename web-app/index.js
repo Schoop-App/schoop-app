@@ -12,7 +12,7 @@ const SCHOOP_HOST = process.env.SCHOOP_HOST || "https://schoop.app";
 const PORT = process.env.SCHOOP_PORT || 3060;
 
 const fs = require("fs");
-const path = require("path")
+const path = require("path");
 
 const express = require("express");
 const redis = require("redis");
@@ -49,6 +49,13 @@ const dbConn = mysql.createConnection({
 		ca: fs.readFileSync(process.env.DATABASE_CERT_PATH)
 	}
 });
+
+let JS_LAST_REVISED;
+try {
+	JS_LAST_REVISED = parseInt(fs.readFileSync(path.join(__dirname, "/JS_LAST_REVISED.txt")).toString());
+} catch (e) {
+	JS_LAST_REVISED = Date.now();
+}
 
 logger.log("Connecting to database...");
 dbConn.connect(async err => {
@@ -135,7 +142,8 @@ dbConn.connect(async err => {
 		let includeDefaults = {
 			divisionPeriods,
 			divisionOptions,
-			appHost: SCHOOP_HOST
+			appHost: SCHOOP_HOST,
+			jsLastRevised: JS_LAST_REVISED
 		};
 		if (typeof req.user !== "undefined" && typeof req.user.id === "string") {
 			let studentHasSeenOnboarding = await db.studentHasSeenOnboarding(req.user.id);
@@ -152,7 +160,8 @@ dbConn.connect(async err => {
 		let redirectString = (typeof req.query.redirect === "undefined") ? "" : `?redirect=${encodeURIComponent(req.query.redirect)}`;
 		res.status(200).render("login", {
 			layout: false,
-			redirectString
+			redirectString,
+			defaults: req.includeDefaults
 		});
 	});
 
@@ -161,7 +170,8 @@ dbConn.connect(async err => {
 		layout: false,
 		divisionPeriods,
 		divisionOptions,
-		pageJS: "class-entry"
+		pageJS: "class-entry",
+		defaults: req.includeDefaults
 	}));
 	app.get("/home", homeAuthCheck, async (req, res) => {
 		let studentInfo = await db.getStudentInfo(req.user.id);

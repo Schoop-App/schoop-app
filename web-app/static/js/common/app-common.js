@@ -204,6 +204,13 @@ const fixAllHashLinks = () => {
 	}
 };
 
+const fixAllNavLiElemLinks = () => {
+	let liElems = document.querySelectorAll("ul.nav-btns-inner li");
+	for (let i = 0; i < liElems.length; i++) {
+		liElems[i].addEventListener("click", function (e) { this.children[0].click() });
+	}
+}
+
 const showFeedbackDialog = async () => {
 	await Swal.fire({
 		title: "Submit Feedback",
@@ -303,6 +310,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 	try {
 		fixAllLinksForStandalone(); // fixes all links in standalone app to stay in
 		fixAllHashLinks(); // links with href="#"
+		fixAllNavLiElemLinks(); // allows li elems to be clickable if the user misses the a element (click target)
 	} catch (e) {
 		console.error(e);
 	}

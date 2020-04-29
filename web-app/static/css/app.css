@@ -495,6 +495,8 @@ nav.navbar .nav-btns-inner {
 
 nav.navbar .nav-btns-inner li {
 	padding-right: 10px;
+	display: inline-block;
+	cursor: pointer;
 }
 
 nav.navbar .nav-btns-inner li a {
@@ -522,10 +524,6 @@ nav.navbar .nav-btns-inner li.link-active a , nav.navbar .nav-btns-inner li:hove
 	color: var(--main-theme-color);
 }
 
-nav.navbar .nav-btns-inner li {
-	display: inline-block;
-	/*padding-right: 10px;*/
-}
 nav.navbar .nav-btns-inner li:last-child {
 	padding-right: 0;
 }
@@ -633,6 +631,7 @@ aside.user-settings-general-aside {
 	margin-bottom: 5px;
 }
 
+/* fix outline issue */
 .swal2-close {
 	outline: none;
 }
