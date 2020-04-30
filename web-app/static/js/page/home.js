@@ -290,7 +290,7 @@ const SCHOOP_REDIRECT_REF = "dashboard";
 						populateMissionControlUpNextEvent(upNextEvent, upNextTimeElem, upNextEventElem, upNextSignifierElem);
 						break;
 					case EarlyOrLate.LATE:
-						nowEventElem.innerHTML = "School is over. Enjoy your evening.";
+						nowEventElem.innerHTML = "School is over";
 						upNextTimeElem.innerText = NOTHING_DEMARCATOR;
 						upNextEventElem.innerText = "You're free";
 						upNextSignifierElem.innerText = "FREE";
