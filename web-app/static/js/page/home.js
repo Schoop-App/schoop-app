@@ -375,7 +375,10 @@ const SCHOOP_REDIRECT_REF = "dashboard";
 		mobx.autorun(() => {
 			// dateState.previousDate = dateState.currentDate;
 			dateState.currentDate = new Date(appState.time);
-			handleAutorunRefresh(dateState);
+			if (dateState.currentDate.getSeconds() === 0) {
+				// refresh visuals ONLY at the top of the minute
+				handleAutorunRefresh(dateState);
+			}
 		});
 		setIntervalAdjusted(() => { appState.time = Date.now(); }, 1000);
 	});
