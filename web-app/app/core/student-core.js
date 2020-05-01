@@ -53,10 +53,14 @@ const getDivision = grade => {
 	return division;
 };
 
+// Now that I've written this, I ought to employ it everywhere that uses this basic formula (below).
+const getDivisionFromGradYear = gradYear => getDivision(gradYearToGrade(gradYear));
+
 module.exports = {
 	Division,
 	PERIODS,
 	gradeToGradYear,
 	gradYearToGrade,
-	getDivision
+	getDivision,
+	getDivisionFromGradYear
 };

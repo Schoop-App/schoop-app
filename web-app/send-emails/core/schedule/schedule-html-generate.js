@@ -14,9 +14,9 @@ const CLASS_COLORS = [
 	"#60B2A1"
 ];
 
-const getScheduleHtml = (template, classes) => {
+const getScheduleHtml = (template, classes, seminarZoomLink) => {
 	let schedule = JSON.parse(JSON.stringify(scheduleBuildingCore.buildUserSchedule(template, classes)));
-	let scheduleHtml = scheduleBuildingCore.buildAllScheduleItemsHTML(schedule, CLASS_COLORS);
+	let scheduleHtml = scheduleBuildingCore.buildAllScheduleItemsHTML(schedule, CLASS_COLORS, seminarZoomLink);
 	// console.log("SCHEDULE HTML: ", scheduleHtml);
 	return `<table class="today-schedule fix-border-radius"><tbody>${scheduleHtml}</tbody></table>`;
 };

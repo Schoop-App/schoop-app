@@ -24,6 +24,7 @@
 	},
 	"mailgun": {
 		"api_key": "YOUR_API_KEY",
-		"domain_name": "example.com"
+		"domain_name": "example.com",
+		"subdomain_name": "mailer"
 	}
 }

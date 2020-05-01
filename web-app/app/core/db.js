@@ -20,6 +20,10 @@ module.exports = imports => {
 		let query = await dbConnAsync.query(`SELECT * FROM students WHERE google_oauth_id = ${dbConn.escape(studentId)}`);
 		return query.results[0];
 	};
+	const getStudentInfoByEmail = async studentEmail => {
+		let query = await dbConnAsync.query(`SELECT * FROM students WHERE email = ${dbConn.escape(studentEmail)}`);
+		return query.results[0];
+	};
 	const studentHasSeenOnboarding = async studentId => {
 		// gets onboarding state
 		let query = await dbConnAsync.query(`SELECT has_seen_onboarding FROM students WHERE google_oauth_id = ${dbConn.escape(studentId)}`);
@@ -242,6 +246,7 @@ module.exports = imports => {
 	return {
 		doesStudentExist,
 		getStudentInfo,
+		getStudentInfoByEmail,
 		studentHasSeenOnboarding,
 		studentDidSetup,
 		getClasses,

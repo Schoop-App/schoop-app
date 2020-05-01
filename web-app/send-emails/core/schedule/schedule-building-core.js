@@ -141,7 +141,7 @@ const buildUserSchedule = (template, classes) => {
 };
 
 // const buildScheduleItemHTML = (event, period) => {
-const buildScheduleItemHTML = (event, colors, index=0) => {
+const buildScheduleItemHTML = (event, colors, seminarZoomLink, index=0) => {
 	let periodNumber,
 		eventSignifier,
 		eventZoomLink,
@@ -164,9 +164,9 @@ const buildScheduleItemHTML = (event, colors, index=0) => {
 			eventIsLightOrDark = "light";
 		}
 
-		eventZoomLink = (event.overrideSignifier === "SEMINAR") ? `/s/event_redirect?url=${encodeURIComponent(SEMINAR_ZOOM_LINK)}&ref=${SCHOOP_REDIRECT_REF}` : `/s/${event.class_id || "empty"}?ref=${SCHOOP_REDIRECT_REF}`;
+		eventZoomLink = (event.overrideSignifier === "SEMINAR") ? `/s/event_redirect?url=${encodeURIComponent(seminarZoomLink)}&ref=${SCHOOP_REDIRECT_REF}` : `/s/${event.class_id || "empty"}?ref=${SCHOOP_REDIRECT_REF}`;
 		eventZoomLink = SCHOOP_HOST + eventZoomLink;
-		eventZoomLinkRaw = (event.overrideSignifier === "SEMINAR") ? SEMINAR_ZOOM_LINK : event.zoom_link;
+		eventZoomLinkRaw = (event.overrideSignifier === "SEMINAR") ? seminarZoomLink : event.zoom_link;
 		eventName = event.class_name || event.name || NOTHING_DEMARCATOR;
 		eventTimespan = generateTimespan(event.start, event.end);
 	} catch (e) {
@@ -188,7 +188,7 @@ const buildScheduleItemHTML = (event, colors, index=0) => {
 	});
 };
 
-const buildAllScheduleItemsHTML = (schedule, classColors) => {
+const buildAllScheduleItemsHTML = (schedule, classColors, seminarZoomLink) => {
 	let scheduleHTML = "";
 
 	if (typeof schedule.message === "undefined") {
@@ -197,7 +197,7 @@ const buildAllScheduleItemsHTML = (schedule, classColors) => {
 			event = schedule[i];
 			// scheduleHTML += buildScheduleItemHTML(event, i + 1);
 			// scheduleHTML += buildScheduleItemHTML(event, event.number);
-			scheduleHTML += buildScheduleItemHTML(event, classColors, i);
+			scheduleHTML += buildScheduleItemHTML(event, classColors, seminarZoomLink, i);
 		}
 
 		return scheduleHTML;

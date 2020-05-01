@@ -25,9 +25,13 @@ dbConn.connect(async err => {
 	const db = require("../app/core/db")({ Sentry, dbConn });
 
 	console.log("Sending schedule emails...");
-	await emailClient.sendScheduleEmail(db, "Zane", "zstjohn22@windwardschool.org", "UPPER", new Date("Monday April 20 2020 04:07:35"));
-	// await emailClient.sendScheduleEmail(db, "Jude", "jstjohn24@windwardschool.org", "MIDDLE", new Date("Monday April 20 2020 04:07:35"));
-	console.log("Emails sent!");
+	try {
+		await emailClient.sendScheduleEmail(db, "zstjohn22@windwardschool.org", new Date("Wednesday April 29 2020 04:07:35"));
+		console.log("Email sent!");
+	} catch (e) {
+		console.log("Error sending messages:");
+		console.error(e);
+	}
 
 	dbConn.end();
 });
