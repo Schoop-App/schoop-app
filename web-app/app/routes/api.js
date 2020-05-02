@@ -193,8 +193,8 @@ module.exports = imports => {
 			*/
 			await db.updateClasses(req.user.id, req.body.classes.map(classJson => {
 				// sanitize inputs
-				classJson.name = sanitizer.sanitize(class.name);
-				classJson.zoomLink = escapeUrlForClassEntry(class.zoomLink);
+				classJson.name = sanitizer.sanitize(classJson.name);
+				classJson.zoomLink = escapeUrlForClassEntry(classJson.zoomLink);
 				return class;
 			}));
 			await db.setSeminarZoomLink(req.user.id, escapeUrlForClassEntry(req.body.seminarZoomLink));
