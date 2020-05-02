@@ -191,10 +191,10 @@ module.exports = imports => {
 					"zoomLink": "https://windwardschool.zoom.us/j/1234567890"
 				}
 			*/
-			await db.updateClasses(req.user.id, req.body.classes.map(class => {
+			await db.updateClasses(req.user.id, req.body.classes.map(classJson => {
 				// sanitize inputs
-				class.name = sanitizer.sanitize(class.name);
-				class.zoomLink = escapeUrlForClassEntry(class.zoomLink);
+				classJson.name = sanitizer.sanitize(class.name);
+				classJson.zoomLink = escapeUrlForClassEntry(class.zoomLink);
 				return class;
 			}));
 			await db.setSeminarZoomLink(req.user.id, escapeUrlForClassEntry(req.body.seminarZoomLink));
