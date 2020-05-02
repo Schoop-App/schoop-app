@@ -1,14 +1,17 @@
 const bodyParser = require("body-parser");
-const rateLimit = require("express-rate-limit");
+const rateLimit = require("express-rate-limit"); // I may end up getting rid of rate limiter...it's not even implemented right now
+const sanitizer = require("sanitizer");
 const accessProtectionMiddleware = require("../middleware/access-protection");
 const endpointNoCacheMiddleware = require("../middleware/endpoint-no-cache");
-const getQotd = require("../../getQotd");
 
 const urlencodedParser = bodyParser.urlencoded({ extended: true }); // using qs
 const jsonParser = bodyParser.json();
 
 // SCHEDULES
 const schedules = require("../core/schedules");
+
+// QOTD
+const getQotd = require("../../getQotd");
 
 // STUDENT CORE
 const { Division, PERIODS, gradeToGradYear, gradYearToGrade, getDivision } = require("../core/student-core");
@@ -29,6 +32,18 @@ const parseAthleticsPeriod = period => {
 	athleticsPeriod = (typeof athleticsPeriod === "number" && athleticsPeriod >= 1 && athleticsPeriod <= 9) ? athleticsPeriod : -1;
 	return athleticsPeriod;
 };
+
+const escapeUrlForClassEntry = url => {
+	let urlToReturn;
+	try {
+		urlToReturn = encodeURI(url);
+	} catch (e) {
+		// not a URL (I really should be validating. I will do so
+		// at some point (not sure when)
+		urlToReturn = sanitizer.sanitize(url);
+	}
+	return urlToReturn;
+}
 
 /* API ROUTES */
 module.exports = imports => {
@@ -52,6 +67,8 @@ module.exports = imports => {
 
 	// PROTECTED ENDPOINTS
 	// setup
+	// THIS IS A BEAST OF A CALLBACK.
+	// TODO: FIX THIS ASAP!!!
 	router.post("/classes", accessProtectionMiddleware, urlencodedParser, async (req, res) => {
 		// logger.log("Called /classes in API endpoints");
 		let studentSetupState = await db.studentDidSetup(req.user.id);
@@ -66,8 +83,9 @@ module.exports = imports => {
 				//for (const periodNumber in studentPeriods) {
 				for (let i = 0; i < studentPeriods.length; i++) {
 					periodNumber = studentPeriods[i];
-					className = req.body[`className_P${periodNumber}`].trim();
-					zoomLink = req.body[`zoomLink_P${periodNumber}`].trim();
+					// added sanitization
+					className = sanitizer.sanitize(req.body[`className_P${periodNumber}`].trim());
+					zoomLink = escapeUrlForClassEntry(req.body[`zoomLink_P${periodNumber}`].trim());
 					isAthletics = periodNumber === athleticsPeriod;
 					if (className !== "" || zoomLink !== "") // DeMorgan's Law coming in handy ;)
 						db.addClass(req.user.id, periodNumber, className, zoomLink, isAthletics);
@@ -166,8 +184,20 @@ module.exports = imports => {
 	// USER PAGE APIs (for now, that's just for updating classes and deleting account)
 	router.post("/update_classes", accessProtectionMiddleware, jsonParser, async (req, res) => {
 		try {
-			await db.updateClasses(req.user.id, req.body.classes);
-			await db.setSeminarZoomLink(req.user.id, req.body.seminarZoomLink);
+			/* example json:
+				{
+					"period": 2,
+					"name": "AP Euro",
+					"zoomLink": "https://windwardschool.zoom.us/j/1234567890"
+				}
+			*/
+			await db.updateClasses(req.user.id, req.body.classes.map(class => {
+				// sanitize inputs
+				class.name = sanitizer.sanitize(class.name);
+				class.zoomLink = escapeUrlForClassEntry(class.zoomLink);
+				return class;
+			}));
+			await db.setSeminarZoomLink(req.user.id, escapeUrlForClassEntry(req.body.seminarZoomLink));
 			await db.setAthleticsPeriod(req.user.id, parseAthleticsPeriod(req.body.athleticsPeriod || -1));
 			res.status(200).send({
 				status: "ok"

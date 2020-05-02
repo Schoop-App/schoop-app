@@ -187,7 +187,7 @@ module.exports = imports => {
 		// classesJson example:
 		/*
 			{
-				"period": 2
+				"period": 2,
 				"name": "AP Euro",
 				"zoomLink": "https://windwardschool.zoom.us/j/1234567890"
 			}
