@@ -195,7 +195,7 @@ module.exports = imports => {
 				// sanitize inputs
 				classJson.name = sanitizer.sanitize(classJson.name);
 				classJson.zoomLink = escapeUrlForClassEntry(classJson.zoomLink);
-				return class;
+				return classJson;
 			}));
 			await db.setSeminarZoomLink(req.user.id, escapeUrlForClassEntry(req.body.seminarZoomLink));
 			await db.setAthleticsPeriod(req.user.id, parseAthleticsPeriod(req.body.athleticsPeriod || -1));
