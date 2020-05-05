@@ -25,8 +25,9 @@ class ViewController: UIViewController, WKNavigationDelegate {
 //        webView.customUserAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4130.3 Safari/537.36";
         // fake UA with something non-WKWebView related (just using
         // my Chrome browser UA with modification to say Schoop
-        webView.customUserAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_0) AppleWebKit/537.36 (KHTML, like Gecko) Schoop/1.0 Safari/537.36";
-        webView.backgroundColor = schoopColor;
+        webView.customUserAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_0) AppleWebKit/537.36 (KHTML, like Gecko) Schoop/1.0 Safari/537.36"
+        webView.backgroundColor = schoopColor
+        webView.allowsLinkPreview = false
         view = webView
     }
     

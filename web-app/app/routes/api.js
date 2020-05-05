@@ -240,7 +240,7 @@ module.exports = imports => {
 	});
 
 	// ONBOARDING
-	router.post("/student_has_seen_onboarding", async (req, res) => {
+	router.post("/student_has_seen_onboarding", accessProtectionMiddleware, async (req, res) => {
 		try {
 			await db.setStudentHasSeenOnboarding(req.user.id, 1);
 			res.status(200).send({ status: "ok" });
