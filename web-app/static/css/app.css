@@ -4,6 +4,8 @@
 	--today-schedule-row-padding-tb: 12px;
 	--today-table-border-radius: 10px;
 	--navbar-height: 78px;
+	--footer-height: 85px;
+	--footer-padding: 15px;
 	/*--main-theme-color: #000;*/
 	--main-theme-color: #305475; /* Windward-approved color */
 
@@ -180,6 +182,8 @@ h1, h2, h3, h4, h5, h6 {
 main.content {
 	padding: var(--main-content-padding);
 	z-index: 0;
+	/* page must be at least this tall to ride! */
+	min-height: calc(100vh - var(--navbar-height) - (2 * var(--main-content-padding)) - var(--footer-height));
 }
 
 main.content.page-loaded {
@@ -634,4 +638,29 @@ aside.user-settings-general-aside {
 /* fix outline issue */
 .swal2-close {
 	outline: none;
+}
+
+footer.page-footer {
+	width: 100%;
+	height: 85px;
+	background-color: var(--main-theme-color);
+	color: #fff; /* white text */
+	position: relative; /* for content positioning */
+}
+
+footer.page-footer div.footer-content {
+	padding: var(--footer-padding);
+/*	height: calc(100% - (2 * var(--footer-padding)));*/
+	position: absolute;
+	top: 50%;
+	left: 0;
+	transform: translateY(-50%);
+	/*left: 50%;*/
+	/*transform: translate(-50%, -50%);*/
+}
+
+footer.page-footer a {
+	/*color: #65adef;*/
+	color: #6fb6f7;
+	font-weight: 700;
 }

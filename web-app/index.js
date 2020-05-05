@@ -79,6 +79,14 @@ dbConn.connect(async err => {
 	// begin app stuff
 	const app = express();
 
+	// disable any caching when NOT in production (i.e. development)
+	if (process.env.NODE_ENV !== "production") {
+		app.use((req, res, next) => {
+			res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+			next();
+		});
+	}
+
 	app.use(require("helmet")()); // helmet security headers (good to have here)
 
 	// general app config
@@ -143,7 +151,10 @@ dbConn.connect(async err => {
 			divisionPeriods,
 			divisionOptions,
 			appHost: SCHOOP_HOST,
-			jsLastRevised: JS_LAST_REVISED
+			jsLastRevised: JS_LAST_REVISED,
+			currentYear: new Date().getFullYear() // this may be a performance issue. should
+												  // I be caching this value? creating a
+												  // whole date object may not be very performant.
 		};
 		if (typeof req.user !== "undefined" && typeof req.user.id === "string") {
 			let studentHasSeenOnboarding = await db.studentHasSeenOnboarding(req.user.id);
