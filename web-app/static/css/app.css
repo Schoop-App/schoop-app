@@ -377,7 +377,7 @@ div.loading-overlay {
 	height: calc(100 * var(--vh));
 
 	position: fixed;
-	z-index: 21 !important;
+	z-index: 1061 !important; /* positioned above sweetalert */
 
 	background: var(--main-theme-color);
 }
