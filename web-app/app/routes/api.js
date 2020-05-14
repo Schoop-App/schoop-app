@@ -14,7 +14,7 @@ const schedules = require("../core/schedules");
 const getQotd = require("../../getQotd");
 
 // STUDENT CORE
-const { Division, PERIODS, gradeToGradYear, gradYearToGrade, getDivision } = require("../core/student-core");
+const { Division, PERIODS, CLASS_COLORS, gradeToGradYear, gradYearToGrade, getDivision } = require("../core/student-core");
 
 const INTERNAL_SERVER_ERROR_RESPONSE = {
 	status: "error",
@@ -160,17 +160,7 @@ module.exports = imports => {
 			res.status(500).send(INTERNAL_SERVER_ERROR_RESPONSE);
 		}
 	});
-	router.get("/class_colors", accessProtectionMiddleware, (req, res) => res.status(200).send([
-		"#9CE87B",
-		"#89BBEF",
-		"#FEF486",
-		"#F1D483",
-		"#BABABC",
-		"#B198E6",
-		"#82C2E5",
-		"#EE9DC2",
-		"#60B2A1"
-	])); // for now......... Maybe I should store this in a file or in Redis. We will see...
+	router.get("/class_colors", accessProtectionMiddleware, (req, res) => res.status(200).send(CLASS_COLORS));
 	
 	// misc (NOT for production):
 	if (typeof process.env.NODE_ENV !== "undefined" && process.env.NODE_ENV !== "production") {

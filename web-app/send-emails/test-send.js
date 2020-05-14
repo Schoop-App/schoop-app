@@ -26,7 +26,8 @@ dbConn.connect(async err => {
 
 	console.log("Sending schedule emails...");
 	try {
-		await emailClient.sendScheduleEmail(db, "zstjohn22@windwardschool.org", new Date("Wednesday April 29 2020 04:07:35"));
+		// await emailClient.sendScheduleEmail(db, "101538478513395768684", new Date("Thursday April 30 2020 04:07:35"));
+		await emailClient.sendScheduleEmail(db, "101538478513395768684", new Date("Wednesday April 29 2020 04:07:35"));
 		console.log("Email sent!");
 	} catch (e) {
 		console.log("Error sending messages:");

@@ -14,6 +14,19 @@ const PERIODS = {
 	UPPER: [1, 2, 3, 4, 5, 6, 7, 8]
 };
 
+// Moved these here as I should have a long time ago.
+const CLASS_COLORS = [
+	"#9CE87B",
+	"#89BBEF",
+	"#FEF486",
+	"#F1D483",
+	"#BABABC",
+	"#B198E6",
+	"#82C2E5",
+	"#EE9DC2",
+	"#60B2A1"
+];
+
 const gradeToGradYear = grade => {
 	if (grade >= 0 && grade <= 12) {
 		let date = new Date(); // current date
@@ -59,6 +72,7 @@ const getDivisionFromGradYear = gradYear => getDivision(gradYearToGrade(gradYear
 module.exports = {
 	Division,
 	PERIODS,
+	CLASS_COLORS,
 	gradeToGradYear,
 	gradYearToGrade,
 	getDivision,

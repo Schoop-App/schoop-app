@@ -143,7 +143,11 @@ dbConn.connect(async err => {
 
 	// EXTERNAL ROUTES
 	app.use("/api", require("./app/routes/api")({ Sentry, passport, logger, db, redisClient }));
-	app.use("/s", require("./app/routes/short-link")({ Sentry, db }));
+	app.use("/s", require("./app/routes/short-link")({
+		Sentry,
+		db,
+		emailAuthKey: PRIVATE_CONFIG.email_auth_secret
+	}));
 
 	// default includes (maybe change location of this? idk)
 	app.use(async (req, res, next) => {

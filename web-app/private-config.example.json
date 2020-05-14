@@ -26,5 +26,6 @@
 		"api_key": "YOUR_API_KEY",
 		"domain_name": "example.com",
 		"subdomain_name": "mailer"
-	}
+	},
+	"email_auth_secret": "YOUR_AUTH_SECRET"
 }

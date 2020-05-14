@@ -1,5 +1,9 @@
+// REQUIRES
 const Handlebars = require("handlebars");
+const Hmac = require("../../../app/core/email-auth/hmac");
+// END REQUIRES
 
+// CONSTANTS
 const SCHOOP_HOST = "https://schoop.app"; // maybe not hardcode...
 const SCHOOP_REDIRECT_REF = "email"; // for analytics...
 
@@ -12,10 +16,12 @@ const EVENT_SIGNIFIERS = {
 const NOTHING_DEMARCATOR = "-----";
 
 // This WILL need to be changed for the email. Work on it!!! (I think I have now...?)
+// also I unescaped eventName because it is now sanitized and leaving it unescaped
+// leads to html entities showing up for users.
 const eventRowTemplate = Handlebars.compile(
-`<tr style="background-color: {{{eventColor}}};" class="event-{{{eventIsLightOrDark}}}{{#if hasLink}} event-has-link{{/if}}" data-event-name="{{{eventName}}}">
+`<tr style="background-color: {{{eventColor}}};" class="event-{{{eventIsLightOrDark}}}{{#if hasLink}} event-has-link{{/if}}">
 	<td class="signifier left">{{{eventSignifier}}}</td>
-	<td class="center" style="font-weight: 700;">{{#if hasLink}}<a href="{{{eventZoomLink}}}">{{/if}}{{eventName}}{{#if hasLink}}</a>{{/if}}</td>
+	<td class="center" style="font-weight: 700;">{{#if hasLink}}<a href="{{{eventZoomLink}}}">{{/if}}{{{eventName}}}{{#if hasLink}}</a>{{/if}}</td>
 	<td class="right">{{eventTimespan}}</td>
 </tr>`
 );
@@ -140,74 +146,92 @@ const buildUserSchedule = (template, classes) => {
 	}
 };
 
-// const buildScheduleItemHTML = (event, period) => {
-const buildScheduleItemHTML = (event, colors, seminarZoomLink, index=0) => {
-	let periodNumber,
-		eventSignifier,
-		eventZoomLink,
-		eventZoomLinkRaw,
-		eventName,
-		eventTimespan,
-		eventColor,
-		eventIsLightOrDark;
+module.exports = imports => {
+	const hmac = Hmac({ key: imports.emailAuthKey }); // hmac auth lib built for this email application
 
-	try {
-		eventSignifier = getEventSignifier(event);
-		if (event.type === "PERIOD") {
-			periodNumber = event.number;
-			eventColor = colors[periodNumber - 1];
-			eventIsLightOrDark = lightOrDark(eventColor);
-			// console.log((periodNumber - 1), eventColor);
+	return studentId => {
+		const buildScheduleItemHTML = (event, colors, seminarZoomLink, index=0) => {
+			let periodNumber,
+				eventSignifier,
+				eventZoomLink,
+				eventZoomLinkRaw,
+				eventName,
+				eventTimespan,
+				eventColor,
+				eventIsLightOrDark;
 
-			eventSignifier += `<span style="font-size: 0.93em;">${periodNumber}</span>`; // quite hacky, sorry
-		} else {
-			eventIsLightOrDark = "light";
-		}
+			try {
+				eventSignifier = getEventSignifier(event);
+				if (event.type === "PERIOD") {
+					periodNumber = event.number;
+					eventColor = colors[periodNumber - 1];
+					eventIsLightOrDark = lightOrDark(eventColor);
+					// console.log((periodNumber - 1), eventColor);
 
-		eventZoomLink = (event.overrideSignifier === "SEMINAR") ? `/s/event_redirect?url=${encodeURIComponent(seminarZoomLink)}&ref=${SCHOOP_REDIRECT_REF}` : `/s/${event.class_id || "empty"}?ref=${SCHOOP_REDIRECT_REF}`;
-		eventZoomLink = SCHOOP_HOST + eventZoomLink;
-		eventZoomLinkRaw = (event.overrideSignifier === "SEMINAR") ? seminarZoomLink : event.zoom_link;
-		eventName = event.class_name || event.name || NOTHING_DEMARCATOR;
-		eventTimespan = generateTimespan(event.start, event.end);
-	} catch (e) {
-		// console.error(e);
-		// console.log("something went wrong. fine because was already handled");
-		// eventSignifier = 
-		console.error(e);
-	}
+					eventSignifier += `<span style="font-size: 0.93em;">${periodNumber}</span>`; // quite hacky, sorry
+				} else {
+					eventIsLightOrDark = "light";
+				}
 
-	return eventRowTemplate({
-		eventSignifier,
-		eventName,
-		eventTimespan,
-		eventZoomLink,
-		eventZoomLinkRaw,
-		eventColor: eventColor || "transparent",
-		eventIsLightOrDark: eventIsLightOrDark || "light",
-		hasLink: typeof eventZoomLinkRaw !== "undefined" && eventZoomLinkRaw !== ""
-	});
+				let eventIdAdjusted = (event.overrideSignifier === "SEMINAR") ? seminarZoomLink : event.class_id;
+				let emailToken = hmac.generateHmacAuth(eventIdAdjusted, studentId);
+
+				// I should probably redo the query string stuff with the qs (querystring) library to make it a bit tidier
+				eventZoomLink = (event.overrideSignifier === "SEMINAR") ? `/s/event_redirect?url=${encodeURIComponent(seminarZoomLink)}&token=${emailToken}&userId=${studentId}&ref=${SCHOOP_REDIRECT_REF}` : `/s/${eventIdAdjusted || "empty"}?token=${emailToken}&userId=${studentId}&ref=${SCHOOP_REDIRECT_REF}`;
+				eventZoomLink = SCHOOP_HOST + eventZoomLink; // for email purposes hehe (need a domain there!)
+				eventZoomLinkRaw = (event.overrideSignifier === "SEMINAR") ? seminarZoomLink : event.zoom_link;
+				eventName = event.class_name || event.name || NOTHING_DEMARCATOR;
+				eventTimespan = generateTimespan(event.start, event.end);
+			} catch (e) {
+				// console.error(e);
+				// console.log("something went wrong. fine because was already handled");
+				// eventSignifier = 
+				console.error(e);
+			}
+
+			return eventRowTemplate({
+				eventSignifier,
+				eventName,
+				eventTimespan,
+				eventZoomLink,
+				eventZoomLinkRaw,
+				eventColor: eventColor || "transparent",
+				eventIsLightOrDark: eventIsLightOrDark || "light",
+				hasLink: typeof eventZoomLinkRaw !== "undefined" && eventZoomLinkRaw !== ""
+			});
+		};
+
+		const buildAllScheduleItemsHTML = (schedule, classColors, seminarZoomLink) => {
+			let scheduleHTML = "";
+			if (typeof schedule.message === "undefined") {
+				// no special messages, so continue as usual
+				let event; // performance fix
+				for (let i = 0; i < schedule.length; i++) {
+					event = schedule[i];
+					scheduleHTML += buildScheduleItemHTML(event, classColors, seminarZoomLink, i);
+				}
+				return scheduleHTML;
+			} else {
+				// well this wouldn't matter...unless I were sending emails on the weekend,
+				// which I am not. I just grafted this code onto my backend app from my
+				// frontend JS.
+
+				// HAS MESSAGE! ALERT
+				return `<tr><td style="text-align: center; font-size: 1.07em;">${schedule.message}</td></tr>`;
+			}
+		};
+
+		// Two functions within a function...within another function! I'm really on a roll here.
+		return {
+			buildUserSchedule,
+			buildAllScheduleItemsHTML
+		};
+
+	};
+
 };
 
-const buildAllScheduleItemsHTML = (schedule, classColors, seminarZoomLink) => {
-	let scheduleHTML = "";
-
-	if (typeof schedule.message === "undefined") {
-		let event; // performance fix
-		for (let i = 0; i < schedule.length; i++) {
-			event = schedule[i];
-			// scheduleHTML += buildScheduleItemHTML(event, i + 1);
-			// scheduleHTML += buildScheduleItemHTML(event, event.number);
-			scheduleHTML += buildScheduleItemHTML(event, classColors, seminarZoomLink, i);
-		}
-
-		return scheduleHTML;
-	} else {
-		// HAS MESSAGE! ALERT
-		return `<tr><td style="text-align: center; font-size: 1.07em;">${schedule.message}</td></tr>`;
-	}
-};
-
-module.exports = {
-	buildUserSchedule,
-	buildAllScheduleItemsHTML
-};
+// module.exports = {
+// 	buildUserSchedule,
+// 	buildAllScheduleItemsHTML
+// };

@@ -1,0 +1,73 @@
+html, body {
+	background-color: #fff;
+	font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", sans-serif;
+}
+
+.fix-border-radius {
+	-webkit-mask-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAA5JREFUeNpiYGBgAAgwAAAEAAGbA+oJAAAAAElFTkSuQmCC);
+	        mask-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAA5JREFUeNpiYGBgAAgwAAAEAAGbA+oJAAAAAElFTkSuQmCC);
+	overflow: hidden;
+}
+
+table.today-schedule {
+	background: #fff;
+	border-collapse: collapse;
+	border-radius: 10px;
+
+	width: 100%;
+	height: auto;
+
+	table-layout: fixed; /* keeps all boxes equal */
+}
+
+table.today-schedule tr {
+	border-top: 1px solid #ccc;
+	position: relative;
+}
+
+table.today-schedule tr:first-child {
+	border-top: none;
+}
+
+table.today-schedule tr.event-dark {
+	color: #fff;
+}
+
+table.today-schedule tr.event-light {
+	color: #000;
+}
+
+table.today-schedule tr.event-has-link {
+	cursor: pointer;
+	-moz-user-select: none;
+	 -ms-user-select: none;
+	     user-select: none;
+	-webkit-user-select: none;
+}
+
+table.today-schedule tr td {
+	padding-top: 12px;
+	padding-bottom: 12px;
+	padding-right: 22px;
+}
+
+table.today-schedule tr td:first-child {
+	padding-left: 22px;
+	padding-right: 0;
+}
+
+td.left, th.left {
+	text-align: left;
+}
+
+table.today-schedule tr td.signifier {
+	font-weight: 700;
+}
+
+td.center, th.center {
+	text-align: center;
+}
+
+td.right, th.right {
+	text-align: right;
+}

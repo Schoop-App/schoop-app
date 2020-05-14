@@ -4,12 +4,11 @@ const striptags = require("striptags");
 const { minify } = require("html-minifier");
 
 const { getDateString, getScheduleDay } = require("./date-util");
-const { getScheduleHtml } = require("./schedule/schedule-html-generate");
 const schedules = require("../../app/core/schedules");
 const studentCore = require("../../app/core/student-core");
 
 const vendorCss = fs.readFileSync(__dirname + "/../../static/css/vendor.css").toString();
-const emailCss = fs.readFileSync(__dirname + "/../../static/css/app-cssnext.css").toString();
+const emailCss = fs.readFileSync(__dirname + "/css/email.css").toString();
 
 module.exports = imports => {
 	// imports
@@ -33,12 +32,18 @@ module.exports = imports => {
 	};
 
 	// sends email with schedule to user (WORK IN PROGRESS)
-	const sendScheduleEmail = async (db, studentEmail, todaysDate = new Date()) => {
+	const sendScheduleEmail = async (db, studentId, todaysDate = new Date()) => {
+		const { getScheduleHtml } = require("./schedule/schedule-html-generate")(studentId); // initialize with student ID
+
 		// let todaysDate = new Date();
 
 		// NEW: get the info straight from the db instead of via arguments
 		// REPLACES ARGUMENTS: studentFirstName, studentDivision, studentSeminarZoomLink
-		let studentInfo = await db.getStudentInfoByEmail(studentEmail);
+		// let studentInfo = await db.getStudentInfoByEmail(studentEmail);
+
+		// student ID is better for this purpose
+		let studentInfo = await db.getStudentInfo(studentId);
+		let studentEmail = studentInfo.email;
 		/* ----- */
 		let studentFirstName = studentInfo.first_name;
 		let studentDivision = studentCore.getDivisionFromGradYear(studentInfo.graduation_year);
@@ -57,6 +62,7 @@ module.exports = imports => {
 		 *         (I honestly haven't done too much analytics
 		 *         setup yet)
 		 */
+		// TODO: swap out template literal for Handlebars
 		let htmlToSend =
 `<!DOCTYPE html>
 <html lang="en">
@@ -87,7 +93,7 @@ module.exports = imports => {
 		}));
 		let plainTextMessage = striptags(htmlToSend); // fallback if no HTML
 
-		// console.log(htmlJuiced);
+		// console.log(htmlToSend);
 
 		let data = {
 			from: `Schoop Schedules <noreply-schedules@${mailgunConfig.subdomain_name}.${mailgunConfig.domain_name}>`,
