@@ -12,7 +12,7 @@ module.exports = imports => {
 		return (req, res, next) => {
 			if (req.isAuthenticated()) {
 				// already authenticated via cookie, so no need to check anything else
-				console.log("already had auth");
+				req.adjustedUserId = req.user.id;
 				next();
 			} else {
 				// no cookie auth
