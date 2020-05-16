@@ -1,6 +1,8 @@
 const Sentry = require('@sentry/node');
 const mysql = require("mysql");
 const fs = require("fs");
+const { sendEmails } = require("./core/send-util");
+
 const PRIVATE_CONFIG = require("../private-config.json");
 const mailgunConfig = PRIVATE_CONFIG.mailgun;
 // error reporting
