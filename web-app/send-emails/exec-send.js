@@ -26,8 +26,7 @@ const getPercentage = (index, outOf) => (index / outOf * 100).toPrecision(3) + "
 // begin actual "meat" of the program
 
 let date = new Date();
-// if (date.getDay() !== 6 && date.getDay() !== 0) {
-if (true) {
+if (date.getDay() !== 6 && date.getDay() !== 0) {
 	// this is just a fail-safe. the cron job knows to send monday thru friday only
 	console.log("Connecting...");
 	dbConn.connect(async err => {
