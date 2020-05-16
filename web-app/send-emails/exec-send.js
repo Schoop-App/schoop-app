@@ -17,7 +17,7 @@ const dbConn = mysql.createConnection({
 	database: PRIVATE_CONFIG.database.database,
 	port: PRIVATE_CONFIG.database.port,
 	ssl: {
-		ca: fs.readFileSync(process.env.DATABASE_CERT_PATH || "/Users/zooza310/ca-certificate.crt")
+		ca: fs.readFileSync(process.env.DATABASE_CERT_PATH || process.argv[2] "/Users/zooza310/ca-certificate.crt")
 	}
 });
 
