@@ -13,7 +13,7 @@ module.exports = db => {
 				res.status(500).send("Error: studentDidSetup had unexpected value: " + studentDidSetup);
 			}
 		} else {
-			res.redirect("/login");
+			res.redirect(`/login?redirect=${encodeURIComponent(req.originalUrl)}`);
 		}
 	};
 };

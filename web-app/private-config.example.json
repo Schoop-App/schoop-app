@@ -20,7 +20,7 @@
 	},
 	"server": {
 		"server_home_path": "/home/admin",
-		"session_secret": "some_secret_here"
+		"session_secret": "YOUR_SESSION_SECRET"
 	},
 	"mailgun": {
 		"api_key": "YOUR_API_KEY",

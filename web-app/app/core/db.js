@@ -12,6 +12,11 @@ module.exports = imports => {
 	const dbUtil = DBUtil(dbConn); // database util
 
 	/* READ DB */
+	const getStudentIdsWhoWantDailyEmail = async () => {
+		let query = await dbConnAsync.query(`SELECT google_oauth_id FROM students WHERE wants_daily_email = 1`);
+		return query.results.map(k => k.google_oauth_id); // grab the values from each RowDataPacket
+	};
+
 	const doesStudentExist = async studentId => {
 		let query = await dbConnAsync.query(`SELECT 1 FROM students WHERE google_oauth_id = ${dbConn.escape(studentId)}`);
 		return query.results.length > 0;
@@ -244,6 +249,7 @@ module.exports = imports => {
 	/* END WRITE DB */
 
 	return {
+		getStudentIdsWhoWantDailyEmail,
 		doesStudentExist,
 		getStudentInfo,
 		getStudentInfoByEmail,
