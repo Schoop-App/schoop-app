@@ -21,8 +21,6 @@ const dbConn = mysql.createConnection({
 	}
 });
 
-const getPercentage = (index, outOf) => (index / outOf * 100).toPrecision(3) + "%";
-
 // begin actual "meat" of the program
 
 let date = new Date();

@@ -1,3 +1,5 @@
+const getPercentage = (index, outOf) => (index / outOf * 100).toPrecision(3) + "%";
+
 const sendEmails = async (db, studentIds) => {
 	try {
 		let numStudentIds = studentIds.length;
