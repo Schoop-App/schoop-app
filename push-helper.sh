@@ -7,4 +7,4 @@ cd web-app
 ./setJsLastRevised
 git add . && git add -u
 git commit -m "$1"
-git push -u origin master
+git push -u origin $2
