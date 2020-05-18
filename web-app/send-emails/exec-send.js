@@ -1,7 +1,7 @@
 const Sentry = require('@sentry/node');
 const mysql = require("mysql");
 const fs = require("fs");
-const { sendEmails } = require("./core/send-util");
+const SendUtil = require("./core/send-util");
 
 const PRIVATE_CONFIG = require("../private-config.json");
 const mailgunConfig = PRIVATE_CONFIG.mailgun;
@@ -29,8 +29,9 @@ if (date.getDay() !== 6 && date.getDay() !== 0) {
 	console.log("Connecting...");
 	dbConn.connect(async err => {
 		const db = require("../app/core/db")({ Sentry, dbConn });
+		const sendEmails = SendUtil(emailClient).sendEmails;
 		console.log("Connected to database. Start sending student emails");
-		
+
 		let studentIds = await db.getStudentIdsWhoWantDailyEmail(); // retrieve student ids
 
 		await sendEmails(db, studentIds); // send emails to retrieved student ids
