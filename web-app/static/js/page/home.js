@@ -77,6 +77,7 @@ const SCHOOP_REDIRECT_REF = "dashboard";
 	// But with funky schedules I can't risk anyone having
 	// an outdated schedule. Heavens no.
 	const getScheduleTemplate = async (division, givenDate, forceUpdate=false) => {
+		let daySymbol = DAYS_FOR_SCHEDULE_TEMPLATE[givenDate.getDay()]; // MON, TUE, WED, etc.
 		let schedule = await getJSON(`/schedule/${division}/${daySymbol}?${Date.now()}`);
 		return schedule;
 	};
