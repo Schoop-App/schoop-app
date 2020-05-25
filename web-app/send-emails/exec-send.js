@@ -29,7 +29,7 @@ if (date.getDay() !== 6 && date.getDay() !== 0) {
 	console.log("Connecting...");
 	dbConn.connect(async err => {
 		const db = require("../app/core/db")({ Sentry, dbConn });
-		const sendEmails = SendUtil(emailClient).sendEmails;
+		const { sendEmails } = SendUtil({ Sentry, emailClient });
 		console.log("Connected to database. Start sending student emails");
 
 		let studentIds = await db.getStudentIdsWhoWantDailyEmail(); // retrieve student ids

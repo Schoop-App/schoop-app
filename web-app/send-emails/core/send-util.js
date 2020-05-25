@@ -1,6 +1,9 @@
 const getPercentage = (index, outOf) => (index / outOf * 100).toPrecision(3) + "%";
 
-module.exports = emailClient => {
+module.exports = imports => {
+	const Sentry = imports.Sentry;
+	const emailClient = imports.emailClient;
+
 	const sendEmails = async (db, studentIds) => {
 		try {
 			let numStudentIds = studentIds.length;
@@ -17,6 +20,10 @@ module.exports = emailClient => {
 				console.log(`Email sent to ${currentStudentId}\n`);
 			}
 		} catch (e) {
+			Sentry.captureException(e);
+			// maybe I ought to get rid of this part below
+			// since no person would see it except in
+			// testing...or maybe not. Decisions, decisions!
 			console.log("Error sending emails:");
 			console.error(e);
 		}

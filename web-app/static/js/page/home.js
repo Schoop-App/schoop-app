@@ -57,20 +57,28 @@ const SCHOOP_REDIRECT_REF = "dashboard";
 		}
 	};
 
-	let SCHEDULE_TEMPLATES = [];
-	const getScheduleTemplate = async (division, givenDate, forceUpdate=false) => {
-		// let schedule = await getJSON(`/schedule?division=${division}&time=${Date.now()}`);
-		let daySymbol = DAYS_FOR_SCHEDULE_TEMPLATE[givenDate.getDay()]; // MON, TUE, WED, etc.
-		let scheduleTemplatesKeyName = `${daySymbol}_${division}`;
+	// let SCHEDULE_TEMPLATES = [];
+	// const getScheduleTemplate = async (division, givenDate, forceUpdate=false) => {
+	// 	// let schedule = await getJSON(`/schedule?division=${division}&time=${Date.now()}`);
+	// 	let daySymbol = DAYS_FOR_SCHEDULE_TEMPLATE[givenDate.getDay()]; // MON, TUE, WED, etc.
+	// 	let scheduleTemplatesKeyName = `${daySymbol}_${division}`;
 
-		if (typeof SCHEDULE_TEMPLATES[scheduleTemplatesKeyName] === "undefined" || forceUpdate) {
-			// let schedule = await getJSON(`http://localhost:3001/${division}/${daySymbol}.json`, true);
-			let schedule = await getJSON(`/schedule/${division}/${daySymbol}?${Date.now()}`);
-			SCHEDULE_TEMPLATES[scheduleTemplatesKeyName] = schedule; // for in-memory cache ;)
-			return schedule;
-		} else {
-			return SCHEDULE_TEMPLATES[scheduleTemplatesKeyName];
-		}
+	// 	if (typeof SCHEDULE_TEMPLATES[scheduleTemplatesKeyName] === "undefined" || forceUpdate) {
+	// 		// let schedule = await getJSON(`http://localhost:3001/${division}/${daySymbol}.json`, true);
+	// 		let schedule = await getJSON(`/schedule/${division}/${daySymbol}?${Date.now()}`);
+	// 		SCHEDULE_TEMPLATES[scheduleTemplatesKeyName] = schedule; // for in-memory cache ;)
+	// 		return schedule;
+	// 	} else {
+	// 		return SCHEDULE_TEMPLATES[scheduleTemplatesKeyName];
+	// 	}
+	// };
+
+	// Honestly my design for this has been rather silly.
+	// But with funky schedules I can't risk anyone having
+	// an outdated schedule. Heavens no.
+	const getScheduleTemplate = async (division, givenDate, forceUpdate=false) => {
+		let schedule = await getJSON(`/schedule/${division}/${daySymbol}?${Date.now()}`);
+		return schedule;
 	};
 	window.getScheduleTemplate = getScheduleTemplate;
 
@@ -300,7 +308,7 @@ const SCHOOP_REDIRECT_REF = "dashboard";
 				}
 			}
 		} else {
-			// THERE IS A MESSAGE (means there is no school that day...)
+			// THERE IS A MESSAGE (means there is no [normal] school that day...)
 			nowEventElem.innerText = NOTHING_DEMARCATOR;
 			nowSignifierElem.innerText = NOTHING_DEMARCATOR;
 

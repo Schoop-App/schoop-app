@@ -83,9 +83,9 @@ module.exports = imports => {
 </head>
 <body>
 	<p>Hi ${studentFirstName},</p>
-	<p>Here is your schedule for today, ${getDateString(todaysDate, true)}. If you would like to view it in the Schoop app, <a href="https://schoop.app/home">click here</a>.</p><br>
+	<p>Here is your schedule for today, ${getDateString(todaysDate, true)}. If you would like to view it in the Schoop app, <a href="https://schoop.app/home" target="_blank">click here</a>.</p><br>
 	${scheduleHtml}<br>
-	If you have any questions or concerns, <a href="mailto:schoophelp@gmail.com">please let us know</a>. Have a great day!
+	If you'd like to unsubscribe, you can do so by <a href="https://schoop.app/profile">changing your settings on the Profile page</a>. If you have any questions or concerns, <a href="mailto:schoophelp@gmail.com">please let us know</a>. Have a great day!
 </body>
 </html>`;
 		let htmlJuiced = minify(juice(htmlToSend, {
