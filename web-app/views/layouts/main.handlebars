@@ -46,6 +46,7 @@
 			scope.setExtra("student_grade", STUDENT_GRADE);
 			scope.setExtra("student_division", STUDENT_DIVISION);
 			scope.setExtra("student_has_seen_onboarding", STUDENT_HAS_SEEN_ONBOARDING);
+			scope.setExtra("student_device_is_in_standalone_mode", (("standalone" in window.navigator) && window.navigator.standalone));
 		});
 	</script>
 
