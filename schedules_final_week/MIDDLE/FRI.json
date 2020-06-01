@@ -1,0 +1,63 @@
+[
+	{
+		"number": 1,
+		"type": "PERIOD",
+		"start": [9, 0],
+		"end": [9, 25]
+	},
+	{
+		"number": 2,
+		"type": "PERIOD",
+		"start": [9, 35],
+		"end": [10, 0]
+	},
+	{
+		"name": "Break",
+		"type": "BREAK",
+		"start": [10, 0],
+		"end": [10, 35]
+	},
+	{
+		"number": 3,
+		"type": "PERIOD",
+		"start": [10, 35],
+		"end": [11, 0]
+	},
+	{
+		"number": 4,
+		"type": "PERIOD",
+		"start": [11, 10],
+		"end": [11, 35]
+	},
+	{
+		"name": "Lunch",
+		"type": "BREAK",
+		"start": [11, 35],
+		"end": [12, 25]
+	},
+	{
+		"number": 5,
+		"type": "PERIOD",
+		"start": [12, 25],
+		"end": [12, 50]
+	},
+	{
+		"number": 6,
+		"type": "PERIOD",
+		"start": [13, 0],
+		"end": [13, 25]
+	},
+	{
+		"number": 7,
+		"type": "PERIOD",
+		"start": [13, 35],
+		"end": [14, 0]
+	},
+	{
+		"name": "End of Year Division Assemblies",
+		"type": "ASSEMBLY",
+		"start": [14, 10],
+		"end": [14, 30],
+		"overrideSignifier": "MEET"
+	}
+]
