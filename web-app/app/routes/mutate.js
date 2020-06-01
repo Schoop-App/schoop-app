@@ -9,7 +9,7 @@ module.exports = imports => {
 	const db = imports.db;
 	const accessProtectionMiddleware = imports.accessProtectionMiddleware; // PROTECT
 
-	const router = require("express").Router();
+	const router = express.Router();
 
 	router.use(accessProtectionMiddleware); // all routes would need this
 
@@ -37,7 +37,7 @@ module.exports = imports => {
 		} catch (e) {
 			res.status(500).send({
 				status: "error",
-				message: e.toString()
+				message: e.message
 			});
 		}
 	});
