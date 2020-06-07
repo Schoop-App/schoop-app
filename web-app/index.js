@@ -167,7 +167,7 @@ dbConn.connect(async err => {
 		}
 		
 		// school alert setup
-		includeDefaults.schoolBreakAlert = (PRIVATE_CONFIG.is_school_break) ? JSON.stringify(SCHOOL_BREAK_ALERT) : {};
+		includeDefaults.schoolBreakAlert = (PRIVATE_CONFIG.is_school_break) ? JSON.stringify(SCHOOL_BREAK_ALERT) : "{}";
 
 		req.includeDefaults = includeDefaults;
 		next();
