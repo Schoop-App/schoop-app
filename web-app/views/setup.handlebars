@@ -14,8 +14,17 @@
 	<script>Sentry.init({ dsn: 'https://60efb1ff5f9c417bbd61dd94ed62a14e@o378464.ingest.sentry.io/5201900' });
 </script>
 
+	<script>
+		// stuff for breaks
+		var IS_ON_BREAK = {{{defaults.isOnBreak}}};
+		var SCHOOL_BREAK_ALERT = {{{defaults.schoolBreakAlert}}};
+	</script>
+
 	<!-- vendor script -->
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 	<script src="/js/vendor.js?{{defaults.jsLastRevised}}"></script>
+	<!-- all common -->
+	<script src="/js/common/all-common.js"></script>
 
 	<!-- styles -->
 	<!-- FONTS -->

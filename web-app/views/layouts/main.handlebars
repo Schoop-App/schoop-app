@@ -33,6 +33,9 @@
 		var API_HOST = SCHOOP_HOST + "/api";
 		var DIVISIONS = {{{defaults.divisionOptions}}};
 		var DIVISION_PERIODS = {{{defaults.divisionPeriods}}};
+		// stuff for breaks
+		var IS_ON_BREAK = {{{defaults.isOnBreak}}};
+		var SCHOOL_BREAK_ALERT = {{{defaults.schoolBreakAlert}}};
 
 		// user-specific
 		var STUDENT_HAS_SEEN_ONBOARDING = {{{defaults.studentHasSeenOnboarding}}};
@@ -56,6 +59,9 @@
 	<script src="https://unpkg.com/mobx@5.15.4/lib/mobx.umd.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 	<script src="/js/vendor.js?{{defaults.jsLastRevised}}"></script>
+
+	<!-- all common -->
+	<script src="/js/common/all-common.js"></script>
 
 	<!-- styles -->	
 	<!-- FONTS -->
