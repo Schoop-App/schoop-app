@@ -1,3 +1,11 @@
+const STUDENTS_ON_BREAK_MESSAGE = "School is on break. We look forward to seeing you soon!";
+
+const SCHOOL_BREAK_ALERT = {
+	icon: "info",
+	title: "School is on break",
+	text: STUDENTS_ON_BREAK_MESSAGE
+}
+
 const Division = {
 	MIDDLE: "MIDDLE",
 	UPPER: "UPPER"
@@ -70,6 +78,8 @@ const getDivision = grade => {
 const getDivisionFromGradYear = gradYear => getDivision(gradYearToGrade(gradYear));
 
 module.exports = {
+	STUDENTS_ON_BREAK_MESSAGE,
+	SCHOOL_BREAK_ALERT,
 	Division,
 	PERIODS,
 	CLASS_COLORS,

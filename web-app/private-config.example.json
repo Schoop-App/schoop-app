@@ -27,5 +27,6 @@
 		"domain_name": "example.com",
 		"subdomain_name": "mailer"
 	},
-	"email_auth_secret": "YOUR_AUTH_SECRET"
+	"email_auth_secret": "YOUR_AUTH_SECRET",
+	"is_school_break": true
 }

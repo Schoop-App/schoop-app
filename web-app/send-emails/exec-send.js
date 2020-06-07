@@ -23,8 +23,11 @@ const dbConn = mysql.createConnection({
 
 // begin actual "meat" of the program
 
+// console debug to show if school
+console.log(`IS SCHOOL IN SESSION (NO BREAK): ${({"true":"YES","false":"NO"})[!PRIVATE_CONFIG.is_school_break]} (${!PRIVATE_CONFIG.is_school_break})`);
+
 let date = new Date();
-if (date.getDay() !== 6 && date.getDay() !== 0) {
+if (date.getDay() !== 6 && date.getDay() !== 0 && !PRIVATE_CONFIG.is_school_break) {
 	// this is just a fail-safe. the cron job knows to send monday thru friday only
 	console.log("Connecting...");
 	dbConn.connect(async err => {
@@ -42,5 +45,5 @@ if (date.getDay() !== 6 && date.getDay() !== 0) {
 	});
 } else {
 	// just in case
-	console.log("Email not sent (reason: it's the weekend!)");
+	console.log("Email not sent (reason: no school right now)");
 }

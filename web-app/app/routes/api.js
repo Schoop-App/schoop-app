@@ -7,6 +7,9 @@ const endpointNoCacheMiddleware = require("../middleware/endpoint-no-cache");
 const urlencodedParser = bodyParser.urlencoded({ extended: true }); // using qs
 const jsonParser = bodyParser.json();
 
+// private config
+const PRIVATE_CONFIG = require("../../private-config.json");
+
 // SCHEDULES
 const schedules = require("../core/schedules");
 
@@ -14,7 +17,7 @@ const schedules = require("../core/schedules");
 const getQotd = require("../../getQotd");
 
 // STUDENT CORE
-const { Division, PERIODS, CLASS_COLORS, gradeToGradYear, gradYearToGrade, getDivision } = require("../core/student-core");
+const { STUDENTS_ON_BREAK_MESSAGE, Division, PERIODS, CLASS_COLORS, gradeToGradYear, gradYearToGrade, getDivision } = require("../core/student-core");
 
 const INTERNAL_SERVER_ERROR_RESPONSE = {
 	status: "error",
@@ -128,13 +131,22 @@ module.exports = imports => {
 	// maybe I SHOULD be caching this...on the server side (with Redis maybe?)
 	router.get("/schedule/:division/:day", accessProtectionMiddleware, endpointNoCacheMiddleware, async (req, res) => {
 		try {
-			let schedule = await schedules.getSchedule(req.params.division, req.params.day);
-			res.status(200).send(schedule);
+			if (PRIVATE_CONFIG.is_school_break) {
+				res.status(200).send({
+					message: STUDENTS_ON_BREAK_MESSAGE
+				});
+			} else {
+				let schedule = await schedules.getSchedule(req.params.division, req.params.day);
+				res.status(200).send(schedule);
+			}
 		} catch (e) {
-			res.status(400).send({
-				status: "error",
-				message: e.message
-			});
+			// res.status(400).send({
+			// 	status: "error",
+			// 	message: e.message
+			// });
+			res.status(200).send({
+				message: `Server error when fetching schedule: ${e.message}`
+			})
 		}
 	});
 	router.get("/classes", accessProtectionMiddleware, endpointNoCacheMiddleware, async (req, res) => {

@@ -27,7 +27,7 @@ const logger = require("./app/core/logger");
 const csrfProtection = csrf({ cookie: true });
 
 // STUDENT CORE
-const { gradYearToGrade, getDivision, PERIODS, Division } = require("./app/core/student-core");
+const { SCHOOL_BREAK_ALERT, gradYearToGrade, getDivision, PERIODS, Division } = require("./app/core/student-core");
 const divisionPeriods = JSON.stringify(PERIODS),
       divisionOptions = JSON.stringify(Division);
 
@@ -156,6 +156,7 @@ dbConn.connect(async err => {
 			divisionOptions,
 			appHost: SCHOOP_HOST,
 			jsLastRevised: JS_LAST_REVISED,
+			isOnBreak: PRIVATE_CONFIG.is_school_break,
 			currentYear: new Date().getFullYear() // this may be a performance issue. should
 												  // I be caching this value? creating a
 												  // whole date object may not be very performant.
@@ -164,6 +165,10 @@ dbConn.connect(async err => {
 			let studentHasSeenOnboarding = await db.studentHasSeenOnboarding(req.user.id);
 			includeDefaults.studentHasSeenOnboarding = Boolean(studentHasSeenOnboarding);
 		}
+		
+		// school alert setup
+		includeDefaults.schoolBreakAlert = (PRIVATE_CONFIG.is_school_break) ? JSON.stringify(SCHOOL_BREAK_ALERT) : {};
+
 		req.includeDefaults = includeDefaults;
 		next();
 	});
