@@ -3,4 +3,4 @@
 const fs = require("fs");
 const path = require("path");
 
-fs.writeFileSync("JS_LAST_REVISED.txt", Date.now());
+fs.writeFileSync("JS_LAST_REVISED.txt", Buffer.from(Date.now().toString()));
