@@ -5,6 +5,7 @@
 # fifteen percent or more on car insurance.
 cd web-app
 ./setJsLastRevised
+cd ..
 git add . && git add -u
 git commit -m "$1"
 git push -u origin $2
