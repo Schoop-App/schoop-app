@@ -9,8 +9,7 @@
 		"name": "Break/Extra Help",
 		"type": "BREAK",
 		"start": [9, 55],
-		"end": [10, 40],
-		"overrideSignifier": "MEET"
+		"end": [10, 40]
 	},
 	{
 		"name": "Seminar",
