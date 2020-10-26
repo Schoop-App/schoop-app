@@ -61,7 +61,8 @@ class ViewController: UIViewController, WKNavigationDelegate {
         }
         
         // 1
-        let url = URL(string: "https://schoop.app")!
+//        let url = URL(string: "https://schoop.app")!
+        let url = URL(string: "https://app.schoop.app/home")!
         webView.load(URLRequest(url: url))
           
         // 2
