@@ -16,7 +16,7 @@
 		"name": "Lunch",
 		"type": "BREAK",
 		"start": [11, 45],
-		"end": [12, 30],
+		"end": [12, 30]
 	},
 	{
 		"number": 8,
