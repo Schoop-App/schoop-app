@@ -34,6 +34,8 @@
 		var DIVISIONS = {{{defaults.divisionOptions}}};
 		var DIVISION_PERIODS = {{{defaults.divisionPeriods}}};
 		var SCHEDULE_FOLDER_NAME = "{{{defaults.scheduleFolderName}}}";
+		var NODE_ENV = "{{{defaults.nodeEnv}}}";
+		var APP_INSTANCE = "{{{defaults.nodeAppInstance}}}";
 		// stuff for breaks
 		var IS_ON_BREAK = {{{defaults.isOnBreak}}};
 		var SCHOOL_BREAK_ALERT = {{{defaults.schoolBreakAlert}}};
@@ -122,7 +124,7 @@
 				&copy; {{defaults.currentYear}} Zane St. John |
 				<a href="https://blog.schoop.app/about.html?utm_source=app&utm_medium=footer&utm_campaign=schoop_blog" target="_blank">About</a> |
 				<a href="https://blog.schoop.app/?utm_source=app&utm_medium=footer&utm_campaign=schoop_blog" target="_blank">Blog</a> |
-				<a href="javascript:showDebug();">Debug</a>
+				<a href="javascript:showDebugDialog();">Debug</a>
 			</span>
 		</div>
 	</footer>
@@ -131,14 +133,16 @@
 	<script src="/js/common/app-common.js?{{defaults.jsLastRevised}}"></script> <!-- common elements -->
 	<script src="/js/page/{{{pageJS}}}.js?{{defaults.jsLastRevised}}" defer></script> <!-- loads after the other stuff lol -->
 
-	<script>
+	<script type="text/javascript">
 		// last-minute junk added for debug
-		function showDebug() {
+		function showDebugDialog() {
 			const values = {
+				node_env: NODE_ENV,
 				host: SCHOOP_HOST,
 				divisions: DIVISIONS,
 				division_periods: DIVISION_PERIODS,
 				schedule_folder_name: SCHEDULE_FOLDER_NAME,
+				app_instance: (APP_INSTANCE === "" ? "none" : APP_INSTANCE),
 				is_on_break: IS_ON_BREAK,
 				school_break_alert: SCHOOL_BREAK_ALERT
 			};

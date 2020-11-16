@@ -156,6 +156,8 @@ dbConn.connect(async err => {
 			divisionOptions,
 			appHost: SCHOOP_HOST,
 			scheduleFolderName: PUBLIC_CONFIG.schedule_folder_name,
+			nodeEnv: process.env.NODE_ENV,
+			nodeAppInstance: process.env.NODE_APP_INSTANCE,
 			jsLastRevised: JS_LAST_REVISED,
 			isOnBreak: PRIVATE_CONFIG.is_school_break,
 			currentYear: new Date().getFullYear() // this may be a performance issue. should
