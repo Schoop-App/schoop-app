@@ -2,5 +2,6 @@
 module.exports = {
 	// schedule_folder_name: "schedules_2020_2021"
 	// schedule_folder_name: "schedules_2020_2021_4Day_MonHoliday"
-	schedule_folder_name: "schedules_2020_2021_4Day_FriHoliday"
+	// schedule_folder_name: "schedules_2020_2021_4Day_FriHoliday"
+	schedule_folder_name: "schedules_2020_PreThanksgiving_Conferences_Week"
 };

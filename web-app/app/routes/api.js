@@ -7,8 +7,9 @@ const endpointNoCacheMiddleware = require("../middleware/endpoint-no-cache");
 const urlencodedParser = bodyParser.urlencoded({ extended: true }); // using qs
 const jsonParser = bodyParser.json();
 
-// private config
-const PRIVATE_CONFIG = require("../../private-config.json");
+// config
+const PRIVATE_CONFIG = require("../../private-config.json"); // private
+const PUBLIC_CONFIG = require("../../public-config"); // public
 
 // SCHEDULES
 const schedules = require("../core/schedules");
@@ -249,6 +250,12 @@ module.exports = imports => {
 		} catch (e) {
 			res.status(500).send(INTERNAL_SERVER_ERROR_RESPONSE);
 		}
+	});
+
+	// DEBUG
+	router.get("/schedule_folder_name", accessProtectionMiddleware, async (req, res) => {
+		// gets folder name for debug purposes
+		res.status(200).send({ folderName: PUBLIC_CONFIG.schedule_folder_name });
 	});
 
 	// routes here

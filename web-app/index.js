@@ -6,6 +6,7 @@ const Sentry = require('@sentry/node');
 Sentry.init({ dsn: 'https://9e300dfd5afb4c2db06743525644f742@o378464.ingest.sentry.io/5201899' });
 
 const PRIVATE_CONFIG = require("./private-config.json");
+const PUBLIC_CONFIG = require("./public-config");
 
 // const RAND = Math.random().toString();
 const SCHOOP_HOST = process.env.SCHOOP_HOST || "https://schoop.app";
@@ -38,7 +39,6 @@ const divisionPeriods = JSON.stringify(PERIODS),
 const generalAuthCheck = require("./app/middleware/general-auth-check");
 const slashAuthCheck = require("./app/middleware/slash-auth-check"); // for the endpoint / ("slash")
 const loginAuthCheck = require("./app/middleware/login-auth-check");
-
 const dbConn = mysql.createConnection({
 	host: PRIVATE_CONFIG.database.host,
 	user: PRIVATE_CONFIG.database.user,
@@ -155,6 +155,7 @@ dbConn.connect(async err => {
 			divisionPeriods,
 			divisionOptions,
 			appHost: SCHOOP_HOST,
+			scheduleFolderName: PUBLIC_CONFIG.schedule_folder_name,
 			jsLastRevised: JS_LAST_REVISED,
 			isOnBreak: PRIVATE_CONFIG.is_school_break,
 			currentYear: new Date().getFullYear() // this may be a performance issue. should
