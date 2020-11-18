@@ -31,10 +31,9 @@
 		"end": [13, 40]
 	},
 	{
-		"name": "Seminar",
-		"type": "ASSEMBLY",
+		"number": 8,
+		"type": "PERIOD",
 		"start": [13, 40],
-		"end": [14, 30],
-		"overrideSignifier": "SEMINAR"
+		"end": [14, 30]
 	}
 ]
