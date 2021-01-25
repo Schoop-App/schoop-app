@@ -92,6 +92,7 @@ const SCHOOP_REDIRECT_REF = "dashboard";
 			// let periods = template.filter(event => event.type === "PERIOD");
 			// for (const period of periods) {
 			for (const event of template) {
+				// added for overriding links
 				if (event.type === "PERIOD") {
 					// console.log("It's a period!", event);
 					// CLASS
@@ -101,6 +102,7 @@ const SCHOOP_REDIRECT_REF = "dashboard";
 						classInfo = classes.find(item => item.period_number === event.number);
 					} catch (e) {} // I'm doing absolutely nothing here because there haven't been problems w/ the users heh
 					// console.log(classInfo);
+
 					if (classInfo !== null && typeof classInfo === "object") {
 						// maybe a more efficient way to do this?
 						classInfo.type = event.type;
@@ -114,7 +116,10 @@ const SCHOOP_REDIRECT_REF = "dashboard";
 					}
 				} else {
 					// OTHER EVENT (BREAK, ASSEMBLY, or others maybe)
-					builtSchedule.push(event);
+					let augmentedEvent = Object.assign({}, event);
+					if (typeof event.overrideLink !== "undefined") augmentedEvent.overrideLink = event.overrideLink;
+					if (typeof event.link !== "undefined") augmentedEvent.link = event.link;
+					builtSchedule.push(augmentedEvent);
 				}
 			}
 
@@ -158,9 +163,17 @@ const SCHOOP_REDIRECT_REF = "dashboard";
 				eventSignifier += `<span style="font-size: 0.93em;">${periodNumber}</span>`; // quite hacky, sorry
 			}
 
-			eventZoomLink = (event.overrideSignifier === "SEMINAR") ? `/s/event_redirect?url=${encodeURIComponent(SEMINAR_ZOOM_LINK)}&ref=${SCHOOP_REDIRECT_REF}` : `/s/${event.class_id || "empty"}?ref=${SCHOOP_REDIRECT_REF}`;
-			eventZoomLink = SCHOOP_HOST + eventZoomLink;
-			eventZoomLinkRaw = (event.overrideSignifier === "SEMINAR") ? SEMINAR_ZOOM_LINK : event.zoom_link;
+			// links can now be overriden through schedule JSON
+			if (event.overrideLink) {
+				// SPECIAL handling
+				eventZoomLink = event.link;
+				eventZoomLinkRaw = event.link;
+			} else {
+				// regular link handling
+				eventZoomLink = (event.overrideSignifier === "SEMINAR") ? `/s/event_redirect?url=${encodeURIComponent(SEMINAR_ZOOM_LINK)}&ref=${SCHOOP_REDIRECT_REF}` : `/s/${event.class_id || "empty"}?ref=${SCHOOP_REDIRECT_REF}`;
+				eventZoomLink = SCHOOP_HOST + eventZoomLink;
+				eventZoomLinkRaw = (event.overrideSignifier === "SEMINAR") ? SEMINAR_ZOOM_LINK : event.zoom_link;
+			}
 			eventName = event.class_name || event.name || NOTHING_DEMARCATOR;
 			eventTimespan = generateTimespan(event.start, event.end);
 			eventIsLightOrDark = lightOrDark(event.color);

@@ -28,8 +28,11 @@ dbConn.connect(async err => {
 	try {
 		// await emailClient.sendScheduleEmail(db, "101538478513395768684", new Date("Thursday April 30 2020 04:07:35"));
 		// await emailClient.sendScheduleEmail(db, "101538478513395768684", new Date("Wednesday April 29 2020 04:07:35"));
-		await emailClient.sendScheduleEmail(db, "101538478513395768684");
-		console.log("Email sent!");
+		// await emailClient.sendScheduleEmail(db, "101538478513395768684");
+		for (let i = 1; i <= 5; i++) {
+			await emailClient.sendScheduleEmail(db, "101538478513395768684", new Date(Date.now() + (i * 86400000)));
+			console.log(`Email #${i} sent!`);
+		}
 	} catch (e) {
 		console.log("Error sending messages:");
 		console.error(e);

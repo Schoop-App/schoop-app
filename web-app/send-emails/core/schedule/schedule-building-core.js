@@ -136,7 +136,10 @@ const buildUserSchedule = (template, classes) => {
 				}
 			} else {
 				// OTHER EVENT (BREAK, ASSEMBLY, or others maybe)
-				builtSchedule.push(event);
+					let augmentedEvent = Object.assign({}, event);
+					if (typeof event.overrideLink !== "undefined") augmentedEvent.overrideLink = event.overrideLink;
+					if (typeof event.link !== "undefined") augmentedEvent.link = event.link;
+					builtSchedule.push(augmentedEvent);
 			}
 		}
 
@@ -176,10 +179,17 @@ module.exports = imports => {
 				let eventIdAdjusted = (event.overrideSignifier === "SEMINAR") ? seminarZoomLink : event.class_id;
 				let emailToken = hmac.generateHmacAuth(eventIdAdjusted, studentId);
 
-				// I should probably redo the query string stuff with the qs (querystring) library to make it a bit tidier
-				eventZoomLink = (event.overrideSignifier === "SEMINAR") ? `/s/event_redirect?url=${encodeURIComponent(seminarZoomLink)}&token=${emailToken}&userId=${studentId}&ref=${SCHOOP_REDIRECT_REF}` : `/s/${eventIdAdjusted || "empty"}?token=${emailToken}&userId=${studentId}&ref=${SCHOOP_REDIRECT_REF}`;
-				eventZoomLink = SCHOOP_HOST + eventZoomLink; // for email purposes hehe (need a domain there!)
-				eventZoomLinkRaw = (event.overrideSignifier === "SEMINAR") ? seminarZoomLink : event.zoom_link;
+				// links can now be overriden through schedule JSON
+				if (event.overrideLink) {
+					// SPECIAL handling
+					eventZoomLink = event.link;
+					eventZoomLinkRaw = event.link;
+				} else {
+					// regular link handling
+					eventZoomLink = (event.overrideSignifier === "SEMINAR") ? `/s/event_redirect?url=${encodeURIComponent(SEMINAR_ZOOM_LINK)}&ref=${SCHOOP_REDIRECT_REF}` : `/s/${event.class_id || "empty"}?ref=${SCHOOP_REDIRECT_REF}`;
+					eventZoomLink = SCHOOP_HOST + eventZoomLink;
+					eventZoomLinkRaw = (event.overrideSignifier === "SEMINAR") ? SEMINAR_ZOOM_LINK : event.zoom_link;
+				}
 				eventName = event.class_name || event.name || NOTHING_DEMARCATOR;
 				eventTimespan = generateTimespan(event.start, event.end);
 			} catch (e) {

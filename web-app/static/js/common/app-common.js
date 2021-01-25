@@ -22,7 +22,7 @@ const openZoomLink = elem => {
 	let eventLink = elem.getAttribute("data-link");
 	let eventLinkRaw = elem.getAttribute("data-link-raw");
 	let eventName = elem.getAttribute("data-event-name");
-	if (confirm("Open Zoom link for " + eventName + "?\n(" + eventLinkRaw + ")")) window.open(eventLink);
+	if (confirm("Open link for " + eventName + "?\n(" + eventLinkRaw + ")")) window.open(eventLink);
 };
 
 // SHOW/HIDE LOADING OVERLAY
