@@ -186,7 +186,7 @@ module.exports = imports => {
 					eventZoomLinkRaw = event.link;
 				} else {
 					// regular link handling
-					eventZoomLink = (event.overrideSignifier === "SEMINAR") ? `/s/event_redirect?url=${encodeURIComponent(SEMINAR_ZOOM_LINK)}&ref=${SCHOOP_REDIRECT_REF}` : `/s/${event.class_id || "empty"}?ref=${SCHOOP_REDIRECT_REF}`;
+					eventZoomLink = (event.overrideSignifier === "SEMINAR") ? `/s/event_redirect?url=${encodeURIComponent(seminarZoomLink)}&token=${emailToken}&userId=${studentId}&ref=${SCHOOP_REDIRECT_REF}` : `/s/${eventIdAdjusted || "empty"}?token=${emailToken}&userId=${studentId}&ref=${SCHOOP_REDIRECT_REF}`;
 					eventZoomLink = SCHOOP_HOST + eventZoomLink;
 					eventZoomLinkRaw = (event.overrideSignifier === "SEMINAR") ? SEMINAR_ZOOM_LINK : event.zoom_link;
 				}
