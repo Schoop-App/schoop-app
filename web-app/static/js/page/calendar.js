@@ -1,11 +1,11 @@
 let selected = [];
 
-const toggleSelected = (id, start, end, title) => {
+const toggleSelected = (id, start, end, title, location) => {
   document.getElementById(id).classList.toggle('not-selected');
   if (selected.find(event => event.id === id)) {
     selected = selected.filter(event => event.id !== id);
   } else {
-    selected.push({ id, start, end, title });
+    selected.push({ id, start, end, title, location });
   }
 };
 
@@ -23,7 +23,7 @@ const toggleSelected = (id, start, end, title) => {
     `<tr
       style="background-color: {{{backgroundColor}}}; color: {{{foregroundColor}}}"
       class="event {{selected}}"
-      onclick="toggleSelected('{{{id}}}', '{{{start}}}', '{{{end}}}', \`{{{summary}}}\`)"
+      onclick="toggleSelected('{{{id}}}', '{{{start}}}', '{{{end}}}', \`{{{summary}}}\`, '{{{location}}}')"
       id="{{{id}}}"
       data-event-name="{{{summary}}}">
         <td />
@@ -58,33 +58,39 @@ const toggleSelected = (id, start, end, title) => {
     eventsElem.innerHTML = '';
     events.forEach(cal => {
       if (!cal.events.length) return;
-      return cal.events
-        .filter(e => e.start && !e.start.date) // No full-day events
-        .map(e => ({
-          ...e,
-          start: fixDate(e.start.dateTime),
-          end: fixDate(e.end.dateTime)
-        })) // For repeating events, the stored start and end dates are incorrect
-        .sort((a, b) => a.start - b.start) // Order by start date
-        .forEach(event => {
-          const { start, end, summary, id } = event;
-          const { backgroundColor, foregroundColor } = cal;
+      return (
+        cal.events
+          // No full-day events or duplicates
+          .filter(e => e.start && !e.start.date && !e.id.includes('_'))
+          // For repeating events, the stored start and end dates are incorrect
+          .map(e => ({
+            ...e,
+            start: fixDate(e.start.dateTime),
+            end: fixDate(e.end.dateTime)
+          }))
+          // Order by start date
+          .sort((a, b) => a.start - b.start)
+          .forEach(event => {
+            const { start, end, summary, id, location } = event;
+            const { backgroundColor, foregroundColor } = cal;
 
-          eventsElem.innerHTML += eventRowTemplate({
-            backgroundColor,
-            foregroundColor,
-            start,
-            end,
-            summary,
-            id,
-            timespan: `${formatDateForDisplay(start)} - ${formatDateForDisplay(
-              start
-            )}`,
-            selected: selected.find(i => i.id === event.id)
-              ? ''
-              : 'not-selected'
-          });
-        });
+            eventsElem.innerHTML += eventRowTemplate({
+              backgroundColor,
+              foregroundColor,
+              start,
+              end,
+              summary,
+              id,
+              timespan: `${formatDateForDisplay(
+                start
+              )} - ${formatDateForDisplay(start)}`,
+              selected: selected.find(i => i.id === event.id)
+                ? ''
+                : 'not-selected',
+              location
+            });
+          })
+      );
     });
 
     if (!eventsElem.innerHTML) {
@@ -123,15 +129,15 @@ const toggleSelected = (id, start, end, title) => {
 
   const addSelected = () => {
     console.log(selected);
-    fetch('/events', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ events: selected })
-    }).then(() => {
-      window.location.href = '/';
-    });
+    // fetch('/events', {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json'
+    //   },
+    //   body: JSON.stringify({ events: selected })
+    // }).then(() => {
+    //   window.location.href = '/';
+    // });
   };
 
   addSelectedButton.onclick = addSelected;
