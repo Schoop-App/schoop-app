@@ -681,8 +681,16 @@ table.calendar-events {
 
 table.calendar-events tr.event {
 	border-top: 1px solid #000;
+	opacity: 0.95;
 	position: relative;
 	height: 80px;
+
+	-webkit-touch-callout: none; 
+    -webkit-user-select: none;
+     -khtml-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
 }
 
 table.calendar-events tr:first-child {
@@ -701,13 +709,7 @@ table.calendar-events tr td:first-child {
 }
 
 .event.not-selected {
-	opacity: 0.7;
-	-webkit-touch-callout: none; 
-    -webkit-user-select: none;
-     -khtml-user-select: none;
-       -moz-user-select: none;
-        -ms-user-select: none;
-            user-select: none;
+	opacity: 0.7 !important;
 }
 
 .event:hover {
