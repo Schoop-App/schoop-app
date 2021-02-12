@@ -60,8 +60,8 @@ const toggleSelected = (id, start, end, title, location) => {
       if (!cal.events.length) return;
       return (
         cal.events
-          // No full-day events or duplicates
-          .filter(e => e.start && !e.start.date && !e.id.includes('_'))
+          // No full-day events
+          .filter(e => e.start && !e.start.date)
           // For repeating events, the stored start and end dates are incorrect
           .map(e => ({
             ...e,

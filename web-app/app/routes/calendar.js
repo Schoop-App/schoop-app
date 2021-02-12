@@ -39,7 +39,8 @@ module.exports = imports => {
         const data = await calendar.events.list({
           calendarId: cal.id,
           timeMin,
-          timeMax
+          timeMax,
+          singleEvents: true
         });
 
         return {
