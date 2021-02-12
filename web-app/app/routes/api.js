@@ -68,6 +68,7 @@ module.exports = imports => {
 
 	router.use("/auth", require("./auth")({ Sentry, passport, logger, db })); // hee hee
 	router.use("/mutate", require("./mutate")({ Sentry, db, accessProtectionMiddleware }));
+	router.use("/calendar", require("./calendar")({ db }))
 
 	// PROTECTED ENDPOINTS
 	// setup

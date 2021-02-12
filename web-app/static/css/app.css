@@ -664,3 +664,42 @@ footer.page-footer a {
 	color: #6fb6f7;
 	font-weight: 700;
 }
+
+/* Calendar events */
+table.calendar-events {
+	background: #fff;
+	border-collapse: collapse;
+	border-radius: var(--today-table-border-radius);
+
+	width: 100%;
+	height: auto;
+	margin: 5px 0;
+	/*min-height: 425px;*/
+
+	table-layout: fixed; /* keeps all boxes equal */
+}
+
+table.calendar-events tr.event {
+	border-top: 1px solid #000;
+	position: relative;
+	height: 80px;
+}
+
+table.calendar-events tr:first-child {
+	border-top: none;
+}
+
+table.calendar-events tr td {
+	padding-top: var(--today-schedule-row-padding-tb);
+	padding-bottom: var(--today-schedule-row-padding-tb);
+	padding-right: var(--today-schedule-row-padding-lr);
+}
+
+table.calendar-events tr td:first-child {
+	padding-left: var(--today-schedule-row-padding-lr);
+	padding-right: 0;
+}
+
+.event.not-selected {
+	opacity: 0.7;
+}

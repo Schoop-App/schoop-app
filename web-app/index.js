@@ -23,6 +23,10 @@ const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const mysql = require("mysql");
 const csrf = require("csurf"); // CSRF Protection
 const logger = require("./app/core/logger");
+const cookieparser = require('cookie-parser');
+
+// Google api stuff
+const { setAccessToken, setRefreshToken } = require('./tokens');
 
 // INIT CSRF PROTECTION
 const csrfProtection = csrf({ cookie: true });
@@ -40,14 +44,29 @@ const generalAuthCheck = require("./app/middleware/general-auth-check");
 const slashAuthCheck = require("./app/middleware/slash-auth-check"); // for the endpoint / ("slash")
 const loginAuthCheck = require("./app/middleware/login-auth-check");
 const dbConn = mysql.createConnection({
-	host: PRIVATE_CONFIG.database.host,
-	user: PRIVATE_CONFIG.database.user,
-	password: PRIVATE_CONFIG.database.password,
-	database: PRIVATE_CONFIG.database.database,
-	port: PRIVATE_CONFIG.database.port,
-	ssl: {
-		ca: fs.readFileSync(process.env.DATABASE_CERT_PATH)
-	}
+  host: PRIVATE_CONFIG.database.host,
+  user: PRIVATE_CONFIG.database.user,
+  password: PRIVATE_CONFIG.database.password,
+  database: PRIVATE_CONFIG.database.database,
+  port: PRIVATE_CONFIG.database.port,
+  timezone: 'utc'
+  // ssl: {
+  // 	ca: fs.readFileSync(process.env.DATABASE_CERT_PATH)
+  // }
+});
+
+const { google } = require('googleapis');
+const oauth2Client = new google.auth.OAuth2({
+  clientId: PRIVATE_CONFIG.googleOAuth.web.client_id,
+  clientSecret: PRIVATE_CONFIG.googleOAuth.web.client_secret
+});
+const calendar = google.calendar({
+  version: 'v3',
+  auth: oauth2Client
+});
+
+oauth2Client.on('tokens', tokens => {
+	setAccessToken(tokens.access_token);
 });
 
 let JS_LAST_REVISED;
@@ -88,6 +107,7 @@ dbConn.connect(async err => {
 	}
 
 	app.use(require("helmet")()); // helmet security headers (good to have here)
+	app.use(cookieparser());
 
 	// general app config
 	app.set("trust proxy", "127.0.0.1"); // trust Nginx reverse proxy
@@ -122,11 +142,17 @@ dbConn.connect(async err => {
 			clientID: PRIVATE_CONFIG.googleOAuth.web.client_id,
 			clientSecret: PRIVATE_CONFIG.googleOAuth.web.client_secret,
 			callbackURL: `${SCHOOP_HOST}/api/auth/google/callback`,
-			scope: ["email", "profile"]
+			scope: [
+        'email',
+        'profile',
+        'https://www.googleapis.com/auth/calendar.readonly'
+      ]
 		},
 		// This is a "verify" function required by all Passport strategies
 		(accessToken, refreshToken, profile, cb) => {
 			// logger.log("Our user authenticated with Google, and Google sent us back this profile info identifying the authenticated user:", profile);
+			setAccessToken(accessToken);
+			setRefreshToken(refreshToken);
 			logger.log("User authenticated through Google");
 			return cb(null, profile);
 		}
@@ -225,6 +251,19 @@ dbConn.connect(async err => {
 			defaults: req.includeDefaults
 		});
 	});
+
+	app.get('/calendar', homeAuthCheck, async (req, res) => {
+		let studentInfo = await db.getStudentInfo(req.user.id);
+		let studentDivision = getDivision(gradYearToGrade(studentInfo.graduation_year)); // MIDDLE or UPPER
+    res.status(200).render('calendar', {
+      pageJS: 'calendar',
+      pageTitle: 'Calendar',
+      defaults: req.includeDefaults,
+			studentGrade: gradYearToGrade(studentInfo.graduation_year),
+			studentInfo,
+			studentDivision
+    });
+  });
 
 	// CATCH-ALL ROUTE (must go at end) 404
 	app.all("*", (req, res) => res.status(404).send("Error - Not Found"));

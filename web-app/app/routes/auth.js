@@ -16,7 +16,11 @@ module.exports = imports => {
 	router.get("/google", (req, res, next) => {
 		req.session.redirect = req.query.redirect;
 		next();
-	}, passport.authenticate("google", { hostedDomain: "windwardschool.org" }));
+  }, passport.authenticate("google", {
+    hostedDomain: "windwardschool.org",
+    accessType: "offline",
+    prompt: "consent" // Forces user to consent on every log in. Unfortunately the only way to get a refresh token
+  }));
 
 	router.get("/google/callback",
 		passport.authenticate("google", { failureRedirect: "/login?failed=1", session: true }),
@@ -34,6 +38,7 @@ module.exports = imports => {
 		// signs user out
 		// TODO: async/await this mofo!
 		req.session.destroy(err => {
+			res.clearCookie('tkn', { httpOnly: true });
 			if (err) {
 				res.status(500).send({
 					"status": "error",
