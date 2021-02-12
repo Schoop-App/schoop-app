@@ -21,12 +21,13 @@ const toggleSelected = (id, start, end, title) => {
 
   const eventRowTemplate = Handlebars.compile(
     `<tr
-      style="background-color: {{{eventColor}}}; color: {{{textColor}}}"
+      style="background-color: {{{backgroundColor}}}; color: {{{foregroundColor}}}"
       class="event {{selected}}"
-      onclick="toggleSelected('{{{id}}}', '{{{start}}}', '{{{end}}}', \`{{{title}}}\`)"
+      onclick="toggleSelected('{{{id}}}', '{{{start}}}', '{{{end}}}', \`{{{summary}}}\`)"
       id="{{{id}}}"
-      data-event-name="{{{title}}}">
-	      <td class="center" style="font-weight: 700;">{{title}}</td>
+      data-event-name="{{{summary}}}">
+        <td />
+	      <td class="center" style="font-weight: 700;">{{summary}}</td>
 	      <td class="right">{{timespan}}</td>
     </tr>`
   );
@@ -40,8 +41,14 @@ const toggleSelected = (id, start, end, title) => {
     return temp;
   };
 
+  const formatDateForDisplay = date =>
+    date.toLocaleTimeString([], {
+      hour: 'numeric',
+      minute: 'numeric'
+    });
+
   const displayText = msg =>
-    `<tr><td style="text-align: center; font-size: 1.07em; padding: 15px;">${msg}</td></tr>`;
+    `<tr><td style="text-align: center; font-size: 1.07em;">${msg}</td></tr>`;
 
   const getEvents = async () => {
     eventsElem.innerHTML = displayText('Loading...');
@@ -60,20 +67,19 @@ const toggleSelected = (id, start, end, title) => {
         })) // For repeating events, the stored start and end dates are incorrect
         .sort((a, b) => a.start - b.start) // Order by start date
         .forEach(event => {
+          const { start, end, summary, id } = event;
+          const { backgroundColor, foregroundColor } = cal;
+
           eventsElem.innerHTML += eventRowTemplate({
-            eventColor: cal.backgroundColor,
-            textColor: cal.foregroundColor,
-            start: event.start,
-            end: event.end,
-            title: event.summary,
-            id: event.id,
-            timespan: `${event.start.toLocaleTimeString([], {
-              hour: 'numeric',
-              minute: 'numeric'
-            })} - ${event.end.toLocaleTimeString([], {
-              hour: 'numeric',
-              minute: 'numeric'
-            })}`,
+            backgroundColor,
+            foregroundColor,
+            start,
+            end,
+            summary,
+            id,
+            timespan: `${formatDateForDisplay(start)} - ${formatDateForDisplay(
+              start
+            )}`,
             selected: selected.find(i => i.id === event.id)
               ? ''
               : 'not-selected'

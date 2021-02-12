@@ -702,4 +702,14 @@ table.calendar-events tr td:first-child {
 
 .event.not-selected {
 	opacity: 0.7;
+	-webkit-touch-callout: none; 
+    -webkit-user-select: none;
+     -khtml-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
+}
+
+.event:hover {
+	cursor: pointer;
 }
