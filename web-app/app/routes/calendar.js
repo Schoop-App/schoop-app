@@ -1,7 +1,7 @@
 const { google } = require('googleapis');
 const PRIVATE_CONFIG = require('../../private-config.json');
 const { getAccessToken } = require('../../tokens');
-const express = require('express')
+const express = require('express');
 
 const oauth2Client = new google.auth.OAuth2({
   clientId: PRIVATE_CONFIG.googleOAuth.web.client_id,
@@ -13,11 +13,11 @@ const calendar = google.calendar({
 });
 
 module.exports = imports => {
-  const { db } = imports;
+  const { db, Sentry, logger } = imports;
 
   const router = express.Router();
 
-  router.use(express.json())
+  router.use(express.json());
 
   router.get('/:time', async (req, res) => {
     const { time } = req.params;
@@ -54,23 +54,29 @@ module.exports = imports => {
       });
       const events = await Promise.all(result);
       res.json(events);
-    } catch (error) {
-      console.log(error);
+    } catch (e) {
+      Sentry.captureException(e);
+      logger.error(e);
     }
   });
 
-  router.post('/', (req, res) => {
+  router.post('/', async (req, res) => {
     const { events } = req.body;
 
     try {
-      events.forEach(event => {
-        db.addCalendarEvent(event, req.user.id);
-      });
-      res.send(true)
+      for (let event of events) {
+        await db.addCalendarEvent(event, req.user.id);
+      }
     } catch (error) {
-      console.log(error);
-      res.send(error)
+      // Ignore dup_entry errors.
+      // Maybe later I'll implement warning
+      // when users try to add existing events to the db?
+      if (error.code !== 'ER_DUP_ENTRY') {
+        logger.error(error);
+        return res.status(500).json(false);
+      }
     }
+    res.json(true);
   });
 
   return router;

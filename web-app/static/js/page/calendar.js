@@ -169,17 +169,26 @@ const toggleSelected = (id, start, end, title, location) => {
 
   todayButton.onclick = setToday;
 
-  const addSelected = () => {
-    console.log(selected);
-    fetch('/api/calendar', {
+  const addSelected = async () => {
+    const res = await fetch('/api/calendar', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({ events: selected })
-    }).then(() => {
-      window.location.href = '/';
     });
+    const data = await res.json();
+
+    if (data) {
+      window.location.href = '/';
+    } else {
+      document.querySelector('.content').innerHTML = `
+      <div style="text-align: center;">
+        <h1>Something went wrong</h1>
+        <p>You can <a href="/calendar">reload the page</a> and try again</p>
+      </div>
+      `;
+    }
   };
 
   addSelectedButton.onclick = addSelected;
