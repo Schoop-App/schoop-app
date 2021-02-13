@@ -1,10 +1,26 @@
 let selected = [];
 
+const SELECTED_ITEM_HTML = '<h3><i class="las la-check-square"></i></h3>';
+const UNSELECTED_ITEM_HTML = '<h3><i class="las la-stop"></i></h3>';
+
 const toggleSelected = (id, start, end, title, location) => {
-  document.getElementById(id).classList.toggle('not-selected');
+  const elem = document.getElementById(id);
+  const color = elem.style.backgroundColor;
+  const colorStart = color.indexOf('(') + 1;
+
   if (selected.find(event => event.id === id)) {
+    elem.style.backgroundColor = `rgba(${color.substring(
+      colorStart,
+      color.length - 1
+    )}, 0.7)`;
+    elem.firstElementChild.innerHTML = UNSELECTED_ITEM_HTML;
     selected = selected.filter(event => event.id !== id);
   } else {
+    elem.style.backgroundColor = `rgb(${color.substring(
+      colorStart,
+      color.length - 6
+    )})`;
+    elem.firstElementChild.innerHTML = SELECTED_ITEM_HTML;
     selected.push({ id, start, end, title, location });
   }
 };
@@ -22,11 +38,11 @@ const toggleSelected = (id, start, end, title, location) => {
   const eventRowTemplate = Handlebars.compile(
     `<tr
       style="background-color: {{{backgroundColor}}}; color: {{{foregroundColor}}}"
-      class="event {{selected}}"
+      class="event"
       onclick="toggleSelected('{{{id}}}', '{{{start}}}', '{{{end}}}', \`{{{summary}}}\`, '{{{location}}}')"
       id="{{{id}}}"
       data-event-name="{{{summary}}}">
-        <td />
+        <td>{{{selected}}}</td>
 	      <td class="center" style="font-weight: 700;">{{summary}}</td>
 	      <td class="right">{{timespan}}</td>
     </tr>`
@@ -61,6 +77,18 @@ const toggleSelected = (id, start, end, title, location) => {
     return;
   };
 
+  // From https://stackoverflow.com/questions/5623838/rgb-to-hex-and-hex-to-rgb
+  const hexToRgb = hex => {
+    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result
+      ? [
+          parseInt(result[1], 16), // r
+          parseInt(result[2], 16), // g
+          parseInt(result[3], 16) // b
+        ]
+      : null;
+  };
+
   const getEvents = async () => {
     eventsElem.innerHTML = displayText('Loading...');
     const events = await (
@@ -84,9 +112,14 @@ const toggleSelected = (id, start, end, title, location) => {
           .forEach(event => {
             const { start, end, summary, id } = event;
             const { backgroundColor, foregroundColor } = cal;
+            const [r, g, b] = hexToRgb(backgroundColor);
+
+            const isSelected = selected.find(i => i.id === event.id);
 
             eventsElem.innerHTML += eventRowTemplate({
-              backgroundColor,
+              backgroundColor: isSelected
+                ? `rgb(${r}, ${g}, ${b})`
+                : `rgba(${r}, ${g}, ${b}, 0.8)`,
               foregroundColor,
               start,
               end,
@@ -94,11 +127,9 @@ const toggleSelected = (id, start, end, title, location) => {
               id,
               timespan: `${formatDateForDisplay(
                 start
-              )} - ${formatDateForDisplay(start)}`,
-              selected: selected.find(i => i.id === event.id)
-                ? ''
-                : 'not-selected',
-              location: getLinkIfPresent(event)
+              )} - ${formatDateForDisplay(end)}`,
+              location: getLinkIfPresent(event),
+              selected: isSelected ? SELECTED_ITEM_HTML : UNSELECTED_ITEM_HTML
             });
           })
       );

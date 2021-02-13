@@ -681,7 +681,7 @@ table.calendar-events {
 
 table.calendar-events tr.event {
 	border-top: 1px solid #000;
-	opacity: 0.95;
+	opacity: 0.9;
 	position: relative;
 	height: 80px;
 
@@ -708,10 +708,23 @@ table.calendar-events tr td:first-child {
 	padding-right: 0;
 }
 
-.event.not-selected {
-	opacity: 0.7 !important;
-}
-
 .event:hover {
 	cursor: pointer;
+}
+
+#date-select button {
+	background-color: #fff;
+	border-radius: 5px;
+	border: none;
+	color: #000;
+	padding: 1px 14px;
+}
+
+#date-select button:hover {
+	cursor: pointer;
+}
+
+#date-select button:disabled {
+	opacity: 0.6;
+	cursor: default;
 }
