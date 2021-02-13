@@ -246,6 +246,23 @@ module.exports = imports => {
 		await dbConnAsync.query(deleteStudentRecordQuery);
 	};
 
+	const addCalendarEvent = async (event, userId) => {
+    const location = event.location ? ', location' : '';
+    const insertFields = `(id, start, end, name, user_id${location})`;
+    const values = `(
+			${dbConn.escape(event.id)},
+			${dbConn.escape(dbUtil.formatMySqlTimestamp(event.start))},
+			${dbConn.escape(dbUtil.formatMySqlTimestamp(event.end))},
+			${dbConn.escape(event.title)},
+			${dbConn.escape(userId)}${
+      	event.location ? `, ${dbConn.escape(event.location)}` : ''
+			})`;
+
+    const query = `INSERT INTO cal_events ${insertFields} VALUES ${values}`;
+
+    await dbConnAsync.query(query);
+  };
+
 	/* END WRITE DB */
 
 	return {
@@ -270,6 +287,7 @@ module.exports = imports => {
 		// updateClasses,
 		setAthleticsPeriod,
 		updateClasses: updateClassesNew, // NEW FUNCTION TO UPDATE. DOES NOT OVERWRITE, SO IDS ARE PRESERVED
-		deleteAccount
+		deleteAccount,
+		addCalendarEvent
 	};
 };

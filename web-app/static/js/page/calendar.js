@@ -129,15 +129,15 @@ const toggleSelected = (id, start, end, title, location) => {
 
   const addSelected = () => {
     console.log(selected);
-    // fetch('/events', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json'
-    //   },
-    //   body: JSON.stringify({ events: selected })
-    // }).then(() => {
-    //   window.location.href = '/';
-    // });
+    fetch('/api/calendar', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ events: selected })
+    }).then(() => {
+      window.location.href = '/';
+    });
   };
 
   addSelectedButton.onclick = addSelected;

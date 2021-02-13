@@ -22,3 +22,14 @@ CREATE TABLE classes (
   is_athletics TINYINT(1) NOT NULL DEFAULT 0,
   bound_for_deletion TINYINT(1) NOT NULL DEFAULT 0
 );
+
+-- New table
+CREATE TABLE cal_events (
+  id VARCHAR(255) NOT NULL PRIMARY KEY,
+  start TIMESTAMP NOT NULL,
+  end TIMESTAMP NOT NULL,
+  name VARCHAR(50) NOT NULL,
+  location VARCHAR(550), -- Zoom link/location
+  user_id VARCHAR(21) NOT NULL,
+  FOREIGN KEY (user_id) REFERENCES students(google_oauth_id)
+);

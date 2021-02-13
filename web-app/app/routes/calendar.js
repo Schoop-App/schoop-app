@@ -1,6 +1,7 @@
 const { google } = require('googleapis');
 const PRIVATE_CONFIG = require('../../private-config.json');
 const { getAccessToken } = require('../../tokens');
+const express = require('express')
 
 const oauth2Client = new google.auth.OAuth2({
   clientId: PRIVATE_CONFIG.googleOAuth.web.client_id,
@@ -14,7 +15,9 @@ const calendar = google.calendar({
 module.exports = imports => {
   const { db } = imports;
 
-  const router = require('express').Router();
+  const router = express.Router();
+
+  router.use(express.json())
 
   router.get('/:time', async (req, res) => {
     const { time } = req.params;
@@ -53,6 +56,20 @@ module.exports = imports => {
       res.json(events);
     } catch (error) {
       console.log(error);
+    }
+  });
+
+  router.post('/', (req, res) => {
+    const { events } = req.body;
+
+    try {
+      events.forEach(event => {
+        db.addCalendarEvent(event, req.user.id);
+      });
+      res.send(true)
+    } catch (error) {
+      console.log(error);
+      res.send(error)
     }
   });
 
