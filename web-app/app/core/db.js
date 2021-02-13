@@ -68,6 +68,16 @@ module.exports = imports => {
 			return null;
 		}
 	};
+
+	const getGoogleCalendarEvents = async (userId, timeMin, timeMax) => {
+		const data = await dbConnAsync.query(`SELECT * FROM cal_events
+		WHERE user_id = ${dbConn.escape(userId)}
+		AND start >= ${dbConn.escape(dbUtil.formatMySqlTimestamp(timeMin))}
+		AND start <= ${dbConn.escape(dbUtil.formatMySqlTimestamp(timeMax))}
+		ORDER BY start`)
+
+		return data.results;
+	}
 	/* END READ DB */
 
 	/* WRITE DB */
@@ -276,6 +286,7 @@ module.exports = imports => {
 		getClassesByStudentEmail,
 		// getClassLink,
 		getClassLinkForStudent, // user-specific
+		getGoogleCalendarEvents,
 		addStudent,
 		addClass,
 		setSeminarZoomLink,

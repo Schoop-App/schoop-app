@@ -72,11 +72,34 @@ module.exports = imports => {
       // Maybe later I'll implement warning
       // when users try to add existing events to the db?
       if (error.code !== 'ER_DUP_ENTRY') {
+        Sentry.captureException(error);
         logger.error(error);
         return res.status(500).json(false);
       }
     }
     res.json(true);
+  });
+
+  router.get('/myevents/:time', async (req, res) => {
+    const { time } = req.params;
+
+    const timeMin = new Date(time);
+    timeMin.setHours(0, 0, 0, 0);
+    const timeMax = new Date(timeMin);
+    timeMax.setDate(timeMax.getDate() + 1);
+
+    try {
+      const data = await db.getGoogleCalendarEvents(
+        req.user.id,
+        timeMin,
+        timeMax
+      );
+      res.json(data);
+    } catch (error) {
+      Sentry.captureException(error);
+      logger.error(error);
+      res.json({ error });
+    }
   });
 
   return router;
