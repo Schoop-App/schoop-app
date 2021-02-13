@@ -50,6 +50,17 @@ const toggleSelected = (id, start, end, title, location) => {
   const displayText = msg =>
     `<tr><td style="text-align: center; font-size: 1.07em;">${msg}</td></tr>`;
 
+  const getLinkIfPresent = event => {
+    if (event.location) return event.location;
+
+    const zoomLink = event.conferenceData
+      ? event.conferenceData.entryPoints.find(e => e.entryPointType === 'video')
+      : null;
+    if (zoomLink) return zoomLink.uri;
+
+    return;
+  };
+
   const getEvents = async () => {
     eventsElem.innerHTML = displayText('Loading...');
     const events = await (
@@ -71,7 +82,7 @@ const toggleSelected = (id, start, end, title, location) => {
           // Order by start date
           .sort((a, b) => a.start - b.start)
           .forEach(event => {
-            const { start, end, summary, id, location } = event;
+            const { start, end, summary, id } = event;
             const { backgroundColor, foregroundColor } = cal;
 
             eventsElem.innerHTML += eventRowTemplate({
@@ -87,7 +98,7 @@ const toggleSelected = (id, start, end, title, location) => {
               selected: selected.find(i => i.id === event.id)
                 ? ''
                 : 'not-selected',
-              location
+              location: getLinkIfPresent(event)
             });
           })
       );
