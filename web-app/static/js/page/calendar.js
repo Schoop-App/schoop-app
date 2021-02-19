@@ -170,6 +170,24 @@ const toggleSelected = (id, start, end, title, location) => {
   todayButton.onclick = setToday;
 
   const addSelected = async () => {
+    for (let event of selected) {
+      if (event.location) {
+        const res = await Swal.fire({
+          title: event.title,
+          html: `<p>Schoop found <a href="${event.location}">${event.location}</a> as a zoom link for this event. Use it?</p>`,
+          showCancelButton: true,
+          confirmButtonText: 'Use it',
+          cancelButtonText: 'Leave blank'
+        });
+
+        if (!res.isConfirmed) {
+          selected = selected.map(e =>
+            e.id === event.id ? { ...e, location: null } : e
+          );
+        }
+      }
+    }
+
     const res = await fetch('/api/calendar', {
       method: 'POST',
       headers: {
