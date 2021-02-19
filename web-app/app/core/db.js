@@ -257,18 +257,22 @@ module.exports = imports => {
 	};
 
 	const addCalendarEvent = async (event, userId) => {
-    const location = event.location ? ', location' : '';
-    const insertFields = `(id, start, end, name, user_id${location})`;
-    const values = `(
-			${dbConn.escape(event.id)},
-			${dbConn.escape(dbUtil.formatMySqlTimestamp(event.start))},
-			${dbConn.escape(dbUtil.formatMySqlTimestamp(event.end))},
-			${dbConn.escape(event.title)},
-			${dbConn.escape(userId)}${
-      	event.location ? `, ${dbConn.escape(event.location)}` : ''
-			})`;
+    const start = dbConn.escape(dbUtil.formatMySqlTimestamp(event.start));
+    const end = dbConn.escape(dbUtil.formatMySqlTimestamp(event.end));
+    const title = dbConn.escape(event.title);
+    const location = dbConn.escape(event.location);
 
-    const query = `INSERT INTO cal_events ${insertFields} VALUES ${values}`;
+    const query = `INSERT INTO cal_events (id, start, end, name, user_id, location) VALUES (
+			${dbConn.escape(event.id)},
+			${start},
+			${end},
+			${title},
+			${dbConn.escape(userId)},
+			${location})
+		ON DUPLICATE KEY UPDATE start = ${start},
+		end = ${end},
+		name = ${title},
+		location = ${location}`;
 
     await dbConnAsync.query(query);
   };

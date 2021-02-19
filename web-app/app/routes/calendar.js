@@ -68,14 +68,9 @@ module.exports = imports => {
         await db.addCalendarEvent(event, req.user.id);
       }
     } catch (error) {
-      // Ignore dup_entry errors.
-      // Maybe later I'll implement warning
-      // when users try to add existing events to the db?
-      if (error.code !== 'ER_DUP_ENTRY') {
-        Sentry.captureException(error);
-        logger.error(error);
-        return res.status(500).json(false);
-      }
+      Sentry.captureException(error);
+      logger.error(error);
+      return res.status(500).json(false);
     }
     res.json(true);
   });
