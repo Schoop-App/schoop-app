@@ -1,0 +1,46 @@
+[
+	{
+		"number": 1,
+		"type": "PERIOD",
+		"start": [9, 0],
+		"end": [10, 5]
+	},
+	{
+		"name": "Break",
+		"type": "BREAK",
+		"start": [10, 5],
+		"end": [10, 20]
+	},
+	{
+		"name": "Guest Speaker - Rosetta Lee",
+		"type": "ASSEMBLY",
+		"start": [10, 20],
+		"end": [11, 20],
+		"overrideLink": true,
+		"link": "https://windwardschool.zoom.us/j/4242891064"
+	},
+	{
+		"name": "Break",
+		"type": "BREAK",
+		"start": [11, 20],
+		"end": [11, 35]
+	},
+	{
+		"number": 3,
+		"type": "PERIOD",
+		"start": [11, 35],
+		"end": [12, 40]
+	},
+	{
+		"name": "Lunch",
+		"type": "BREAK",
+		"start": [12, 40],
+		"end": [13, 25]
+	},
+	{
+		"number": 5,
+		"type": "PERIOD",
+		"start": [13, 25],
+		"end": [14, 30]
+	}
+]
