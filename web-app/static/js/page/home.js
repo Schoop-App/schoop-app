@@ -83,6 +83,45 @@ const SCHOOP_REDIRECT_REF = "dashboard";
 	};
 	window.getScheduleTemplate = getScheduleTemplate;
 
+	const getCalendarEvents = async date => {
+    const events = await getJSON(
+      `/calendar/myevents/${encodeURIComponent(date.toISOString())}`
+    );
+    if (!events.length) return null;
+    return events;
+  };
+
+  const addCalEventsToSchedule = (events, schedule) => {
+    let newSchedule = schedule;
+
+    events.forEach(event => {
+      const [start, end] = [event.start, event.end].map(t => {
+        const temp = new Date(t);
+        return [temp.getHours(), temp.getMinutes()];
+      });
+
+      let i = newSchedule.findIndex(
+        e => e.start[0] > start[0] && e.start[1] > start[1]
+      );
+      i = i === -1 ? newSchedule.length + 1 : i;
+
+      let newEvent = {
+        name: event.name,
+        overrideSignifier: 'CAL',
+        type: 'EVENT',
+        start,
+        end
+      };
+      if (event.location) {
+        newEvent.zoom_link = event.location;
+      }
+
+      newSchedule.splice(i - 1, 0, newEvent);
+    });
+
+    return newSchedule;
+  };
+
 	// builds user schedule from schedule template and classes
 	const buildUserSchedule = (template, classes) => {
 		if (typeof template.message === "undefined") {
@@ -365,7 +404,11 @@ const SCHOOP_REDIRECT_REF = "dashboard";
 		// if it is okay to do API requests
 		let template = await getScheduleTemplate(window.STUDENT_DIVISION || STUDENT_DIVISION, initialDate, shouldRefreshAll);
 		let classes = await getClasses(shouldRefreshAll);
+		const calEvents = await getCalendarEvents(initialDate);
 		let userSchedule = buildUserSchedule(template, classes, shouldRefreshAll); // built-out schedule
+		if (calEvents) {
+      userSchedule = addCalEventsToSchedule(calEvents, userSchedule);
+    }
 		// console.log("USER SCHEDULE (debug): ", JSON.stringify(userSchedule, null, 4));
 
 		let classColors = await getClassColors(shouldRefreshAll); // colors for the **periods** in other words
