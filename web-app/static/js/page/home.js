@@ -108,7 +108,7 @@ const SCHOOP_REDIRECT_REF = "dashboard";
       let newEvent = {
         name: event.name,
         overrideSignifier: 'CAL',
-        type: 'EVENT',
+        type: 'CAL',
         start,
         end
       };
@@ -200,6 +200,8 @@ const SCHOOP_REDIRECT_REF = "dashboard";
 				// console.log((periodNumber - 1), eventColor);
 
 				eventSignifier += `<span style="font-size: 0.93em;">${periodNumber}</span>`; // quite hacky, sorry
+			} else if (event.type === 'CAL') {
+				eventColor = colors[8]; // This color seems to be unused this year because no one has a ninth period?
 			}
 
 			// links can now be overriden through schedule JSON
