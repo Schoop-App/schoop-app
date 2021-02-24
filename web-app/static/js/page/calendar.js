@@ -91,9 +91,10 @@ const toggleSelected = (id, start, end, title, location) => {
 
   const getEvents = async () => {
     eventsElem.innerHTML = displayText('Loading...');
-    const events = await (
-      await fetch(`/api/calendar/${date.toISOString()}`)
-    ).json();
+    // const events = await (
+    //   await fetch(`/api/calendar/${date.toISOString()}`)
+    // ).json();
+    const events = await getJSON(`/calendar/${date.toISOString()}`);
     eventsElem.innerHTML = '';
     events.forEach(cal => {
       if (!cal.events.length) return;
@@ -171,39 +172,6 @@ const toggleSelected = (id, start, end, title, location) => {
 
   const addSelected = async () => {
     for (let event of selected) {
-      // let res;
-      // if (event.location) {
-      //   res = await Swal.fire({
-      //     title: event.title,
-      //     html: `<p>Schoop found <a href="${event.location}">${event.location}</a> as a zoom link for this event. Use it?</p>`,
-      //     showCancelButton: true,
-      //     showDenyButton: true,
-      //     confirmButtonText: 'Use it',
-      //     cancelButtonText: 'Leave blank',
-      //     denyButtonText: 'Use custom link'
-      //   });
-      // } else {
-      //   res = await Swal.fire({
-      //     title: event.title,
-      //     input: 'url',
-      //     inputLabel: 'No zoom link found for this event. Use a custom one?',
-      //     inputPlaceholder: `Zoom link for ${event.title}`
-      //   });
-      // }
-      // console.log(res);
-
-      // if (res.isDismissed) {
-      //   selected = selected.map(e =>
-      //     e.id === event.id ? { ...e, location: null } : e
-      //   );
-      // } else if (res.isDenied) {
-      //   const { value } = await Swal.fire({
-      //     title: event.title,
-      //     input: 'url',
-      //     inputLabel: 'Zoom link',
-      //     inputPlaceholder: `Zoom link for ${event.title}`
-      //   });
-      // }
       const res = await Swal.fire({
         title: event.title,
         input: 'url',
@@ -228,26 +196,18 @@ const toggleSelected = (id, start, end, title, location) => {
       }
     }
 
-    console.log(selected);
-    // const res = await fetch('/api/calendar', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json'
-    //   },
-    //   body: JSON.stringify({ events: selected })
-    // });
-    // const data = await res.json();
+    const data = await postJSON('/calendar', { events: selected });
 
-    // if (data) {
-    //   window.location.href = '/';
-    // } else {
-    //   document.querySelector('.content').innerHTML = `
-    //   <div style="text-align: center;">
-    //     <h1>Something went wrong</h1>
-    //     <p>You can <a href="/calendar">reload the page</a> and try again</p>
-    //   </div>
-    //   `;
-    // }
+    if (data) { // Is this check necessary with catch block in postJSON method?
+      window.location.href = '/';
+    } else {
+      document.querySelector('.content').innerHTML = `
+      <div style="text-align: center;">
+        <h1>Something went wrong</h1>
+        <p>You can <a href="/calendar">reload the page</a> and try again</p>
+      </div>
+      `;
+    }
   };
 
   addSelectedButton.onclick = addSelected;
