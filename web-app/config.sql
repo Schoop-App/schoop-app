@@ -31,5 +31,5 @@ CREATE TABLE cal_events (
   name VARCHAR(50) NOT NULL,
   location VARCHAR(550), -- Zoom link/location
   user_id VARCHAR(21) NOT NULL,
-  FOREIGN KEY (user_id) REFERENCES students(google_oauth_id)
+  FOREIGN KEY (user_id) REFERENCES students(google_oauth_id) ON DELETE CASCADE
 );
