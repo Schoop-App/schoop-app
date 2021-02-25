@@ -105,7 +105,7 @@ const SCHOOP_REDIRECT_REF = "dashboard";
           e.start[0] > start[0] ||
           (e.start[0] === start[0] && e.start[1] > start[1])
       );
-      i = i === -1 ? newSchedule.length + 1 : i;
+      i = i === -1 ? newSchedule.length: i;
 
       let newEvent = {
         name: event.name,
@@ -118,7 +118,7 @@ const SCHOOP_REDIRECT_REF = "dashboard";
         newEvent.zoom_link = event.location;
       }
 
-      newSchedule.splice(i - 1, 0, newEvent);
+      newSchedule.splice(i, 0, newEvent);
     });
 
     return newSchedule;
@@ -318,11 +318,16 @@ const SCHOOP_REDIRECT_REF = "dashboard";
 				// THERE IS A PERIOD OR EVENT OF SOME SORT NOW
 				let missionControlCurrentEvent = schedule.find(k => dateFitsInTimeRange(d, k.start, k.end));
 				if (typeof missionControlCurrentEvent === "undefined") {
-					// Passing Period (not needed for now)
-					nowEventElem.innerText = "Passing Period";
-					nowSignifierElem.innerText = "PP";
-
 					let upNextEvent = schedule[getIndexOfEventAfterPassingPeriod(d, schedule)];
+
+					if (upNextEvent.type === "CAL") {
+            nowEventElem.innerText = "Break";
+            nowSignifierElem.innerText = "BREAK";
+          } else {
+            // Passing Period (not needed for now)
+            nowEventElem.innerText = "Passing Period";
+            nowSignifierElem.innerText = "PP";
+          }
 
 					populateMissionControlUpNextEvent(upNextEvent, upNextTimeElem, upNextEventElem, upNextSignifierElem);
 				} else {
