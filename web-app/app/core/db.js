@@ -277,6 +277,14 @@ module.exports = imports => {
     await dbConnAsync.query(query);
   };
 
+	const deleteCalendarEventsBeforeDay = async day => {
+    await dbConnAsync.query(
+      `DELETE FROM cal_events WHERE end < ${dbConn.escape(
+        dbUtil.formatMySqlTimestamp(day)
+      )}`
+    );
+  };
+
 	/* END WRITE DB */
 
 	return {
@@ -303,6 +311,7 @@ module.exports = imports => {
 		setAthleticsPeriod,
 		updateClasses: updateClassesNew, // NEW FUNCTION TO UPDATE. DOES NOT OVERWRITE, SO IDS ARE PRESERVED
 		deleteAccount,
-		addCalendarEvent
+		addCalendarEvent,
+		deleteCalendarEventsBeforeDay
 	};
 };

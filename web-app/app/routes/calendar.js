@@ -97,5 +97,20 @@ module.exports = imports => {
     }
   });
 
+  router.delete('/myevents/beforedate/:time', async (req, res) => {
+    const { time } = req.params;
+    const today = new Date(time);
+    today.setHours(0, 0, 0, 0);
+
+    try {
+      await db.deleteCalendarEventsBeforeDay(today);
+      return res.json(true);
+    } catch (error) {
+      Sentry.captureException(error);
+      logger.error(error);
+      res.json({ error });
+    }
+  });
+
   return router;
 };

@@ -101,7 +101,9 @@ const SCHOOP_REDIRECT_REF = "dashboard";
       });
 
       let i = newSchedule.findIndex(
-        e => e.start[0] > start[0] && e.start[1] > start[1]
+        e =>
+          e.start[0] > start[0] ||
+          (e.start[0] === start[0] && e.start[1] > start[1])
       );
       i = i === -1 ? newSchedule.length + 1 : i;
 
@@ -404,6 +406,11 @@ const SCHOOP_REDIRECT_REF = "dashboard";
 		initialDate = new Date();
 		// if (!(typeof CANCEL_API_REQS !== "undefined" && CANCEL_API_REQS)) {
 		// if it is okay to do API requests
+		if (shouldRefreshAll) {
+      // I don't know if this is good or not, but it seems pointless to be storing events in db that already happened and will never be displayed
+			// Note: this is run a lot more often than it has to be. Is there a way to prevent this?
+      deleteJSON(`/calendar/myevents/beforedate/${initialDate.toISOString()}`);
+    }
 		let template = await getScheduleTemplate(window.STUDENT_DIVISION || STUDENT_DIVISION, initialDate, shouldRefreshAll);
 		let classes = await getClasses(shouldRefreshAll);
 		const calEvents = await getCalendarEvents(initialDate);
