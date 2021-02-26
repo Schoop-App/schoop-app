@@ -21,7 +21,7 @@ const toggleSelected = (id, start, end, title, location) => {
       color.length - 6
     )})`;
     elem.firstElementChild.innerHTML = SELECTED_ITEM_HTML;
-    selected.push({ id, start, end, title, location });
+    selected.push({ id, start, end, title, location, color: elem.style.backgroundColor });
   }
 };
 
@@ -198,7 +198,8 @@ const toggleSelected = (id, start, end, title, location) => {
 
     const data = await postJSON('/calendar', { events: selected });
 
-    if (data) { // Is this check necessary with catch block in postJSON method?
+    if (data) {
+      // Is this check necessary with catch block in postJSON method?
       window.location.href = '/';
     } else {
       document.querySelector('.content').innerHTML = `

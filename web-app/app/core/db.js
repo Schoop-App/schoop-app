@@ -261,13 +261,15 @@ module.exports = imports => {
     const end = dbConn.escape(dbUtil.formatMySqlTimestamp(event.end));
     const title = dbConn.escape(event.title);
     const location = dbConn.escape(event.location);
+		const color = dbConn.escape(event.color);
 
-    const query = `INSERT INTO cal_events (id, start, end, name, user_id, location) VALUES (
+    const query = `INSERT INTO cal_events (id, start, end, name, user_id, color, location) VALUES (
 			${dbConn.escape(event.id)},
 			${start},
 			${end},
 			${title},
 			${dbConn.escape(userId)},
+			${color},
 			${location})
 		ON DUPLICATE KEY UPDATE start = ${start},
 		end = ${end},

@@ -17,7 +17,14 @@ const SCHOOP_REDIRECT_REF = "dashboard";
 
 	const eventRowTemplate = Handlebars.compile(
 `<tr style="background-color: {{{eventColor}}};" class="event-{{{eventIsLightOrDark}}}{{#if hasLink}} event-has-link{{/if}}"{{#if hasLink}} data-link="{{{eventZoomLink}}}" data-link-raw="{{{eventZoomLinkRaw}}}" onclick="openZoomLink(this);"{{/if}} data-event-name="{{{eventName}}}">
-	<td class="signifier left">{{{eventSignifier}}}</td>
+	<td class="signifier left">
+		<div style="display: flex; align-items: center;">
+			{{{eventSignifier}}}
+			{{#if calColor}}
+			<div style="background-color: {{calColor}}; border-radius: 50%; width: 12px; height: 12px; margin-left: 10px;" />
+			{{/if}}
+		</div>
+	</td>
 	<td class="center" style="font-weight: 700;">{{eventName}}</td>
 	<td class="right">{{eventTimespan}}</td>
 </tr>`
@@ -112,7 +119,8 @@ const SCHOOP_REDIRECT_REF = "dashboard";
         overrideSignifier: 'CAL',
         type: 'CAL',
         start,
-        end
+        end,
+				color: event.color
       };
       if (event.location) {
         newEvent.zoom_link = event.location;
@@ -192,7 +200,8 @@ const SCHOOP_REDIRECT_REF = "dashboard";
 			eventName,
 			eventTimespan,
 			eventColor,
-			eventIsLightOrDark;
+			eventIsLightOrDark,
+			calColor;
 
 		try {
 			eventSignifier = getEventSignifier(event);
@@ -204,6 +213,7 @@ const SCHOOP_REDIRECT_REF = "dashboard";
 				eventSignifier += `<span style="font-size: 0.93em;">${periodNumber}</span>`; // quite hacky, sorry
 			} else if (event.type === 'CAL') {
 				eventColor = colors[8]; // This color seems to be unused this year because no one has a ninth period?
+				calColor = event.color;
 			}
 
 			// links can now be overriden through schedule JSON
@@ -234,7 +244,8 @@ const SCHOOP_REDIRECT_REF = "dashboard";
 			eventZoomLinkRaw,
 			eventColor: eventColor || "transparent",
 			eventIsLightOrDark: eventIsLightOrDark || "light",
-			hasLink: typeof eventZoomLinkRaw !== "undefined" && eventZoomLinkRaw !== ""
+			hasLink: typeof eventZoomLinkRaw !== "undefined" && eventZoomLinkRaw !== "",
+			calColor: calColor || false
 		});
 	};
 
