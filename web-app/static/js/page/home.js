@@ -116,6 +116,7 @@ const SCHOOP_REDIRECT_REF = "dashboard";
 
       let newEvent = {
         name: event.name,
+				overrideLink: true,
         overrideSignifier: 'CAL',
         type: 'CAL',
         start,
@@ -123,7 +124,7 @@ const SCHOOP_REDIRECT_REF = "dashboard";
 				color: event.color
       };
       if (event.location) {
-        newEvent.zoom_link = event.location;
+        newEvent.link = event.location;
       }
 
       newSchedule.splice(i, 0, newEvent);
