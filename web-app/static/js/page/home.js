@@ -121,7 +121,7 @@ const SCHOOP_REDIRECT_REF = "dashboard";
         type: 'CAL',
         start,
         end,
-				color: event.color
+        color: event.color
       };
       if (event.location) {
         newEvent.link = event.location;
@@ -333,7 +333,7 @@ const SCHOOP_REDIRECT_REF = "dashboard";
 					let upNextEvent = schedule[getIndexOfEventAfterPassingPeriod(d, schedule)];
 
 					if (upNextEvent.type === "CAL") {
-            nowEventElem.innerText = "Break";
+            nowEventElem.innerText = "Nothing";
             nowSignifierElem.innerText = "BREAK";
           } else {
             // Passing Period (not needed for now)

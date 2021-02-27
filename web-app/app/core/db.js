@@ -274,6 +274,7 @@ module.exports = imports => {
 		ON DUPLICATE KEY UPDATE start = ${start},
 		end = ${end},
 		name = ${title},
+		color = ${color},
 		location = ${location}`;
 
     await dbConnAsync.query(query);
