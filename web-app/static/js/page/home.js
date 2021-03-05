@@ -360,7 +360,10 @@ const SCHOOP_REDIRECT_REF = "dashboard";
 		// let initialDate = new Date("Thursday March 19 2020 2:06 PM");
 		// initialDate = new Date("Friday March 20 2020 2:06 PM");
 		// initialDate = new Date(Date.now() + (24 * 60 * 60 * 1000));
-		initialDate = new Date();
+
+		// date can now be forced through global variable
+		initialDate = (window.FORCE_DATE) ? window.FORCE_DATE : new Date();
+		
 		// if (!(typeof CANCEL_API_REQS !== "undefined" && CANCEL_API_REQS)) {
 		// if it is okay to do API requests
 		let template = await getScheduleTemplate(window.STUDENT_DIVISION || STUDENT_DIVISION, initialDate, shouldRefreshAll);
