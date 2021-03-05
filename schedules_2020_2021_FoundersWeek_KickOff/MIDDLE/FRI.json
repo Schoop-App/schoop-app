@@ -3,30 +3,45 @@
 		"number": 6,
 		"type": "PERIOD",
 		"start": [9, 0],
-		"end": [10, 20]
+		"end": [9, 50]
 	},
 	{
-		"name": "Community/Clubs",
+		"name": "Break",
 		"type": "BREAK",
-		"start": [10, 20],
-		"end": [11, 5]
+		"start": [9, 50],
+		"end": [10, 0]
 	},
 	{
 		"number": 8,
 		"type": "PERIOD",
-		"start": [11, 5],
-		"end": [12, 25]
+		"start": [10, 0],
+		"end": [10, 50]
 	},
 	{
-		"name": "Lunch",
+		"name": "Break",
 		"type": "BREAK",
-		"start": [12, 25],
-		"end": [13, 10]
+		"start": [10, 50],
+		"end": [11, 0]
 	},
 	{
 		"number": 4,
 		"type": "PERIOD",
-		"start": [13, 10],
-		"end": [14, 30]
+		"start": [11, 0],
+		"end": [11, 50]
+	},
+	{
+		"name": "Lunch",
+		"type": "BREAK",
+		"start": [11, 50],
+		"end": [12, 45]
+	},
+	{
+		"name": "Founder's Coffee House",
+		"type": "ASSEMBLY",
+		"overrideSignifier": "PERF",
+		"start": [12, 45],
+		"end": [14, 15],
+		"overrideLink": true,
+		"link": "https://windwardschool.zoom.us/j/4242891050?pwd=cVljLzFXZVFJQ3JncmduUklPd0hZZz09"
 	}
 ]
