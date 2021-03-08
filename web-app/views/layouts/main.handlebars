@@ -150,14 +150,12 @@
 		// last-minute junk added for debug
 		function showDebugDialog() {
 			const values = {
-				node_env: NODE_ENV,
+				node_env: (NODE_ENV === "" ? "(none)" : NODE_ENV),
 				host: SCHOOP_HOST,
-				divisions: DIVISIONS,
-				division_periods: DIVISION_PERIODS,
+				student_division: STUDENT_DIVISION,
 				schedule_folder_name: SCHEDULE_FOLDER_NAME,
-				app_instance: (APP_INSTANCE === "" ? "none" : APP_INSTANCE),
-				is_on_break: IS_ON_BREAK,
-				school_break_alert: SCHOOL_BREAK_ALERT
+				app_instance: (APP_INSTANCE === "" ? "N/A" : APP_INSTANCE),
+				is_on_break: IS_ON_BREAK
 			};
 			const listKeys = Object.keys(values);
 
