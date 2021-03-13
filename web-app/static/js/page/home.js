@@ -107,16 +107,9 @@ const SCHOOP_REDIRECT_REF = "dashboard";
         return [temp.getHours(), temp.getMinutes()];
       });
 
-      let i = newSchedule.findIndex(
-        e =>
-          e.start[0] > start[0] ||
-          (e.start[0] === start[0] && e.start[1] > start[1])
-      );
-      i = i === -1 ? newSchedule.length: i;
-
       let newEvent = {
         name: event.name,
-				overrideLink: true,
+        overrideLink: true,
         overrideSignifier: 'CAL',
         type: 'CAL',
         start,
@@ -127,7 +120,17 @@ const SCHOOP_REDIRECT_REF = "dashboard";
         newEvent.link = event.location;
       }
 
-      newSchedule.splice(i, 0, newEvent);
+      if (newSchedule.length) {
+        let i = newSchedule.findIndex(
+          e =>
+            e.start[0] > start[0] ||
+            (e.start[0] === start[0] && e.start[1] > start[1])
+        );
+        i = i === -1 ? newSchedule.length : i;
+        newSchedule.splice(i, 0, newEvent);
+      } else {
+        newSchedule = [newEvent];
+      }
     });
 
     return newSchedule;
