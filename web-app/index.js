@@ -60,10 +60,6 @@ const oauth2Client = new google.auth.OAuth2({
   clientId: PRIVATE_CONFIG.googleOAuth.web.client_id,
   clientSecret: PRIVATE_CONFIG.googleOAuth.web.client_secret
 });
-const calendar = google.calendar({
-  version: 'v3',
-  auth: oauth2Client
-});
 
 oauth2Client.on('tokens', tokens => {
 	setAccessToken(tokens.access_token);

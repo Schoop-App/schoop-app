@@ -292,24 +292,8 @@ const showFeedbackDialog = async () => {
 		}
 	};
 
-	const deleteJSON = async path => {
-    try {
-      let req = await fetch(API_HOST + path, {
-        method: 'DELETE'
-      });
-      let res = await req.json();
-
-      return res;
-    } catch (e) {
-      await showLostCommunicationDialog(
-        'If you would like, you can reload the page to reconnect.'
-      );
-    }
-  };
-
 	window.getJSON = getJSON;
 	window.postJSON = postJSON;
-	window.deleteJSON = deleteJSON;
 })(window);
 
 document.addEventListener("DOMContentLoaded", async () => {

@@ -16,6 +16,7 @@ const dbConn = mysql.createConnection({
 	password: PRIVATE_CONFIG.database.password,
 	database: PRIVATE_CONFIG.database.database,
 	port: PRIVATE_CONFIG.database.port,
+	timezone: 'utc',
 	ssl: {
 		ca: fs.readFileSync(process.env.DATABASE_CERT_PATH || process.argv[2] || "/Users/zooza310/ca-certificate.crt")
 	}
@@ -40,6 +41,13 @@ if (date.getDay() !== 6 && date.getDay() !== 0 && !PRIVATE_CONFIG.is_school_brea
 		await sendEmails(db, studentIds); // send emails to retrieved student ids
 
 		console.log("Done!"); // it's over
+
+		// I know this has nothing to do with emails but I want to clear unused calendar events every day
+		// so I'm adding this on to the existing cron job
+		console.log("Deleting yesterday's events");
+		date.setHours(0, 0, 0, 0);
+		await db.deleteCalendarEventsBeforeDay(date);
+		console.log("Done!");
 
 		dbConn.end(); // close connection when done
 	});
