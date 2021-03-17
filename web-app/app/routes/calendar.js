@@ -49,11 +49,30 @@ module.exports = imports => {
         return {
           backgroundColor: cal.backgroundColor,
           foregroundColor: cal.foregroundColor,
+          calId: cal.id,
           events: data.data.items
         };
       });
       const events = await Promise.all(result);
       res.json(events);
+    } catch (e) {
+      Sentry.captureException(e);
+      logger.error(e);
+    }
+  });
+
+  router.get('/cal/:id', async (req, res) => {
+    const { id } = req.params;
+    const { tkn } = req.cookies;
+
+    oauth2Client.credentials = {
+      access_token: getAccessToken(),
+      refresh_token: tkn
+    };
+
+    try {
+      const cal = await calendar.calendarList.get({ calendarId: id });
+      res.json(cal.data);
     } catch (e) {
       Sentry.captureException(e);
       logger.error(e);

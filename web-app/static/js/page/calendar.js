@@ -3,7 +3,7 @@ let selected = [];
 const SELECTED_ITEM_HTML = '<h3><i class="las la-check-square"></i></h3>';
 const UNSELECTED_ITEM_HTML = '<h3><i class="las la-stop"></i></h3>';
 
-const toggleSelected = (id, start, end, title, location) => {
+const toggleSelected = (id, start, end, title, location, calId) => {
   const elem = document.getElementById(id);
   const color = elem.style.backgroundColor;
   const colorStart = color.indexOf('(') + 1;
@@ -27,7 +27,7 @@ const toggleSelected = (id, start, end, title, location) => {
       end,
       title,
       location,
-      color: elem.style.backgroundColor
+      calId
     });
   }
 };
@@ -46,7 +46,7 @@ const toggleSelected = (id, start, end, title, location) => {
     `<tr
       style="background-color: {{{backgroundColor}}}; color: {{{foregroundColor}}}"
       class="event"
-      onclick="toggleSelected('{{{id}}}', '{{{start}}}', '{{{end}}}', \`{{{summary}}}\`, '{{{location}}}')"
+      onclick="toggleSelected('{{{id}}}', '{{{start}}}', '{{{end}}}', \`{{{summary}}}\`, '{{{location}}}', '{{{calId}}}')"
       id="{{{id}}}"
       data-event-name="{{{summary}}}">
         <td>{{{selected}}}</td>
@@ -98,9 +98,6 @@ const toggleSelected = (id, start, end, title, location) => {
 
   const getEvents = async () => {
     eventsElem.innerHTML = displayText('Loading...');
-    // const events = await (
-    //   await fetch(`/api/calendar/${date.toISOString()}`)
-    // ).json();
     const events = await getJSON(`/calendar/${date.toISOString()}`);
     eventsElem.innerHTML = '';
     events.forEach(cal => {
@@ -119,7 +116,7 @@ const toggleSelected = (id, start, end, title, location) => {
           .sort((a, b) => a.start - b.start)
           .forEach(event => {
             const { start, end, summary, id } = event;
-            const { backgroundColor, foregroundColor } = cal;
+            const { backgroundColor, foregroundColor, calId } = cal;
             const [r, g, b] = hexToRgb(backgroundColor);
 
             const isSelected = selected.find(i => i.id === event.id);
@@ -137,7 +134,8 @@ const toggleSelected = (id, start, end, title, location) => {
                 start
               )} - ${formatDateForDisplay(end)}`,
               location: getLinkIfPresent(event),
-              selected: isSelected ? SELECTED_ITEM_HTML : UNSELECTED_ITEM_HTML
+              selected: isSelected ? SELECTED_ITEM_HTML : UNSELECTED_ITEM_HTML,
+              calId
             });
           })
       );
@@ -208,15 +206,12 @@ const toggleSelected = (id, start, end, title, location) => {
     if (data) {
       window.location.href = '/';
     } else {
-      await showLostCommunicationDialog(
-        'If you would like, you can reload the page to reconnect.'
-      );
-      // document.querySelector('.content').innerHTML = `
-      // <div style="text-align: center;">
-      //   <h1>Something went wrong</h1>
-      //   <p>You can <a href="/calendar">reload the page</a> and try again</p>
-      // </div>
-      // `;
+      document.querySelector('.content').innerHTML = `
+      <div style="text-align: center;">
+        <h1>Something went wrong</h1>
+        <p>You can <a href="/calendar">reload the page</a> and try again</p>
+      </div>
+      `;
     }
   };
 

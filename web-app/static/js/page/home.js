@@ -98,14 +98,20 @@ const SCHOOP_REDIRECT_REF = "dashboard";
     return events;
   };
 
-  const addCalEventsToSchedule = (events, schedule) => {
+  const addCalEventsToSchedule = async (events, schedule) => {
     let newSchedule = schedule;
 
-    events.forEach(event => {
+		for (let i = 0; i < events.length; i++) {
+			const event = events[i];
+
       const [start, end] = [event.start, event.end].map(t => {
         const temp = new Date(t);
         return [temp.getHours(), temp.getMinutes()];
       });
+
+      const cal = await getJSON(
+        `/calendar/cal/${encodeURIComponent(event.cal)}`
+      );
 
       let newEvent = {
         name: event.name,
@@ -114,7 +120,7 @@ const SCHOOP_REDIRECT_REF = "dashboard";
         type: 'CAL',
         start,
         end,
-        color: event.color
+        color: cal.backgroundColor
       };
       if (event.location) {
         newEvent.link = event.location;
@@ -131,7 +137,7 @@ const SCHOOP_REDIRECT_REF = "dashboard";
       } else {
         newSchedule = [newEvent];
       }
-    });
+    };
 
     return newSchedule;
   };
@@ -431,7 +437,7 @@ const SCHOOP_REDIRECT_REF = "dashboard";
 		const calEvents = await getCalendarEvents(initialDate);
 		let userSchedule = buildUserSchedule(template, classes, shouldRefreshAll); // built-out schedule
 		if (calEvents) {
-      userSchedule = addCalEventsToSchedule(calEvents, userSchedule);
+      userSchedule = await addCalEventsToSchedule(calEvents, userSchedule);
     }
 		// console.log("USER SCHEDULE (debug): ", JSON.stringify(userSchedule, null, 4));
 
