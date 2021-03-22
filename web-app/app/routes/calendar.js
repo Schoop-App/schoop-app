@@ -61,6 +61,27 @@ module.exports = imports => {
     }
   });
 
+  router.get('/event/:calId/:id', async (req, res) => {
+    const { calId, id } = req.params;
+    const { tkn } = req.cookies;
+
+    oauth2Client.credentials = {
+      access_token: getAccessToken(),
+      refresh_token: tkn
+    };
+
+    try {
+      const event = await calendar.events.get({
+        calendarId: calId,
+        eventId: id
+      });
+      res.json(event.data);
+    } catch (e) {
+      Sentry.captureException(e);
+      logger.error(e);
+    }
+  });
+
   router.get('/cal/:id', async (req, res) => {
     const { id } = req.params;
     const { tkn } = req.cookies;

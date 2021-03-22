@@ -139,10 +139,10 @@ dbConn.connect(async err => {
 			clientSecret: PRIVATE_CONFIG.googleOAuth.web.client_secret,
 			callbackURL: `${SCHOOP_HOST}/api/auth/google/callback`,
 			scope: [
-        'email',
-        'profile',
-        'https://www.googleapis.com/auth/calendar.readonly'
-      ]
+				'email',
+				'profile',
+				'https://www.googleapis.com/auth/calendar.readonly'
+			]
 		},
 		// This is a "verify" function required by all Passport strategies
 		(accessToken, refreshToken, profile, cb) => {

@@ -3,7 +3,7 @@ let selected = [];
 const SELECTED_ITEM_HTML = '<h3><i class="las la-check-square"></i></h3>';
 const UNSELECTED_ITEM_HTML = '<h3><i class="las la-stop"></i></h3>';
 
-const toggleSelected = (id, start, end, title, location, calId) => {
+const toggleSelected = (id, calId) => {
   const elem = document.getElementById(id);
   const color = elem.style.backgroundColor;
   const colorStart = color.indexOf('(') + 1;
@@ -21,14 +21,7 @@ const toggleSelected = (id, start, end, title, location, calId) => {
       color.length - 6
     )})`;
     elem.firstElementChild.innerHTML = SELECTED_ITEM_HTML;
-    selected.push({
-      id,
-      start,
-      end,
-      title,
-      location,
-      calId
-    });
+    selected.push({ id, calId });
   }
 };
 
@@ -46,7 +39,7 @@ const toggleSelected = (id, start, end, title, location, calId) => {
     `<tr
       style="background-color: {{{backgroundColor}}}; color: {{{foregroundColor}}}"
       class="event"
-      onclick="toggleSelected('{{{id}}}', '{{{start}}}', '{{{end}}}', \`{{{summary}}}\`, '{{{location}}}', '{{{calId}}}')"
+      onclick="toggleSelected('{{{id}}}', '{{{calId}}}')"
       id="{{{id}}}"
       data-event-name="{{{summary}}}">
         <td>{{{selected}}}</td>
@@ -126,14 +119,11 @@ const toggleSelected = (id, start, end, title, location, calId) => {
                 ? `rgb(${r}, ${g}, ${b})`
                 : `rgba(${r}, ${g}, ${b}, 0.8)`,
               foregroundColor,
-              start,
-              end,
               summary,
               id,
               timespan: `${formatDateForDisplay(
                 start
               )} - ${formatDateForDisplay(end)}`,
-              location: getLinkIfPresent(event),
               selected: isSelected ? SELECTED_ITEM_HTML : UNSELECTED_ITEM_HTML,
               calId
             });
@@ -176,43 +166,44 @@ const toggleSelected = (id, start, end, title, location, calId) => {
   todayButton.onclick = setToday;
 
   const addSelected = async () => {
+    let events = [];
     for (let event of selected) {
+      const data = await getJSON(`/calendar/event/${event.calId}/${event.id}`);
+      const location = getLinkIfPresent(data);
       const res = await Swal.fire({
-        title: event.title,
+        title: data.summary,
         input: 'url',
         inputLabel: 'Zoom link for this event',
-        inputValue: event.location || '',
+        inputValue: location || '',
         showDenyButton: true,
         denyButtonText: 'Leave blank'
       });
+
+      let toAdd = {
+        id: data.id,
+        start: fixDate(data.start.dateTime),
+        end: fixDate(data.end.dateTime),
+        title: data.summary,
+        calId: event.calId,
+        location
+      };
 
       if (res.isDismissed) {
         selected = [];
         getEvents();
         return;
       } else if (res.isConfirmed) {
-        selected = selected.map(e =>
-          e.id === event.id ? { ...e, location: res.value || null } : e
-        );
+        toAdd.location = res.value || null;
       } else {
-        selected = selected.map(e =>
-          e.id === event.id ? { ...e, location: null } : e
-        );
+        toAdd.location = null;
       }
+      events.push(toAdd);
     }
+    console.log(events);
 
-    const data = await postJSON('/calendar', { events: selected });
+    await postJSON('/calendar', { events });
 
-    if (data) {
-      window.location.href = '/';
-    } else {
-      document.querySelector('.content').innerHTML = `
-      <div style="text-align: center;">
-        <h1>Something went wrong</h1>
-        <p>You can <a href="/calendar">reload the page</a> and try again</p>
-      </div>
-      `;
-    }
+    window.location.href = '/';
   };
 
   addSelectedButton.onclick = addSelected;
