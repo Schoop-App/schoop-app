@@ -252,6 +252,33 @@ module.exports = imports => {
 		}
 	});
 
+	// DOWNLOAD CLASSES (work-in-progress for backing up)
+	router.get("/download/schoop_account.json", accessProtectionMiddleware, endpointNoCacheMiddleware, async (req, res) => {
+		// get user's classes and info
+		const classes = await db.getClasses(req.user.id);
+		const studentInfo = await db.getStudentInfo(req.user.id);
+
+		// set proper headers for downloading the file
+		res.set({
+			"Content-Type": "application/json",
+			"Content-Disposition": "attachment; filename=\"schoop_account.json\""
+		});
+
+		// send only required JSON
+		res.status(200).send({
+			nickname: studentInfo.first_name,
+			gradYear: studentInfo.graduation_year,
+			seminarZoomLink: studentInfo.seminar_zoom_link,
+			classes: classes.map((classInfo) => {
+				return {
+					className: classInfo.class_name,
+					period: classInfo.period_number,
+					zoomLink: classInfo.zoom_link
+				};
+			})
+		});
+	});
+
 	// DEBUG
 	router.get("/schedule_folder_name", accessProtectionMiddleware, async (req, res) => {
 		// gets folder name for debug purposes
