@@ -287,6 +287,10 @@ module.exports = imports => {
     );
   };
 
+	const deleteCalendarEvent = async id => {
+		await dbConnAsync.query(`DELETE FROM cal_events WHERE id = ${dbConn.escape(id)}`);
+	}
+
 	/* END WRITE DB */
 
 	return {
@@ -314,6 +318,7 @@ module.exports = imports => {
 		updateClasses: updateClassesNew, // NEW FUNCTION TO UPDATE. DOES NOT OVERWRITE, SO IDS ARE PRESERVED
 		deleteAccount,
 		addCalendarEvent,
-		deleteCalendarEventsBeforeDay
+		deleteCalendarEventsBeforeDay,
+		deleteCalendarEvent
 	};
 };

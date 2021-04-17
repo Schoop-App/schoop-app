@@ -728,3 +728,8 @@ table.calendar-events tr td:first-child {
 	opacity: 0.6;
 	cursor: default;
 }
+
+.clickable:hover {
+	cursor: pointer;
+	filter: brightness(0.9);
+}

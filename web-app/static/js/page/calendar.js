@@ -3,23 +3,16 @@ let selected = [];
 const SELECTED_ITEM_HTML = '<h3><i class="las la-check-square"></i></h3>';
 const UNSELECTED_ITEM_HTML = '<h3><i class="las la-stop"></i></h3>';
 
-const toggleSelected = (id, calId) => {
-  const elem = document.getElementById(id);
-  const color = elem.style.backgroundColor;
-  const colorStart = color.indexOf('(') + 1;
+const toggleSelected = elem => {
+  const id = elem.getAttribute('data-event-id');
+  const calId = elem.getAttribute('data-cal-id');
 
   if (selected.find(event => event.id === id)) {
-    elem.style.backgroundColor = `rgba(${color.substring(
-      colorStart,
-      color.length - 1
-    )}, 0.7)`;
+    elem.style.filter = "opacity(0.8)";
     elem.firstElementChild.innerHTML = UNSELECTED_ITEM_HTML;
     selected = selected.filter(event => event.id !== id);
   } else {
-    elem.style.backgroundColor = `rgb(${color.substring(
-      colorStart,
-      color.length - 6
-    )})`;
+    elem.style.filter = "brightness(1)";
     elem.firstElementChild.innerHTML = SELECTED_ITEM_HTML;
     selected.push({ id, calId });
   }
@@ -37,11 +30,11 @@ const toggleSelected = (id, calId) => {
 
   const eventRowTemplate = Handlebars.compile(
     `<tr
-      style="background-color: {{{backgroundColor}}}; color: {{{foregroundColor}}}"
+      style="background-color: {{{backgroundColor}}}; color: {{{foregroundColor}}}; filter: opacity({{opacity}})"
       class="event"
-      onclick="toggleSelected('{{{id}}}', '{{{calId}}}')"
-      id="{{{id}}}"
-      data-event-name="{{{summary}}}">
+      onclick="toggleSelected(this)"
+      data-event-id="{{{id}}}"
+      data-cal-id="{{{calId}}}">
         <td>{{{selected}}}</td>
 	      <td class="center" style="font-weight: 700;">{{summary}}</td>
 	      <td class="right">{{timespan}}</td>
@@ -77,18 +70,6 @@ const toggleSelected = (id, calId) => {
     return;
   };
 
-  // From https://stackoverflow.com/questions/5623838/rgb-to-hex-and-hex-to-rgb
-  const hexToRgb = hex => {
-    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-    return result
-      ? [
-          parseInt(result[1], 16), // r
-          parseInt(result[2], 16), // g
-          parseInt(result[3], 16) // b
-        ]
-      : null;
-  };
-
   const getEvents = async () => {
     eventsElem.innerHTML = displayText('Loading...');
     const events = await getJSON(`/calendar/${date.toISOString()}`);
@@ -110,14 +91,11 @@ const toggleSelected = (id, calId) => {
           .forEach(event => {
             const { start, end, summary, id } = event;
             const { backgroundColor, foregroundColor, calId } = cal;
-            const [r, g, b] = hexToRgb(backgroundColor);
 
             const isSelected = selected.find(i => i.id === event.id);
 
             eventsElem.innerHTML += eventRowTemplate({
-              backgroundColor: isSelected
-                ? `rgb(${r}, ${g}, ${b})`
-                : `rgba(${r}, ${g}, ${b}, 0.8)`,
+              backgroundColor,
               foregroundColor,
               summary,
               id,
@@ -125,6 +103,7 @@ const toggleSelected = (id, calId) => {
                 start
               )} - ${formatDateForDisplay(end)}`,
               selected: isSelected ? SELECTED_ITEM_HTML : UNSELECTED_ITEM_HTML,
+              opacity: isSelected ? 1 : 0.8,
               calId
             });
           })

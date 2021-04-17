@@ -137,5 +137,17 @@ module.exports = imports => {
     }
   });
 
+  router.delete('/myevents/:id', async (req, res) => {
+    const { id } = req.params;
+
+    try {
+      await db.deleteCalendarEvent(id);
+    } catch (error) {
+      Sentry.captureException(error);
+      logger.error(error);
+      res.json({ error });
+    }
+  });
+
   return router;
 };

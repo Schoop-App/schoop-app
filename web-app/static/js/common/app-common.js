@@ -25,6 +25,18 @@ const openZoomLink = elem => {
 	if (confirm("Open link for " + eventName + "?\n(" + eventLinkRaw + ")")) window.open(eventLink);
 };
 
+const eventInfo = async e => {
+	e.stopPropagation();
+	e.stopImmediatePropagation();
+	const elem = e.target;
+  const eventName = elem.getAttribute('data-event-name');
+  const eventId = elem.getAttribute('data-event-id');
+	
+  if (confirm(`Hide ${eventName}?`)) {
+    await fetch(`/api/calendar/myevents/${eventId}`, { method: 'DELETE' });
+  }
+};
+
 // SHOW/HIDE LOADING OVERLAY
 const hideLoadingOverlay = () => {
 	document.querySelector("main.content").classList.add("page-loaded");

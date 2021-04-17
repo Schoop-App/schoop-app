@@ -21,7 +21,7 @@ const SCHOOP_REDIRECT_REF = "dashboard";
 		<div style="display: flex; align-items: center;">
 			{{{eventSignifier}}}
 			{{#if calColor}}
-			<div style="background-color: {{calColor}}; border-radius: 50%; width: 12px; height: 12px; margin-left: 10px;" />
+			<div style="background-color: {{calColor}}; border-radius: 50%; width: 14px; height: 14px; margin-left: 10px;" onclick="eventInfo(event)" data-event-name="{{{eventName}}}" data-event-id="{{{calId}}}" class="clickable" />
 			{{/if}}
 		</div>
 	</td>
@@ -120,7 +120,8 @@ const SCHOOP_REDIRECT_REF = "dashboard";
         type: 'CAL',
         start,
         end,
-        color: cal.backgroundColor
+        color: cal.backgroundColor,
+				id: event.id,
       };
       if (event.location) {
         newEvent.link = event.location;
@@ -211,7 +212,8 @@ const SCHOOP_REDIRECT_REF = "dashboard";
 			eventTimespan,
 			eventColor,
 			eventIsLightOrDark,
-			calColor;
+			calColor,
+			calId;
 
 		try {
 			eventSignifier = getEventSignifier(event);
@@ -224,6 +226,7 @@ const SCHOOP_REDIRECT_REF = "dashboard";
 			} else if (event.type === 'CAL') {
 				eventColor = colors[8]; // This color seems to be unused this year because no one has a ninth period?
 				calColor = event.color;
+				calId = event.id;
 			}
 
 			// links can now be overriden through schedule JSON
@@ -255,7 +258,8 @@ const SCHOOP_REDIRECT_REF = "dashboard";
 			eventColor: eventColor || "transparent",
 			eventIsLightOrDark: eventIsLightOrDark || "light",
 			hasLink: typeof eventZoomLinkRaw !== "undefined" && eventZoomLinkRaw !== "",
-			calColor: calColor || false
+			calColor: calColor || false,
+			calId: calId || false
 		});
 	};
 
