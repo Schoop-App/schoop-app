@@ -49,10 +49,10 @@ const dbConn = mysql.createConnection({
   password: PRIVATE_CONFIG.database.password,
   database: PRIVATE_CONFIG.database.database,
   port: PRIVATE_CONFIG.database.port,
-  timezone: 'utc'
-  // ssl: {
-  // 	ca: fs.readFileSync(process.env.DATABASE_CERT_PATH)
-  // }
+  timezone: 'utc',
+  ssl: {
+  	ca: fs.readFileSync(process.env.DATABASE_CERT_PATH)
+  }
 });
 
 const { google } = require('googleapis');

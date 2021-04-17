@@ -32,7 +32,7 @@ const eventInfo = async e => {
   const eventName = elem.getAttribute('data-event-name');
   const eventId = elem.getAttribute('data-event-id');
 	
-  if (confirm(`Hide ${eventName}?`)) {
+  if (confirm(`Remove ${eventName} from today view?`)) {
     await fetch(`/api/calendar/myevents/${eventId}`, { method: 'DELETE' });
   }
 };
