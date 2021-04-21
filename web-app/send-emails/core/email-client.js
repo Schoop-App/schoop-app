@@ -47,13 +47,10 @@ module.exports = imports => {
 		/* ----- */
 		let studentFirstName = studentInfo.first_name;
 		let studentDivision = studentCore.getDivisionFromGradYear(studentInfo.graduation_year);
-		let studentSeminarZoomLink = studentInfo.seminar_zoom_link;
 
 		let template = await schedules.getSchedule(studentDivision, getScheduleDay(todaysDate));
 		let classes = await db.getClassesByStudentEmail(studentEmail);
-		let scheduleHtml = getScheduleHtml(template, classes, studentSeminarZoomLink);
-
-		let randNum = Math.random(); // for my testing
+		let scheduleHtml = getScheduleHtml(template, classes, studentInfo.seminar_zoom_link, studentInfo.seminar_name);
 
 		/* The Gmail schema I implemented in the HTML below
 		 * does not work yet for a couple reasons:
