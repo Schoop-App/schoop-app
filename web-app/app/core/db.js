@@ -160,6 +160,7 @@ module.exports = imports => {
 
 	//                                                                             (table,      cell,                primaryKeyName,   primaryKeyValue, updateValue)
 	const setSeminarZoomLink = async (studentId, zoomLink) => await dbUpdateQueryGeneric("students", "seminar_zoom_link", "google_oauth_id", studentId, zoomLink);
+	const setSeminarName = async (studentId, seminarName) => await dbUpdateQueryGeneric("students", "seminar_name", "google_oauth_id", studentId, seminarName);
 	const setStudentGradYear = async (studentId, gradYear) => await dbUpdateQueryGeneric("students", "graduation_year", "google_oauth_id", studentId, gradYear);
 	// sets value for email consent
 	const setStudentConsentedToEmail = async (studentId, newState) => await dbUpdateQueryGeneric("students", "did_consent_to_email", "google_oauth_id", studentId, newState);
@@ -262,6 +263,7 @@ module.exports = imports => {
 		addStudent,
 		addClass,
 		setSeminarZoomLink,
+		setSeminarName,
 		setStudentGradYear,
 		setStudentConsentedToEmail,
 		setStudentWantsDailyEmail,

@@ -174,7 +174,7 @@ const SCHOOP_REDIRECT_REF = "dashboard";
 				eventZoomLink = SCHOOP_HOST + eventZoomLink;
 				eventZoomLinkRaw = (event.overrideSignifier === "SEMINAR") ? SEMINAR_ZOOM_LINK : event.zoom_link;
 			}
-			eventName = event.class_name || event.name || NOTHING_DEMARCATOR;
+			eventName = event.overrideSignifier === "SEMINAR" ? SEMINAR_NAME || event.name : event.class_name || event.name || NOTHING_DEMARCATOR;
 			eventTimespan = generateTimespan(event.start, event.end);
 			eventIsLightOrDark = lightOrDark(event.color);
 		} catch (e) {

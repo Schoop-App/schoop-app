@@ -98,8 +98,9 @@ module.exports = imports => {
 				// *** Setting graduation year
 				await db.setStudentGradYear(req.user.id, gradeToGradYear(req.body.studentGrade));
 
-				// *** Setting seminar Zoom link
-				await db.setSeminarZoomLink(req.user.id, req.body.zoomLink_SEMINAR);
+				// *** Setting seminar Zoom link & name
+				await db.setSeminarZoomLink(req.user.id, escapeUrlForClassEntry(req.body.zoomLink_SEMINAR));
+				await db.setSeminarName(req.user.id, sanitizer.sanitize(req.body.className_SEMINAR || ""));
 
 				// *** Setting student email consent (or not)
 				// side note: not sure if the studentConsentedToEmail checkbox is parsed as a 0/1 binary value or as a JS boolean. But either one will work below:
@@ -200,8 +201,14 @@ module.exports = imports => {
 				classJson.zoomLink = escapeUrlForClassEntry(classJson.zoomLink);
 				return classJson;
 			}));
+
+			// update seminar name & zoom link
 			await db.setSeminarZoomLink(req.user.id, escapeUrlForClassEntry(req.body.seminarZoomLink));
+			await db.setSeminarName(req.user.id, sanitizer.sanitize(req.body.seminarName));
+
+			// update athletics period (if applicable)
 			await db.setAthleticsPeriod(req.user.id, parseAthleticsPeriod(req.body.athleticsPeriod || -1));
+			
 			res.status(200).send({
 				status: "ok"
 			});
@@ -269,13 +276,14 @@ module.exports = imports => {
 			nickname: studentInfo.first_name,
 			gradYear: studentInfo.graduation_year,
 			seminarZoomLink: studentInfo.seminar_zoom_link,
+			seminarName: studentInfo.seminar_name || "",
 			classes: classes.map((classInfo) => {
 				return {
 					className: classInfo.class_name,
 					period: classInfo.period_number,
 					zoomLink: classInfo.zoom_link
 				};
-			})
+			}).sort((a, b) => a.period - b.period)
 		});
 	});
 

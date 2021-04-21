@@ -7,9 +7,9 @@ const { CLASS_COLORS } = require("../../../app/core/student-core");
 module.exports = studentId => {
 	const scheduleBuildingCore = ScheduleBuildingCore(studentId); // initialize schedule building with student id for link building
 
-	const getScheduleHtml = (template, classes, seminarZoomLink) => {
+	const getScheduleHtml = (template, classes, seminarZoomLink, seminarName) => {
 		let schedule = JSON.parse(JSON.stringify(scheduleBuildingCore.buildUserSchedule(template, classes)));
-		let scheduleHtml = scheduleBuildingCore.buildAllScheduleItemsHTML(schedule, CLASS_COLORS, seminarZoomLink);
+		let scheduleHtml = scheduleBuildingCore.buildAllScheduleItemsHTML(schedule, CLASS_COLORS, seminarZoomLink, seminarName);
 		return `<table class="today-schedule fix-border-radius"><tbody>${scheduleHtml}</tbody></table>`;
 	};
 
