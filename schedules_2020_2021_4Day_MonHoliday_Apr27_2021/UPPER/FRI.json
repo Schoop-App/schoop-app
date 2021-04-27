@@ -1,0 +1,51 @@
+[
+	{
+		"number": 2,
+		"type": "PERIOD",
+		"start": [9, 0],
+		"end": [9, 55]
+	},
+	{
+		"name": "Clubs/Community",
+		"type": "BREAK",
+		"start": [9, 55],
+		"end": [10, 40]
+	},
+	{
+		"number": 4,
+		"type": "PERIOD",
+		"start": [10, 40],
+		"end": [11, 35]
+	},
+	{
+		"name": "Lunch",
+		"type": "BREAK",
+		"start": [11, 35],
+		"end": [12, 20]
+	},
+	{
+		"number": 7,
+		"type": "PERIOD",
+		"start": [12, 20],
+		"end": [13, 15]
+	},
+	{
+		"name": "Break",
+		"type": "BREAK",
+		"start": [13, 15],
+		"end": [13, 35]
+	},
+	{
+		"number": 6,
+		"type": "PERIOD",
+		"start": [13, 35],
+		"end": [14, 30]
+	},
+	{
+		"name": "9th and 10th Grade On Campus",
+		"type": "BREAK",
+		"overrideSignifier": "SPECIAL",
+		"start": [9, 0],
+		"end": [14, 30]
+	}
+]
