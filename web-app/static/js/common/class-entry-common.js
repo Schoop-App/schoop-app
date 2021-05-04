@@ -67,7 +67,7 @@
 		tableBodyElem.innerHTML += Handlebars.compile(
 `<tr>
 <td class="signifier left">SEMINAR</td>
-<td class="center" style="font-weight: 700;"><input type="text" value="Seminar" name="className_SEMINAR" disabled class="class-entry-input class-entry-class-name" /></td>
+<td class="center" style="font-weight: 700;"><input type="text" name="className_SEMINAR" class="class-entry-input class-entry-class-name" placeholder="Seminar Name (optional)" /></td>
 <td class="{{#if showNinthSeminar}}center{{else}}right{{/if}}"><input type="text" placeholder="Zoom Link or Code" name="zoomLink_SEMINAR" class="class-entry-input class-entry-class-zoom-link" onblur="checkZoomLinkOrCodeValidity(this);" /></td>
 {{#if showNinthSeminar}}<td class="right">&nbsp;</td>{{/if}}
 </tr>`
@@ -84,7 +84,7 @@
 		cb();
 	};
 
-	const showEntryTableForGrade = (grade, cb=function(a, b, c){}, overrideSetupExtras=false) => {
+	const showEntryTableForGrade = (grade, cb=function(){}, overrideSetupExtras=false) => {
 		let division;
 		let showNinthSeminar = false;
 		if (grade === 9)

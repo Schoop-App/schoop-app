@@ -611,6 +611,12 @@ form#class-entry-form input[type=submit].btn, .btn.submit-btn {
 	margin-top: 15px;
 }
 
+.btn.download-account-btn {
+	background-color: var(--main-theme-color);
+	color: #fff;
+	margin-top: 7px;
+}
+
 .btn.delete-btn {
 	background-color: #c7371e;
 	color: #fff;

@@ -46,6 +46,7 @@
 		var STUDENT_DIVISION = "{{{studentDivision}}}";
 		var STUDENT_FIRST_NAME = "{{{studentInfo.first_name}}}";
 		var SEMINAR_ZOOM_LINK = "{{{studentInfo.seminar_zoom_link}}}";
+		var SEMINAR_NAME = "{{{studentInfo.seminar_name}}}";
 
 		// error reporting like a boss
 		Sentry.configureScope(function (scope) {
@@ -90,6 +91,19 @@
 	<link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css"> <!-- line awesome -->
 	<link rel="stylesheet" href="/css/vendor.css?{{defaults.jsLastRevised}}">
 	<link rel="stylesheet" href="/css/app.css?{{defaults.jsLastRevised}}">
+
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-DHETQK3N9W"></script>
+	<script>
+	  window.dataLayer = window.dataLayer || [];
+	  function gtag(){dataLayer.push(arguments);}
+	  gtag('js', new Date());
+
+	  gtag('config', 'G-DHETQK3N9W');
+	</script>
+
+	<!-- cookie consent banner (work in progress) -->
+	<link rel="stylesheet" type="text/css" href="https://cdn.wpcc.io/lib/1.0.2/cookieconsent.min.css"/><script src="https://cdn.wpcc.io/lib/1.0.2/cookieconsent.min.js" defer></script><script>window.addEventListener("load", function(){window.wpcc.init({"border":"thin","corners":"small","colors":{"popup":{"background":"#cff5ff","text":"#000000","border":"#5e99c2"},"button":{"background":"#5e99c2","text":"#ffffff"}},"position":"bottom","content":{"href":"https://schoop.app/privacy_policy.html","link":"Privacy Policy","button":"Got it","message":"Schoop uses cookies to optimize your experience."}})});</script>
 </head>
 <body>
 	<!-- loading overlay -->
@@ -105,7 +119,7 @@
             	<ul class="nav-btns-inner">
 	            	<li><a role="button" data-role="button" class="home-btn" href="/home" title="Home"><span class="sr-only">Home</span><i class="las la-home"></i></a></li>
 	            	<li><a role="button" data-role="button" class="profile-btn" href="/profile" title="Profile"><span class="sr-only">Profile</span><i class="las la-user"></i></a></li>
-								<li><a role="button" data-role="button" href="/calendar" title="Calendar"><span class="sr-only">Calendar</span><i class="las la-calendar"></i></a></li>
+								<!-- <li><a role="button" data-role="button" href="/calendar" title="Calendar"><span class="sr-only">Calendar</span><i class="las la-calendar"></i></a></li> -->
 	            	<li><a role="button" data-role="button" class="feedback-btn" onclick="showFeedbackDialog();" href="#" title="Feedback"><span class="sr-only">Feedback</span><i class="las la-comment"></i></a></li>
 	            	<li><a role="button" data-role="button" class="logout-btn" onclick="logOutUser();" href="#" title="Log Out"><span class="sr-only">Log Out</span><i class="las la-sign-out-alt"></i></a></li>
             	</ul>
@@ -124,7 +138,7 @@
 				<strong>Schoop</strong> |
 				&copy; {{defaults.currentYear}} Zane St. John |
 				<a href="https://blog.schoop.app/about.html?utm_source=app&utm_medium=footer&utm_campaign=schoop_blog" target="_blank">About</a> |
-				<a href="https://blog.schoop.app/?utm_source=app&utm_medium=footer&utm_campaign=schoop_blog" target="_blank">Blog</a> |
+				<a href="/privacy_policy.html">Privacy</a> |
 				<a href="javascript:showDebugDialog();">Debug</a>
 			</span>
 		</div>
@@ -138,14 +152,12 @@
 		// last-minute junk added for debug
 		function showDebugDialog() {
 			const values = {
-				node_env: NODE_ENV,
+				node_env: (NODE_ENV === "" ? "(none)" : NODE_ENV),
 				host: SCHOOP_HOST,
-				divisions: DIVISIONS,
-				division_periods: DIVISION_PERIODS,
+				student_division: STUDENT_DIVISION,
 				schedule_folder_name: SCHEDULE_FOLDER_NAME,
-				app_instance: (APP_INSTANCE === "" ? "none" : APP_INSTANCE),
-				is_on_break: IS_ON_BREAK,
-				school_break_alert: SCHOOL_BREAK_ALERT
+				app_instance: (APP_INSTANCE === "" ? "N/A" : APP_INSTANCE),
+				is_on_break: IS_ON_BREAK
 			};
 			const listKeys = Object.keys(values);
 

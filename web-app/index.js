@@ -231,18 +231,18 @@ dbConn.connect(async err => {
 		});
 	});
 
-	app.get('/calendar', homeAuthCheck, async (req, res) => {
-		let studentInfo = await db.getStudentInfo(req.user.id);
-		let studentDivision = getDivision(gradYearToGrade(studentInfo.graduation_year)); // MIDDLE or UPPER
-    res.status(200).render('calendar', {
-      pageJS: 'calendar',
-      pageTitle: 'Calendar',
-      defaults: req.includeDefaults,
-			studentGrade: gradYearToGrade(studentInfo.graduation_year),
-			studentInfo,
-			studentDivision
-    });
-  });
+	// app.get('/calendar', homeAuthCheck, async (req, res) => {
+	// 	let studentInfo = await db.getStudentInfo(req.user.id);
+	// 	let studentDivision = getDivision(gradYearToGrade(studentInfo.graduation_year)); // MIDDLE or UPPER
+  //   res.status(200).render('calendar', {
+  //     pageJS: 'calendar',
+  //     pageTitle: 'Calendar',
+  //     defaults: req.includeDefaults,
+	// 		studentGrade: gradYearToGrade(studentInfo.graduation_year),
+	// 		studentInfo,
+	// 		studentDivision
+  //   });
+  // });
 
 	// CATCH-ALL ROUTE (must go at end) 404
 	app.all("*", (req, res) => res.status(404).send("Error - Not Found"));

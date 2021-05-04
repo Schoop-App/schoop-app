@@ -153,7 +153,7 @@ module.exports = imports => {
 	const hmac = Hmac({ key: imports.emailAuthKey }); // hmac auth lib built for this email application
 
 	return studentId => {
-		const buildScheduleItemHTML = (event, colors, seminarZoomLink, index=0) => {
+		const buildScheduleItemHTML = (event, colors, seminarZoomLink, seminarName) => {
 			let periodNumber,
 				eventSignifier,
 				eventZoomLink,
@@ -186,11 +186,12 @@ module.exports = imports => {
 					eventZoomLinkRaw = event.link;
 				} else {
 					// regular link handling
-					eventZoomLink = (event.overrideSignifier === "SEMINAR") ? `/s/event_redirect?url=${encodeURIComponent(SEMINAR_ZOOM_LINK)}&ref=${SCHOOP_REDIRECT_REF}` : `/s/${event.class_id || "empty"}?ref=${SCHOOP_REDIRECT_REF}`;
+					eventZoomLink = (event.overrideSignifier === "SEMINAR") ? `/s/event_redirect?url=${encodeURIComponent(seminarZoomLink)}&token=${emailToken}&userId=${studentId}&ref=${SCHOOP_REDIRECT_REF}` : `/s/${eventIdAdjusted || "empty"}?token=${emailToken}&userId=${studentId}&ref=${SCHOOP_REDIRECT_REF}`;
 					eventZoomLink = SCHOOP_HOST + eventZoomLink;
-					eventZoomLinkRaw = (event.overrideSignifier === "SEMINAR") ? SEMINAR_ZOOM_LINK : event.zoom_link;
+					eventZoomLinkRaw = (event.overrideSignifier === "SEMINAR") ? seminarZoomLink : event.zoom_link;
 				}
-				eventName = event.class_name || event.name || NOTHING_DEMARCATOR;
+				// special handling for seminar as well
+				eventName = (event.overrideSignifier === "SEMINAR") ? seminarName || event.name : event.class_name || event.name || NOTHING_DEMARCATOR;
 				eventTimespan = generateTimespan(event.start, event.end);
 			} catch (e) {
 				// console.error(e);
@@ -211,14 +212,14 @@ module.exports = imports => {
 			});
 		};
 
-		const buildAllScheduleItemsHTML = (schedule, classColors, seminarZoomLink) => {
+		const buildAllScheduleItemsHTML = (schedule, classColors, seminarZoomLink, seminarName) => {
 			let scheduleHTML = "";
 			if (typeof schedule.message === "undefined") {
 				// no special messages, so continue as usual
 				let event; // performance fix
 				for (let i = 0; i < schedule.length; i++) {
 					event = schedule[i];
-					scheduleHTML += buildScheduleItemHTML(event, classColors, seminarZoomLink, i);
+					scheduleHTML += buildScheduleItemHTML(event, classColors, seminarZoomLink, seminarName);
 				}
 				return scheduleHTML;
 			} else {

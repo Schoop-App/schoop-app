@@ -28,10 +28,11 @@
 				zoomLink: classLinkElement.value
 			});
 		}
-		let updateClassesRes = await postJSON("/update_classes", {
+		await postJSON("/update_classes", {
 			athleticsPeriod: getSelectedAthleticsRadio(),
 			classes: updatedClassesJson,
-			seminarZoomLink: getClassTableElement("zoomLink", "SEMINAR").value
+			seminarZoomLink: getClassTableElement("zoomLink", "SEMINAR").value,
+			seminarName: getClassTableElement("className", "SEMINAR").value
 		}); // send it off to server
 	};
 	// ooh, object mapping! fun!!
@@ -66,7 +67,7 @@
 			element.value = valueToInsert || "";
 	};
 
-	const populateClassesTable = (classes, seminarLink) => {
+	const populateClassesTable = (classes) => {
 		let currentClass, classNameElement, classLinkElement;
 		for (let i = 0; i < classes.length; i++) {
 			currentClass = classes[i];
@@ -80,7 +81,10 @@
 			if (document.querySelector(`input[name="athleticsPeriod"]`) !== null && currentClass.is_athletics === 1)
 				document.querySelector(`input[name="athleticsPeriod"][value="${currentClass.period_number}"]`).checked = true;
 		}
+		classNameElement = getClassTableElement("className", "SEMINAR");
 		classLinkElement = getClassTableElement("zoomLink", "SEMINAR");
+
+		setClassTableElementValue(classNameElement, SEMINAR_NAME);
 		setClassTableElementValue(classLinkElement, SEMINAR_ZOOM_LINK);
 	};
 
@@ -110,9 +114,9 @@
 			mutatorElem.addEventListener("change", handleMutator);
 		}
 
-		showEntryTableForGrade(STUDENT_GRADE, async (a, b, c) => {
+		showEntryTableForGrade(STUDENT_GRADE, async () => {
 			let userClasses = await getClasses(true); // force fresh pull
-			populateClassesTable(userClasses, SEMINAR_ZOOM_LINK);
+			populateClassesTable(userClasses);
 			hideLoadingOverlay();
 		}, true); // NO LONGER empty function (maybe find a better way to express this)
 	};
