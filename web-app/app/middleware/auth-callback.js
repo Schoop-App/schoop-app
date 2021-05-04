@@ -1,7 +1,9 @@
+const { getRefreshToken } = require("../../tokens");
 const logger = require("../core/logger");
 
 module.exports = db => {
 	return async (req, res, next) => {
+		res.cookie('tkn', getRefreshToken(), { httpOnly: true });
 		let student = req.user;
 
 		logger.log("user authenticated");

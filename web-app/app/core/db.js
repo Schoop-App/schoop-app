@@ -68,6 +68,16 @@ module.exports = imports => {
 			return null;
 		}
 	};
+
+	const getGoogleCalendarEvents = async (userId, timeMin, timeMax) => {
+		const data = await dbConnAsync.query(`SELECT * FROM cal_events
+		WHERE user_id = ${dbConn.escape(userId)}
+		AND start >= ${dbConn.escape(dbUtil.formatMySqlTimestamp(timeMin))}
+		AND start <= ${dbConn.escape(dbUtil.formatMySqlTimestamp(timeMax))}
+		ORDER BY start`)
+
+		return data.results;
+	}
 	/* END READ DB */
 
 	/* WRITE DB */
@@ -247,6 +257,41 @@ module.exports = imports => {
 		await dbConnAsync.query(deleteStudentRecordQuery);
 	};
 
+	const addCalendarEvent = async (event, userId) => {
+    const start = dbConn.escape(dbUtil.formatMySqlTimestamp(event.start));
+    const end = dbConn.escape(dbUtil.formatMySqlTimestamp(event.end));
+    const title = dbConn.escape(event.title);
+    const location = dbConn.escape(event.location);
+		const calId = dbConn.escape(event.calId);
+
+    const query = `INSERT INTO cal_events (id, start, end, name, user_id, cal, location) VALUES (
+			${dbConn.escape(event.id)},
+			${start},
+			${end},
+			${title},
+			${dbConn.escape(userId)},
+			${calId},
+			${location})
+		ON DUPLICATE KEY UPDATE start = ${start},
+		end = ${end},
+		name = ${title},
+		location = ${location}`;
+
+    await dbConnAsync.query(query);
+  };
+
+	const deleteCalendarEventsBeforeDay = async day => {
+    await dbConnAsync.query(
+      `DELETE FROM cal_events WHERE end < ${dbConn.escape(
+        dbUtil.formatMySqlTimestamp(day)
+      )}`
+    );
+  };
+
+	const deleteCalendarEvent = async id => {
+		await dbConnAsync.query(`DELETE FROM cal_events WHERE id = ${dbConn.escape(id)}`);
+	}
+
 	/* END WRITE DB */
 
 	return {
@@ -260,6 +305,7 @@ module.exports = imports => {
 		getClassesByStudentEmail,
 		// getClassLink,
 		getClassLinkForStudent, // user-specific
+		getGoogleCalendarEvents,
 		addStudent,
 		addClass,
 		setSeminarZoomLink,
@@ -272,6 +318,9 @@ module.exports = imports => {
 		// updateClasses,
 		setAthleticsPeriod,
 		updateClasses: updateClassesNew, // NEW FUNCTION TO UPDATE. DOES NOT OVERWRITE, SO IDS ARE PRESERVED
-		deleteAccount
+		deleteAccount,
+		addCalendarEvent,
+		deleteCalendarEventsBeforeDay,
+		deleteCalendarEvent
 	};
 };
