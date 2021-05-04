@@ -670,3 +670,72 @@ footer.page-footer a {
 	color: #6fb6f7;
 	font-weight: 700;
 }
+
+/* Calendar events */
+table.calendar-events {
+	background: #fff;
+	border-collapse: collapse;
+	border-radius: var(--today-table-border-radius);
+
+	width: 100%;
+	height: auto;
+	margin: 5px 0;
+	/*min-height: 425px;*/
+
+	table-layout: fixed; /* keeps all boxes equal */
+}
+
+table.calendar-events tr.event {
+	border-top: 1px solid #000;
+	opacity: 0.9;
+	position: relative;
+	height: 80px;
+
+	-webkit-touch-callout: none; 
+    -webkit-user-select: none;
+     -khtml-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
+}
+
+table.calendar-events tr:first-child {
+	border-top: none;
+}
+
+table.calendar-events tr td {
+	padding-top: var(--today-schedule-row-padding-tb);
+	padding-bottom: var(--today-schedule-row-padding-tb);
+	padding-right: var(--today-schedule-row-padding-lr);
+}
+
+table.calendar-events tr td:first-child {
+	padding-left: var(--today-schedule-row-padding-lr);
+	padding-right: 0;
+}
+
+.event:hover {
+	cursor: pointer;
+}
+
+#date-select button {
+	background-color: #fff;
+	border-radius: 5px;
+	border: none;
+	color: #000;
+	padding: 1px 14px;
+}
+
+#date-select button:hover {
+	cursor: pointer;
+}
+
+#date-select button:disabled {
+	opacity: 0.6;
+	cursor: default;
+}
+
+.clickable:hover {
+	cursor: pointer;
+	filter: brightness(0.9);
+}

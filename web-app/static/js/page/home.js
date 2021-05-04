@@ -17,7 +17,14 @@ const SCHOOP_REDIRECT_REF = "dashboard";
 
 	const eventRowTemplate = Handlebars.compile(
 `<tr style="background-color: {{{eventColor}}};" class="event-{{{eventIsLightOrDark}}}{{#if hasLink}} event-has-link{{/if}}"{{#if hasLink}} data-link="{{{eventZoomLink}}}" data-link-raw="{{{eventZoomLinkRaw}}}" onclick="openZoomLink(this);"{{/if}} data-event-name="{{{eventName}}}">
-	<td class="signifier left">{{{eventSignifier}}}</td>
+	<td class="signifier left">
+		<div style="display: flex; align-items: center;">
+			{{{eventSignifier}}}
+			{{#if calColor}}
+			<div style="background-color: {{calColor}}; border-radius: 50%; width: 14px; height: 14px; margin-left: 10px;" onclick="eventInfo(event)" data-event-name="{{{eventName}}}" data-event-id="{{{calId}}}" class="clickable" />
+			{{/if}}
+		</div>
+	</td>
 	<td class="center" style="font-weight: 700;">{{eventName}}</td>
 	<td class="right">{{eventTimespan}}</td>
 </tr>`
@@ -82,6 +89,59 @@ const SCHOOP_REDIRECT_REF = "dashboard";
 		return schedule;
 	};
 	window.getScheduleTemplate = getScheduleTemplate;
+
+	const getCalendarEvents = async date => {
+    const events = await getJSON(
+      `/calendar/myevents/${encodeURIComponent(date.toISOString())}`
+    );
+    if (!events.length) return null;
+    return events;
+  };
+
+  const addCalEventsToSchedule = async (events, schedule) => {
+    let newSchedule = schedule;
+
+		for (let i = 0; i < events.length; i++) {
+			const event = events[i];
+
+      const [start, end] = [event.start, event.end].map(t => {
+        const temp = new Date(t);
+        return [temp.getHours(), temp.getMinutes()];
+      });
+
+      const cal = await getJSON(
+        `/calendar/cal/${encodeURIComponent(event.cal)}`
+      );
+
+      let newEvent = {
+        name: event.name,
+        overrideLink: true,
+        overrideSignifier: 'CAL',
+        type: 'CAL',
+        start,
+        end,
+        color: cal.backgroundColor,
+				id: event.id,
+      };
+      if (event.location) {
+        newEvent.link = event.location;
+      }
+
+      if (newSchedule.length) {
+        let i = newSchedule.findIndex(
+          e =>
+            e.start[0] > start[0] ||
+            (e.start[0] === start[0] && e.start[1] > start[1])
+        );
+        i = i === -1 ? newSchedule.length : i;
+        newSchedule.splice(i, 0, newEvent);
+      } else {
+        newSchedule = [newEvent];
+      }
+    };
+
+    return newSchedule;
+  };
 
 	// builds user schedule from schedule template and classes
 	const buildUserSchedule = (template, classes) => {
@@ -151,7 +211,9 @@ const SCHOOP_REDIRECT_REF = "dashboard";
 			eventName,
 			eventTimespan,
 			eventColor,
-			eventIsLightOrDark;
+			eventIsLightOrDark,
+			calColor,
+			calId;
 
 		try {
 			eventSignifier = getEventSignifier(event);
@@ -161,6 +223,10 @@ const SCHOOP_REDIRECT_REF = "dashboard";
 				// console.log((periodNumber - 1), eventColor);
 
 				eventSignifier += `<span style="font-size: 0.93em;">${periodNumber}</span>`; // quite hacky, sorry
+			} else if (event.type === 'CAL') {
+				eventColor = colors[8]; // This color seems to be unused this year because no one has a ninth period?
+				calColor = event.color;
+				calId = event.id;
 			}
 
 			// links can now be overriden through schedule JSON
@@ -191,7 +257,9 @@ const SCHOOP_REDIRECT_REF = "dashboard";
 			eventZoomLinkRaw,
 			eventColor: eventColor || "transparent",
 			eventIsLightOrDark: eventIsLightOrDark || "light",
-			hasLink: typeof eventZoomLinkRaw !== "undefined" && eventZoomLinkRaw !== ""
+			hasLink: typeof eventZoomLinkRaw !== "undefined" && eventZoomLinkRaw !== "",
+			calColor: calColor || false,
+			calId: calId || false
 		});
 	};
 
@@ -275,11 +343,16 @@ const SCHOOP_REDIRECT_REF = "dashboard";
 				// THERE IS A PERIOD OR EVENT OF SOME SORT NOW
 				let missionControlCurrentEvent = schedule.find(k => dateFitsInTimeRange(d, k.start, k.end));
 				if (typeof missionControlCurrentEvent === "undefined") {
-					// Passing Period (not needed for now)
-					nowEventElem.innerText = "Passing Period";
-					nowSignifierElem.innerText = "PP";
-
 					let upNextEvent = schedule[getIndexOfEventAfterPassingPeriod(d, schedule)];
+
+					if (upNextEvent.type === "CAL") {
+            nowEventElem.innerText = "Nothing";
+            nowSignifierElem.innerText = "BREAK";
+          } else {
+            // Passing Period (not needed for now)
+            nowEventElem.innerText = "Passing Period";
+            nowSignifierElem.innerText = "PP";
+          }
 
 					populateMissionControlUpNextEvent(upNextEvent, upNextTimeElem, upNextEventElem, upNextSignifierElem);
 				} else {
@@ -368,7 +441,11 @@ const SCHOOP_REDIRECT_REF = "dashboard";
 		// if it is okay to do API requests
 		let template = await getScheduleTemplate(window.STUDENT_DIVISION || STUDENT_DIVISION, initialDate, shouldRefreshAll);
 		let classes = await getClasses(shouldRefreshAll);
+		const calEvents = await getCalendarEvents(initialDate);
 		let userSchedule = buildUserSchedule(template, classes, shouldRefreshAll); // built-out schedule
+		if (calEvents) {
+      userSchedule = await addCalEventsToSchedule(calEvents, userSchedule);
+    }
 		// console.log("USER SCHEDULE (debug): ", JSON.stringify(userSchedule, null, 4));
 
 		let classColors = await getClassColors(shouldRefreshAll); // colors for the **periods** in other words
