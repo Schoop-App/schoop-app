@@ -16,7 +16,6 @@
     "axios": "^0.19.2",
     "buffer-equal-constant-time": "^1.0.1",
     "connect-redis": "^4.0.4",
-    "cookie-parser": "^1.4.5",
     "csurf": "^1.11.0",
     "express": "^4.17.1",
     "express-handlebars": "^3.1.0",

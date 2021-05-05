@@ -23,10 +23,6 @@ const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const mysql = require("mysql");
 const csrf = require("csurf"); // CSRF Protection
 const logger = require("./app/core/logger");
-const cookieparser = require('cookie-parser');
-
-// Google api stuff
-const { setAccessToken, setRefreshToken } = require('./tokens');
 
 // INIT CSRF PROTECTION
 const csrfProtection = csrf({ cookie: true });
@@ -53,16 +49,6 @@ const dbConn = mysql.createConnection({
   ssl: {
   	ca: fs.readFileSync(process.env.DATABASE_CERT_PATH)
   }
-});
-
-const { google } = require('googleapis');
-const oauth2Client = new google.auth.OAuth2({
-  clientId: PRIVATE_CONFIG.googleOAuth.web.client_id,
-  clientSecret: PRIVATE_CONFIG.googleOAuth.web.client_secret
-});
-
-oauth2Client.on('tokens', tokens => {
-	setAccessToken(tokens.access_token);
 });
 
 let JS_LAST_REVISED;
@@ -103,7 +89,6 @@ dbConn.connect(async err => {
 	}
 
 	app.use(require("helmet")()); // helmet security headers (good to have here)
-	app.use(cookieparser());
 
 	// general app config
 	app.set("trust proxy", "127.0.0.1"); // trust Nginx reverse proxy
@@ -147,10 +132,8 @@ dbConn.connect(async err => {
 		// This is a "verify" function required by all Passport strategies
 		(accessToken, refreshToken, profile, cb) => {
 			// logger.log("Our user authenticated with Google, and Google sent us back this profile info identifying the authenticated user:", profile);
-			setAccessToken(accessToken);
-			setRefreshToken(refreshToken);
 			logger.log("User authenticated through Google");
-			return cb(null, profile);
+			return cb(null, profile, { accessToken, refreshToken });
 		}
 	));
 
