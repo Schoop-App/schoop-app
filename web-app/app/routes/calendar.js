@@ -1,6 +1,5 @@
 const { google } = require('googleapis');
 const PRIVATE_CONFIG = require('../../private-config.json');
-const { getAccessToken } = require('../../tokens');
 const express = require('express');
 
 const oauth2Client = new google.auth.OAuth2({
@@ -12,6 +11,26 @@ const calendar = google.calendar({
   auth: oauth2Client
 });
 
+const extractTokens = (req, res) => {
+  const { accessToken, refreshToken } = req.session;
+  if (!refreshToken) {
+    req.session.destroy(err => {
+      if (err) {
+        res.status(500).send({
+          status: 'error',
+          message: 'logout failed'
+        });
+      } else {
+        res.status(200).send({
+          status: 'ok'
+        });
+      }
+    });
+  } else {
+    return { accessToken, refreshToken };
+  }
+};
+
 module.exports = imports => {
   const { db, Sentry, logger } = imports;
 
@@ -21,14 +40,11 @@ module.exports = imports => {
 
   router.get('/:time', async (req, res) => {
     const { time } = req.params;
-    const { tkn } = req.cookies;
-    if (!tkn) {
-      return res.status(401).json({ error: 'Unauthorized' });
-    }
+    const { accessToken, refreshToken } = extractTokens(req, res);
 
     oauth2Client.credentials = {
-      access_token: getAccessToken(),
-      refresh_token: tkn
+      access_token: accessToken,
+      refresh_token: refreshToken
     };
 
     const timeMin = new Date(time);
@@ -63,11 +79,12 @@ module.exports = imports => {
 
   router.get('/event/:calId/:id', async (req, res) => {
     const { calId, id } = req.params;
-    const { tkn } = req.cookies;
+
+    const { accessToken, refreshToken } = extractTokens(req, res);
 
     oauth2Client.credentials = {
-      access_token: getAccessToken(),
-      refresh_token: tkn
+      access_token: accessToken,
+      refresh_token: refreshToken
     };
 
     try {
@@ -84,11 +101,12 @@ module.exports = imports => {
 
   router.get('/cal/:id', async (req, res) => {
     const { id } = req.params;
-    const { tkn } = req.cookies;
+
+    const { accessToken, refreshToken } = extractTokens(req, res);
 
     oauth2Client.credentials = {
-      access_token: getAccessToken(),
-      refresh_token: tkn
+      access_token: accessToken,
+      refresh_token: refreshToken
     };
 
     try {

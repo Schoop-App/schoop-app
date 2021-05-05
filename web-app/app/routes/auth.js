@@ -26,6 +26,9 @@ module.exports = imports => {
 		passport.authenticate("google", { failureRedirect: "/login?failed=1", session: true }),
 		authCallbackMiddleware,
 		(req, res) => {
+			const { accessToken, refreshToken } = req.authInfo;
+      req.session.accessToken = accessToken;
+      req.session.refreshToken = refreshToken;
 			if (req.isNewStudent) {
 				res.redirect("/setup");
 			} else {
@@ -38,7 +41,6 @@ module.exports = imports => {
 		// signs user out
 		// TODO: async/await this mofo!
 		req.session.destroy(err => {
-			res.clearCookie('tkn', { httpOnly: true });
 			if (err) {
 				res.status(500).send({
 					"status": "error",
