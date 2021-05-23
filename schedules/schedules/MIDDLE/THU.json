@@ -1,0 +1,32 @@
+[
+	{
+		"number": 2,
+		"type": "PERIOD",
+		"start": [9, 0],
+		"end": [10, 10]
+	},
+	{
+		"name": "Extra Help/Break",
+		"type": "BREAK",
+		"start": [10, 10],
+		"end": [11, 10]
+	},
+	{
+		"number": 4,
+		"type": "PERIOD",
+		"start": [11, 10],
+		"end": [12, 20]
+	},
+	{
+		"name": "Lunch/Clubs",
+		"type": "BREAK",
+		"start": [12, 20],
+		"end": [13, 20]
+	},
+	{
+		"number": 7,
+		"type": "PERIOD",
+		"start": [13, 20],
+		"end": [14, 30]
+	}
+]
