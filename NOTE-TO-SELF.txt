@@ -1,3 +1,0 @@
-Note-to-self:
-You got the quote from:
-https://api.quotable.io/random?maxLength=50&tags=inspirational
