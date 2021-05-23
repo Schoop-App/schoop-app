@@ -1,0 +1,47 @@
+[
+	{
+		"number": 2,
+		"type": "PERIOD",
+		"start": [9, 0],
+		"end": [9, 50]
+	},
+	{
+		"name": "Extra Help/Break",
+		"type": "BREAK",
+		"start": [9, 50],
+		"end": [10, 10]
+	},
+	{
+		"number": 5,
+		"type": "PERIOD",
+		"start": [10, 10],
+		"end": [11, 0]
+	},
+	{
+		"name": "Break",
+		"type": "BREAK",
+		"start": [11, 0],
+		"end": [11, 20]
+	},
+	{
+		"number": 3,
+		"type": "PERIOD",
+		"start": [11, 20],
+		"end": [12, 10]
+	},
+	{
+		"name": "Lunch",
+		"type": "BREAK",
+		"start": [12, 10],
+		"end": [13, 0]
+	},
+	{
+		"name": "Activities (click for schedule)",
+		"type": "ASSEMBLY",
+		"overrideSignifier": "ACTIVITY",
+		"start": [13, 0],
+		"end": [14, 0],
+		"overrideLink": true,
+		"link": "https://windwardschool.myschoolapp.com/ftpimages/176/download/download_5815369.pdf"
+	}
+]

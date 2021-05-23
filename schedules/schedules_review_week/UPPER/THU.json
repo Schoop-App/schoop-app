@@ -1,0 +1,20 @@
+[
+	{
+		"number": 3,
+		"type": "PERIOD",
+		"start": [9, 0],
+		"end": [10, 10]
+	},
+	{
+		"name": "Break",
+		"type": "BREAK",
+		"start": [10, 10],
+		"end": [11, 0]
+	},
+	{
+		"number": 6,
+		"type": "PERIOD",
+		"start": [11, 0],
+		"end": [12, 10]
+	}
+]

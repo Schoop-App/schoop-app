@@ -1,0 +1,33 @@
+[
+	{
+		"number": 1,
+		"type": "PERIOD",
+		"start": [9, 0],
+		"end": [10, 10]
+	},
+	{
+		"name": "Seminar/Break",
+		"type": "ASSEMBLY",
+		"start": [10, 10],
+		"end": [11, 10],
+		"overrideSignifier": "SEMINAR"
+	},
+	{
+		"number": 3,
+		"type": "PERIOD",
+		"start": [11, 10],
+		"end": [12, 20]
+	},
+	{
+		"name": "Lunch/Extra Help",
+		"type": "BREAK",
+		"start": [12, 20],
+		"end": [13, 20]
+	},
+	{
+		"number": 7,
+		"type": "PERIOD",
+		"start": [13, 20],
+		"end": [14, 30]
+	}
+]
