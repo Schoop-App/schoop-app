@@ -465,6 +465,9 @@ const SCHOOP_REDIRECT_REF = "dashboard";
 		// document.querySelector(".today-heading").innerHTML = `Today&nbsp;<span style="font-weight: 500;">&ndash;&nbsp;<strong>${DAYS_FULL[initialDate.getDay()]}</strong>,&nbsp;${MONTHS_FOR_TODAY_VIEW[initialDate.getMonth()]} ${initialDate.getDate()}</span>`;
 		document.getElementById("daySpan").innerHTML = DAYS_FULL[initialDate.getDay()]; // easier
 
+		// resize boxes accordingly :/
+		handleWindowResize();
+
 		setTimeout(hideLoadingOverlay, 150);
 	};
 	// window.renderPage = onPageReady; // for refresh
