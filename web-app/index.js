@@ -186,7 +186,7 @@ dbConn.connect(async err => {
 
 	app.get("/login", loginAuthCheck, (req, res) => {
 		let redirectString = (typeof req.query.redirect === "undefined") ? "" : `?redirect=${encodeURIComponent(req.query.redirect)}`;
-		res.status(200).render("login", {
+		res.status(200).render("login-v2", {
 			layout: false,
 			redirectString,
 			defaults: req.includeDefaults

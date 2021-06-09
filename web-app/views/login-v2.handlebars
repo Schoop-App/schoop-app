@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Schoop &ndash; Login</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <link rel="icon" href="/img/icons/favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="/img/icons/favicon.ico" type="image/x-icon">
+
+  <!-- Sentry error reporting -->
+  <script src="https://browser.sentry-cdn.com/5.15.4/bundle.min.js"
+    integrity="sha384-Nrg+xiw+qRl3grVrxJtWazjeZmUwoSt0FAVsbthlJ5OMpx0G08bqIq3b/v0hPjhB" crossorigin="anonymous">
+    </script>
+  <script>Sentry.init({ dsn: 'https://60efb1ff5f9c417bbd61dd94ed62a14e@o378464.ingest.sentry.io/5201900' });
+  </script>
+
+  <script>
+    // stuff for breaks
+    var IS_ON_BREAK = {{{ defaults.isOnBreak }}};
+    var SCHOOL_BREAK_ALERT = {{{ defaults.schoolBreakAlert }}};
+  </script>
+
+  <!-- vendor script -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+  <script src="/js/vendor.js?{{defaults.jsLastRevised}}"></script>
+  <!-- all common -->
+  <script src="/js/common/all-common.js?{{defaults.jsLastRevised}}"></script>
+
+  <!-- styles -->
+  <!-- FONTS -->
+  <!--
+	/**
+	* @license
+	* MyFonts Webfont Build ID 205172
+	* 
+	* The fonts listed in this notice are subject to the End User License
+	* Agreement(s) entered into by the website owner. All other parties are 
+	* explicitly restricted from using the Licensed Webfonts(s).
+	* 
+	* You may obtain a valid license from one of MyFonts official sites.
+	* http://www.fonts.com
+	* http://www.myfonts.com
+	* http://www.linotype.com
+	*
+	*/
+	-->
+  <link rel="stylesheet" type="text/css" href="/css/fonts/MyFontsWebfontsKit.css">
+  <link href="https://fonts.googleapis.com/css?family=Karla:400,700&display=swap" rel="stylesheet">
+  <!-- END FONTS -->
+  <link rel="stylesheet"
+    href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
+  <!-- line awesome -->
+  <link rel="stylesheet" href="/css/vendor.css?{{defaults.jsLastRevised}}">
+  <link rel="stylesheet" href="/css/app.css?{{defaults.jsLastRevised}}">
+  <link rel="stylesheet" href="/css/login-v2.css?{{defaults.jsLastRevised}}">
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-DHETQK3N9W"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-DHETQK3N9W');
+  </script>
+</head>
+
+<body>
+  <main class="loginContainer">
+    <div class="centeredContainer">
+      <h1 class="appName">Schoop</h1>
+      <button onclick="logIn();" class="logInButton">
+        Sign In with Windward
+      </button>
+    </div>
+  </main>
+
+  <script>
+    var REDIRECT_STRING = "{{{redirectString}}}";
+    function logIn() { window.location.href = "/api/auth/google" + REDIRECT_STRING; }
+    document.addEventListener("DOMContentLoaded", function () {
+      document.querySelector("#login-button").addEventListener("click", function (e) {
+        e.preventDefault();
+      });
+    });
+  </script>
+
+  <!-- cookie consent banner (work in progress) -->
+  <link rel="stylesheet" type="text/css" href="/js/cookieconsent/cookieconsent.min.css?{{defaults.jsLastRevised}}" />
+  <script src="/js/cookieconsent/cookieconsent.min.js?{{defaults.jsLastRevised}}" defer></script>
+  <script>window.addEventListener("load", function () { window.wpcc.init({ "border": "thin", "corners": "small", "colors": { "popup": { "background": "#cff5ff", "text": "#000000", "border": "#5e99c2" }, "button": { "background": "#5e99c2", "text": "#ffffff" } }, "position": "bottom", "content": { "href": "https://schoop.app/privacy_policy.html", "link": "Privacy Policy", "button": "Got it", "message": "Schoop uses cookies to optimize your experience." } }) });</script>
+</body>
+
+</html>
