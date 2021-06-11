@@ -1,3 +1,20 @@
-{
-	"message": "Special schedule TBD. If you're seeing this, please email me at zstjohn22@windwardschool.org so that I can update the schedule. Thank you!"
-}
+[
+	{
+		"name": "AP EXAMS (At Home): AP Biology",
+		"type": "BREAK",
+		"overrideSignifier": "EXAMS",
+		"start": [9, 0],
+		"end": [14, 30],
+		"overrideLink": true,
+		"link": "https://linktr.ee/schoopapp"
+	},
+	{
+		"name": "Last-Day Celebrations (click for arrival/pickup schedule and other info)",
+		"type": "BREAK",
+		"overrideSignifier": "CAMPUS",
+		"start": [13, 0],
+		"end": [14, 30],
+		"overrideLink": true,
+		"link": "http://ww-last-day-2021.neocities.org/"
+	}
+]
