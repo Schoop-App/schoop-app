@@ -1,0 +1,57 @@
+[
+	{
+		"number": 2,
+		"type": "PERIOD",
+		"start": [8, 30],
+		"end": [9, 40]
+	},
+	{
+		"name": "Extra Help",
+		"type": "BREAK",
+		"start": [9, 40],
+		"end": [10, 0]
+	},
+	{
+		"number": 87,
+		"type": "PERIOD",
+		"start": [10, 0],
+		"end": [10, 50]
+	},
+	{
+		"name": "Break",
+		"type": "BREAK",
+		"start": [10, 50],
+		"end": [11, 0]
+	},
+	{
+		"number": 6,
+		"type": "PERIOD",
+		"start": [11, 0],
+		"end": [12, 10]
+	},
+	{
+		"name": "Lunch",
+		"type": "BREAK",
+		"start": [12, 10],
+		"end": [12, 55]
+	},
+	{
+		"number": 4,
+		"type": "PERIOD",
+		"start": [12, 55],
+		"end": [14, 5]
+	},
+	{
+		"number": 7,
+		"type": "PERIOD",
+		"start": [14, 10],
+		"end": [15, 0]
+	},
+	{
+		"name": "Athletics",
+		"type": "BREAK",
+		"start": [15, 0],
+		"end": [15, 30],
+		"overrideSignifier": "ATHLETICS"
+	}
+]
