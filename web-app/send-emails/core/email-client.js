@@ -79,6 +79,7 @@ module.exports = imports => {
 	</script>
 </head>
 <body>
+	<center><strong>NOTE: The classes listed in this email are the ones we have on file as of today at 7:30 AM. If you changed your schedule after that time or have not updated your schedule, you may see inaccurate information here. If so, please <a href="https://schoop.app/home" target="_blank">view your schedule in the app</a>.</strong></center>
 	<p>Hi ${studentFirstName},</p>
 	<p>Here is your schedule for today, ${getDateString(todaysDate, true)}. If you would like to view it in the Schoop app, <a href="https://schoop.app/home" target="_blank">click here</a>.</p><br>
 	${scheduleHtml}<br>
