@@ -48,6 +48,9 @@
 		var SEMINAR_ZOOM_LINK = "{{{studentInfo.seminar_zoom_link}}}";
 		var SEMINAR_NAME = "{{{studentInfo.seminar_name}}}";
 
+		// for debug
+		var ACCOUNT_ID = "{{{studentInfo.google_oauth_id}}}";
+
 		// error reporting like a boss
 		Sentry.configureScope(function (scope) {
 			scope.setExtra("student_grade", STUDENT_GRADE);
@@ -149,6 +152,7 @@
 		// last-minute junk added for debug
 		function showDebugDialog() {
 			const values = {
+				account_id: ACCOUNT_ID,
 				node_env: (NODE_ENV === "" ? "(none)" : NODE_ENV),
 				host: SCHOOP_HOST,
 				student_division: STUDENT_DIVISION,
