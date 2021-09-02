@@ -4,7 +4,7 @@ module.exports = imports => {
 	const Sentry = imports.Sentry;
 	const emailClient = imports.emailClient;
 
-	const sendEmails = async (db, studentIds) => {
+	const sendEmails = async (db, studentIds, isTest = false) => {
 		try {
 			let numStudentIds = studentIds.length;
 			let currentStudentId;
@@ -14,7 +14,7 @@ module.exports = imports => {
 				console.log(`Sending email ${i} / ${numStudentIds} (${getPercentage(i - 1, numStudentIds)} done) to ${currentStudentId}`);
 
 				// actually sending the email via client
-				await emailClient.sendScheduleEmail(db, currentStudentId);
+				await emailClient.sendScheduleEmail(db, currentStudentId, undefined, isTest);
 
 				// email sent messgae
 				console.log(`Email sent to ${currentStudentId}\n`);

@@ -18,14 +18,20 @@ const dbConn = mysql.createConnection({
 	port: PRIVATE_CONFIG.database.port,
 	timezone: 'utc',
 	ssl: {
-		ca: fs.readFileSync(process.env.DATABASE_CERT_PATH || process.argv[2] || "/Users/zooza310/ca-certificate.crt")
+		ca: fs.readFileSync(process.env.DATABASE_CERT_PATH || (process.argv[2] === "--test" ? undefined : process.argv[2]) || "/Users/zooza310/ca-certificate.crt")
 	}
 });
 
 // begin actual "meat" of the program
+const IS_TEST = process.argv.includes("--test");
 
 // console debug to show if school
 console.log(`IS SCHOOL IN SESSION (NO BREAK): ${({"true":"YES","false":"NO"})[!PRIVATE_CONFIG.is_school_break]} (${!PRIVATE_CONFIG.is_school_break})`);
+
+// console debug for testing
+if (IS_TEST) {
+	console.log("You are in TEST mode. Schedule emails will be sent to Zane");
+}
 
 let date = new Date();
 if (date.getDay() !== 6 && date.getDay() !== 0 && !PRIVATE_CONFIG.is_school_break) {
@@ -38,7 +44,7 @@ if (date.getDay() !== 6 && date.getDay() !== 0 && !PRIVATE_CONFIG.is_school_brea
 
 		let studentIds = await db.getStudentIdsWhoWantDailyEmail(); // retrieve student ids
 
-		await sendEmails(db, studentIds); // send emails to retrieved student ids
+		await sendEmails(db, studentIds, IS_TEST); // send emails to retrieved student ids
 
 		console.log("Done!"); // it's over
 

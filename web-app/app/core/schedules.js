@@ -8,7 +8,7 @@ const SCHEDULE_TEMPLATE_DAYS = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"]
 const getSchedule = async (division, day) => {
 	// make sure the getSchedule call is valid
 	if ((division !== Division.MIDDLE && division !== Division.UPPER) || !SCHEDULE_TEMPLATE_DAYS.includes(day))
-		throw new Error("Invalid Request – malformed schedule template query");
+		throw new Error(`Invalid Request – malformed schedule template query (requested schedule: division: "${division}", day: "${day}")`);
 
 	// for weekends
 	if (day === "SAT" || day === "SUN") {
