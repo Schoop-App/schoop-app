@@ -32,7 +32,7 @@ module.exports = imports => {
 	};
 
 	// sends email with schedule to user (WORK IN PROGRESS)
-	const sendScheduleEmail = async (db, studentId, todaysDate = new Date()) => {
+	const sendScheduleEmail = async (db, studentId, todaysDate = new Date(), isTest = false) => {
 		const { getScheduleHtml } = require("./schedule/schedule-html-generate")(studentId); // initialize with student ID
 
 		// let todaysDate = new Date();
@@ -43,13 +43,13 @@ module.exports = imports => {
 
 		// student ID is better for this purpose
 		let studentInfo = await db.getStudentInfo(studentId);
-		let studentEmail = studentInfo.email;
+		let studentEmail = isTest ? "zstjohn22@windwardschool.org" : studentInfo.email;
 		/* ----- */
 		let studentFirstName = studentInfo.first_name;
 		let studentDivision = studentCore.getDivisionFromGradYear(studentInfo.graduation_year);
 
 		let template = await schedules.getSchedule(studentDivision, getScheduleDay(todaysDate));
-		let classes = await db.getClassesByStudentEmail(studentEmail);
+		let classes = await db.getClassesByStudentEmail(studentInfo.email);
 		let scheduleHtml = getScheduleHtml(template, classes, studentInfo.seminar_zoom_link, studentInfo.seminar_name);
 
 		/* The Gmail schema I implemented in the HTML below
