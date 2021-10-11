@@ -15,6 +15,12 @@ const SCHOOP_REDIRECT_REF = "dashboard";
 	// STARTING DATE
 	let initialDate = new Date();
 
+	const announcementRowTemplate = Handlebars.compile(
+		`<tr style="background-color: #fff;">
+			<td colspan="3" style="text-align: center; font-weight: 700;">{{announcementBody}}</td>
+		</tr>`
+			);
+
 	const eventRowTemplate = Handlebars.compile(
 `<tr style="background-color: {{{eventColor}}};" class="event-{{{eventIsLightOrDark}}}{{#if hasLink}} event-has-link{{/if}}"{{#if hasLink}} data-link="{{{eventZoomLink}}}" data-link-raw="{{{eventZoomLinkRaw}}}" onclick="openZoomLink(this);"{{/if}} data-event-name="{{{eventName}}}">
 	<td class="signifier left">
@@ -216,6 +222,12 @@ const SCHOOP_REDIRECT_REF = "dashboard";
 			calId;
 
 		try {
+			if (event.type === "ANNOUNCEMENT") {
+				return announcementRowTemplate({
+					announcementBody: event.message
+				});
+			}
+
 			eventSignifier = getEventSignifier(event);
 			if (event.type === "PERIOD") {
 				periodNumber = event.number;
@@ -324,7 +336,10 @@ const SCHOOP_REDIRECT_REF = "dashboard";
 	}
 
 	// WORK ON THIS
-	const populateMissionControlStatus = (d, schedule) => {
+	const populateMissionControlStatus = (d, origSchedule) => {
+		// filter out items such as ANNOUNCEMENT for Mission Control status
+		const schedule = origSchedule.filter(item => typeof item.start !== "undefined" && typeof item.end !== "undefined");
+
 		// console.log("SCHEDULE:", JSON.stringify(schedule, null, 2));
 		let nowSignifierElem = document.querySelector("div.mission-control-status-container.now .event-signifier");
 		let nowTimeElem = document.querySelector("div.mission-control-status-container.now div.time");

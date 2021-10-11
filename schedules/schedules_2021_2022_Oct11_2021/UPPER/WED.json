@@ -1,0 +1,49 @@
+[
+	{
+		"type": "ANNOUNCEMENT",
+		"message": "SOPHOMORES and JUNIORS: PSAT today. SENIORS: day off."
+	},
+	{
+		"number": 1,
+		"type": "PERIOD",
+		"start": [8, 50],
+		"end": [10, 0]
+	},
+	{
+		"name": "Community",
+		"type": "BREAK",
+		"start": [10, 0],
+		"end": [10, 40],
+		"overrideSignifier": "MEET"
+	},
+	{
+		"number": 5,
+		"type": "PERIOD",
+		"start": [10, 40],
+		"end": [11, 50]
+	},
+	{
+		"name": "Lunch",
+		"type": "BREAK",
+		"start": [11, 50],
+		"end": [12, 35]
+	},
+	{
+		"number": 3,
+		"type": "PERIOD",
+		"start": [12, 35],
+		"end": [13, 45]
+	},
+	{
+		"name": "Break",
+		"type": "BREAK",
+		"start": [13, 45],
+		"end": [13, 55]
+	},
+	{
+		"number": 7,
+		"type": "PERIOD",
+		"start": [13, 55],
+		"end": [15, 5]
+	}
+]

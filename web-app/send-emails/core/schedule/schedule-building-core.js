@@ -26,6 +26,12 @@ const eventRowTemplate = Handlebars.compile(
 </tr>`
 );
 
+const announcementRowTemplate = Handlebars.compile(
+	`<tr style="background-color: #fff;">
+		<td colspan="3" style="text-align: center; font-weight: 700;">{{announcementBody}}</td>
+	</tr>`
+);
+
 // TIME STRINGS, ET AL
 const generateTime = (hour, min, space) => {
 	let minuteString = min.toString();
@@ -164,6 +170,12 @@ module.exports = imports => {
 				eventIsLightOrDark;
 
 			try {
+				if (event.type === "ANNOUNCEMENT") {
+					return announcementRowTemplate({
+						announcementBody: event.message
+					});
+				}
+
 				eventSignifier = getEventSignifier(event);
 				if (event.type === "PERIOD") {
 					periodNumber = event.number;
