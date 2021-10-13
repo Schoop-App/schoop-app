@@ -16,10 +16,10 @@ const SCHOOP_REDIRECT_REF = "dashboard";
 	let initialDate = new Date();
 
 	const announcementRowTemplate = Handlebars.compile(
-		`<tr style="background-color: #fff;">
+		`<tr style="background-color: #fff;" class="schedule-announcement">
 			<td colspan="3" style="text-align: center; font-weight: 700;">{{announcementBody}}</td>
 		</tr>`
-			);
+	);
 
 	const eventRowTemplate = Handlebars.compile(
 `<tr style="background-color: {{{eventColor}}};" class="event-{{{eventIsLightOrDark}}}{{#if hasLink}} event-has-link{{/if}}"{{#if hasLink}} data-link="{{{eventZoomLink}}}" data-link-raw="{{{eventZoomLinkRaw}}}" onclick="openZoomLink(this);"{{/if}} data-event-name="{{{eventName}}}">

@@ -54,6 +54,13 @@ table.today-schedule tr td {
 	padding-right: 22px;
 }
 
+table.today-schedule tr.schedule-announcement td {
+	padding-top: 12px;
+	padding-bottom: 12px;
+	padding-left: 22px;
+	padding-right: 22px;
+}
+
 table.today-schedule tr td:first-child {
 	padding-left: 22px;
 	padding-right: 0;

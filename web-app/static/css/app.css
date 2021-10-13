@@ -225,6 +225,13 @@ table.today-schedule tr {
 	position: relative;
 }
 
+table.today-schedule tr.schedule-announcement td {
+	padding-top: var(--today-schedule-row-padding-tb);
+	padding-bottom: var(--today-schedule-row-padding-tb);
+	padding-left: var(--today-schedule-row-padding-lr);
+	padding-right: var(--today-schedule-row-padding-lr);
+}
+
 table.today-schedule tr:first-child {
 	border-top: none;
 }
