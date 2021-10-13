@@ -27,7 +27,7 @@ const eventRowTemplate = Handlebars.compile(
 );
 
 const announcementRowTemplate = Handlebars.compile(
-	`<tr style="background-color: #fff;">
+	`<tr style="background-color: #fff;" class="schedule-announcement">
 		<td colspan="3" style="text-align: center; font-weight: 700;">{{announcementBody}}</td>
 	</tr>`
 );
