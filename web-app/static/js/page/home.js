@@ -338,7 +338,7 @@ const SCHOOP_REDIRECT_REF = "dashboard";
 	// WORK ON THIS
 	const populateMissionControlStatus = (d, origSchedule) => {
 		// filter out items such as ANNOUNCEMENT for Mission Control status
-		const schedule = origSchedule.filter(item => typeof item.start !== "undefined" && typeof item.end !== "undefined");
+		const schedule = Array.isArray(origSchedule) ? origSchedule.filter(item => typeof item.start !== "undefined" && typeof item.end !== "undefined") : origSchedule;
 
 		// console.log("SCHEDULE:", JSON.stringify(schedule, null, 2));
 		let nowSignifierElem = document.querySelector("div.mission-control-status-container.now .event-signifier");
