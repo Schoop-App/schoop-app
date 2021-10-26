@@ -1,0 +1,50 @@
+[
+	{
+		"number": 1,
+		"type": "PERIOD",
+		"start": [8, 0],
+		"end": [8, 50]
+	},
+	{
+		"number": 2,
+		"type": "PERIOD",
+		"start": [9, 5],
+		"end": [9, 55]
+	},
+	{
+		"name": "Nutrition",
+		"type": "BREAK",
+		"start": [9, 55],
+		"end": [10, 30]
+	},
+	{
+		"number": 3,
+		"type": "PERIOD",
+		"start": [10, 30],
+		"end": [11, 20]
+	},
+	{
+		"number": 6,
+		"type": "PERIOD",
+		"start": [11, 35],
+		"end": [12, 25]
+	},
+	{
+		"name": "Lunch",
+		"type": "BREAK",
+		"start": [12, 25],
+		"end": [13, 10]
+	},
+	{
+		"number": 5,
+		"type": "PERIOD",
+		"start": [13, 10],
+		"end": [14, 0]
+	},
+	{
+		"number": 4,
+		"type": "PERIOD",
+		"start": [14, 15],
+		"end": [15, 5]
+	}
+]
