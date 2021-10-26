@@ -1,45 +1,63 @@
 [
 	{
-		"number": 1,
+		"number": 2,
 		"type": "PERIOD",
-		"start": [8, 50],
+		"start": [8, 30],
+		"end": [9, 40]
+	},
+	{
+		"name": "Extra Help",
+		"type": "BREAK",
+		"start": [9, 40],
 		"end": [10, 0]
 	},
 	{
-		"name": "Community",
-		"type": "BREAK",
+		"name": "Seminar",
+		"type": "ASSEMBLY",
 		"start": [10, 0],
-		"end": [10, 40],
-		"overrideSignifier": "MEET"
-	},
-	{
-		"number": 5,
-		"type": "PERIOD",
-		"start": [10, 40],
-		"end": [11, 50]
-	},
-	{
-		"name": "Lunch",
-		"type": "BREAK",
-		"start": [11, 50],
-		"end": [12, 35]
-	},
-	{
-		"number": 3,
-		"type": "PERIOD",
-		"start": [12, 35],
-		"end": [13, 45]
+		"end": [10, 50],
+		"overrideSignifier": "SEMINAR"
 	},
 	{
 		"name": "Break",
 		"type": "BREAK",
-		"start": [13, 45],
-		"end": [13, 55]
+		"start": [10, 50],
+		"end": [11, 0]
 	},
 	{
-		"number": 7,
+		"number": 4,
 		"type": "PERIOD",
-		"start": [13, 55],
+		"start": [11, 0],
+		"end": [12, 10]
+	},
+	{
+		"name": "Lunch",
+		"type": "BREAK",
+		"start": [12, 10],
+		"end": [12, 55]
+	},
+	{
+		"number": 6,
+		"type": "PERIOD",
+		"start": [12, 55],
+		"end": [14, 5]
+	},
+	{
+		"name": "Break",
+		"type": "BREAK",
+		"start": [14, 5],
+		"end": [14, 15]
+	},
+	{
+		"number": 8,
+		"type": "PERIOD",
+		"start": [14, 15],
 		"end": [15, 5]
+	},
+	{
+		"number": 9,
+		"type": "PERIOD",
+		"start": [15, 5],
+		"end": [15, 30]
 	}
 ]
