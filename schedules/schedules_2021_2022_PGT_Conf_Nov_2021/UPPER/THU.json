@@ -1,0 +1,45 @@
+[
+	{
+		"number": 2,
+		"type": "PERIOD",
+		"start": [8, 30],
+		"end": [9, 30]
+	},
+	{
+		"name": "Extra Help/Break",
+		"type": "BREAK",
+		"start": [9, 30],
+		"end": [10, 0]
+	},
+	{
+		"number": 5,
+		"type": "PERIOD",
+		"start": [10, 0],
+		"end": [11, 0]
+	},
+	{
+		"name": "Break",
+		"type": "BREAK",
+		"start": [11, 0],
+		"end": [11, 10]
+	},
+	{
+		"number": 3,
+		"type": "PERIOD",
+		"start": [11, 10],
+		"end": [12, 10]
+	},
+  {
+		"name": "Dismissal/Lunch",
+		"type": "BREAK",
+		"start": [12, 10],
+		"end": [13, 0]
+	},
+	{
+		"name": "Conferences",
+		"type": "BREAK",
+		"start": [13, 0],
+		"end": [15, 15],
+		"overrideSignifier": "CONF"
+	}
+]
