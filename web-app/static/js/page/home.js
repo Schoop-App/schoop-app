@@ -21,20 +21,105 @@ const SCHOOP_REDIRECT_REF = "dashboard";
 		</tr>`
 	);
 
-	const eventRowTemplate = Handlebars.compile(
-`<tr style="background-color: {{{eventColor}}};" class="event-{{{eventIsLightOrDark}}}{{#if hasLink}} event-has-link{{/if}}"{{#if hasLink}} data-link="{{{eventZoomLink}}}" data-link-raw="{{{eventZoomLinkRaw}}}" onclick="openZoomLink(this);"{{/if}} data-event-name="{{{eventName}}}">
-	<td class="signifier left">
-		<div style="display: flex; align-items: center;">
-			{{{eventSignifier}}}
-			{{#if calColor}}
-			<div style="background-color: {{calColor}}; border-radius: 50%; width: 14px; height: 14px; margin-left: 10px;" onclick="eventInfo(event)" data-event-name="{{{eventName}}}" data-event-id="{{{calId}}}" class="clickable" />
-			{{/if}}
-		</div>
-	</td>
-	<td class="center" style="font-weight: 700;">{{eventName}}</td>
-	<td class="right">{{eventTimespan}}</td>
-</tr>`
-	);
+// 	const eventRowTemplate = Handlebars.compile(
+// `<tr style="background-color: {{{eventColor}}};" class="event-{{{eventIsLightOrDark}}}{{#if hasLink}} event-has-link{{/if}}"{{#if hasLink}} data-link="{{{eventZoomLink}}}" data-link-raw="{{{eventZoomLinkRaw}}}" onclick="openZoomLink(this);"{{/if}} data-event-name="{{{eventName}}}">
+// 	<td class="signifier left">
+// 		<div style="display: flex; align-items: center;">
+// 			{{{eventSignifier}}}
+// 			{{#if calColor}}
+// 			<div style="background-color: {{calColor}}; border-radius: 50%; width: 14px; height: 14px; margin-left: 10px;" onclick="eventInfo(event)" data-event-name="{{{eventName}}}" data-event-id="{{{calId}}}" class="clickable" />
+// 			{{/if}}
+// 		</div>
+// 	</td>
+// 	<td class="center" style="font-weight: 700;">{{eventName}}</td>
+// 	<td class="right">{{eventTimespan}}</td>
+// </tr>`
+// 	);
+
+const eventRowTemplate = ({
+	eventSignifier,
+	eventName,
+	eventTimespan,
+	eventZoomLink,
+	eventZoomLinkRaw,
+	eventColor,
+	eventIsLightOrDark,
+	hasLink,
+	calColor,
+	calId
+}) => {
+	// ROW
+	const row = document.createElement("tr");
+	row.style.backgroundColor = eventColor;
+	row.classList.add("event-" + eventIsLightOrDark);
+	row.setAttribute("data-event-name", eventName);
+	if (hasLink) {
+			row.classList.add("event-has-link");
+			row.setAttribute("data-link", eventZoomLink);
+			row.setAttribute("data-link-raw", eventZoomLinkRaw);
+			row.setAttribute("onclick", "openZoomLink(this);");
+	}
+
+
+	// SIGNIFIER
+	const signifierElement = document.createElement("td");
+	signifierElement.classList.add("signifier", "left");
+
+	const signifierInner = document.createElement("div");
+	signifierInner.style.display = "flex";
+	signifierInner.style.alignItems = "center";
+
+	const signifierText = document.createTextNode(eventSignifier);
+
+	signifierInner.appendChild(signifierText);
+
+	// calendar button stuff (for signifier cell)
+	if (calColor) {
+			const calClickable = document.createElement("div");
+			calClickable.classList.add("clickable");
+
+			calClickable.style.backgroundColor = calColor;
+			calClickable.style.borderRadius = "50%";
+			calClickable.style.width = "14px";
+			calClickable.style.height = "14px";
+			calClickable.style.marginLeft = "10px";
+
+			calClickable.setAttribute("onclick", "eventInfo(event);");
+			calClickable.setAttribute("data-event-name", eventName);
+			calClickable.setAttribute("data-event-id", calId);
+
+			// add clickable button to signifier inner
+			signifierInner.appendChild(calClickable);
+	}
+
+	// add signifier content to cell
+	signifierElement.appendChild(signifierInner);
+
+
+	// EVENT NAME
+	const eventNameElement = document.createElement("td");
+	eventNameElement.classList.add("center");
+	eventNameElement.style.fontWeight = "700";
+
+	const eventNameText = document.createTextNode(eventName);
+	eventNameElement.appendChild(eventNameText);
+
+
+	// EVENT TIME
+	const eventTimeElement = document.createElement("td");
+	eventTimeElement.classList.add("right");
+
+	const eventTimeText = document.createTextNode(eventTimespan);
+	eventTimeElement.appendChild(eventTimeText);
+
+
+	// ADD EVERYTHING TO ROW
+	row.appendChild(signifierElement);
+	row.appendChild(eventNameElement);
+	row.appendChild(eventTimeElement);
+
+	return row.outerHTML;
+}
 
 	// INIT STATE
 	let dateState = {
@@ -234,7 +319,7 @@ const SCHOOP_REDIRECT_REF = "dashboard";
 				eventColor = colors[periodNumber - 1];
 				// console.log((periodNumber - 1), eventColor);
 
-				eventSignifier += `<span style="font-size: 0.93em;">${periodNumber}</span>`; // quite hacky, sorry
+				eventSignifier += periodNumber;
 			} else if (event.type === 'CAL') {
 				eventColor = colors[8]; // This color seems to be unused this year because no one has a ninth period?
 				calColor = event.color;
