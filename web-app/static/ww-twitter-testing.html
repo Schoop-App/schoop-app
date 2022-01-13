@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Windward Twitter</title>
+    <link rel="stylesheet" href="./css/vendor.css" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Karla:400,500,700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* width */
+      ::-webkit-scrollbar {
+        width: 10px;
+      }
+
+      /* Track */
+      ::-webkit-scrollbar-track {
+        background: rgba(0, 0, 0, 0.02);
+      }
+
+      /* Handle */
+      ::-webkit-scrollbar-thumb {
+        background: rgba(0, 0, 0, 0.3);
+        border-radius: 5px;
+      }
+
+      /* Handle on hover */
+      ::-webkit-scrollbar-thumb:hover {
+        background: rgba(0, 0, 0, 0.5);
+      }
+
+      /* Handle on active */
+      ::-webkit-scrollbar-thumb:active {
+        background: rgba(0, 0, 0, 0.6);
+      }
+
+      html,
+      body {
+        background: transparent;
+      }
+
+      h1 {
+        font-family: "Karla", sans-serif;
+        font-size: 32px;
+      }
+
+      .loading-overlay {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        background: #fff;
+      }
+
+      .loading-overlay.hidden {
+        display: none;
+      }
+
+      .loading-overlay h1 {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        margin-top: inherit;
+      }
+
+      body.notloaded {
+        overflow: hidden;
+      }
+    </style>
+  </head>
+  <body style="background-color: #fff" class="notloaded">
+    <div class="loading-overlay"><h1>Loading Tweets&hellip;</h1></div>
+    <a
+      class="twitter-timeline"
+      href="https://twitter.com/WindwardSchool?ref_src=twsrc%5Etfw"
+      data-tweet-limit="3"
+      >Tweets by WindwardSchool</a
+    >
+    <script
+      src="https://platform.twitter.com/widgets.js"
+      charset="utf-8"
+    ></script>
+    <script defer>
+      (function (document) {
+        let hideLoadingOverlay = () => {
+          document.querySelector(".loading-overlay").classList.add("hidden");
+          document.body.classList.remove("notloaded");
+        };
+
+        document.addEventListener("DOMContentLoaded", () => {
+          twttr.ready((twttr) => {
+            twttr.events.bind("rendered", (event) => {
+              let win = document.getElementById(event.target.id);
+              let winDoc = win.contentDocument || win.contentWindow.document;
+
+              // add test announcement
+              winDoc
+                .querySelector("ol.timeline-TweetList")
+                .insertAdjacentHTML(
+                  "afterbegin",
+                  generateAnnouncementHTML(
+                    "This is a test announcement. Huzzah!",
+                    new Date()
+                  )
+                );
+
+              let fontStylesheetReq = new XMLHttpRequest();
+              fontStylesheetReq.onreadystatechange = function () {
+                if (this.readyState === 4 && this.status === 200) {
+                  let styleElem = winDoc.createElement("style");
+                  styleElem.innerHTML = fontStylesheetReq.responseText;
+                  winDoc.head.insertBefore(
+                    styleElem,
+                    winDoc.head.childNodes[winDoc.head.childNodes.length - 1]
+                      .nextSibling
+                  );
+                  winDoc.body.style.fontFamily = "Karla";
+                  setTimeout(hideLoadingOverlay, 200);
+                }
+              };
+              fontStylesheetReq.open(
+                "GET",
+                "https://fonts.googleapis.com/css?family=Karla:400,500,700&display=swap",
+                true
+              );
+              fontStylesheetReq.send();
+            });
+          });
+        });
+
+        function generateAnnouncementHTML(message, date) {
+          const dateString = new Date().toLocaleString("en-US", {
+            month: "short",
+            day: "numeric",
+            year: "numeric",
+          });
+
+          return `<li class="timeline-TweetList-tweet customisable-border">
+  <div
+    class="timeline-Tweet u-cf js-tweetIdInfo js-clickToOpenTarget"
+    data-twcon="timelinechrome"
+    data-scribe="component:tweet"
+  >
+    <div class="timeline-Tweet-author js-inViewportScribingTarget">
+      <a
+        class="TweetAuthor-avatar Identity-avatar u-linkBlend"
+        data-scribe="element:user_link"
+        aria-label="Schoop (screen name: Schoop)"
+        ><img
+          class="Avatar"
+          data-scribe="element:avatar"
+          src="https://schoop.app/img/icons/apple-touch-icon-180x180.png"
+      /></a>
+
+      <div
+        class="TweetAuthor js-inViewportScribingTarget"
+        data-scribe="component:author"
+      >
+        <a
+          class="TweetAuthor-link Identity u-linkBlend"
+          data-scribe="element:user_link"
+          aria-label="Schoop (screen name: Schoop)"
+        >
+          <div class="TweetAuthor-nameScreenNameContainer">
+            <span class="TweetAuthor-decoratedName">
+              <span
+                class="TweetAuthor-name Identity-name customisable-highlight"
+                title="Schoop"
+                data-scribe="element:name"
+                >Schoop</span
+              >
+            </span>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <p class="timeline-Tweet-text" lang="en" dir="ltr">${message}</p>
+
+    <div class="timeline-Tweet-metadata">
+      <a
+        class="timeline-Tweet-timestamp"
+        data-scribe="element:mini_timestamp"
+      >
+        <time
+          class="dt-updated"
+          datetime="${date.toISOString()}"
+          pubdate=""
+          title="Time posted: ${date.toString()}"
+          aria-label="Posted on ${dateString}"
+        >
+          ${dateString}
+        </time>
+      </a>
+    </div>
+  </div>
+</li>`;
+        }
+      })(document);
+    </script>
+  </body>
+</html>
