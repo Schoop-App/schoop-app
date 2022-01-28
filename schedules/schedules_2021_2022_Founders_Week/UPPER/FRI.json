@@ -1,0 +1,57 @@
+[
+  {
+    "number": 1,
+    "type": "PERIOD",
+    "start": [8, 30],
+    "end": [9, 10]
+  },
+  {
+    "number": 2,
+    "type": "PERIOD",
+    "start": [9, 20],
+    "end": [10, 0]
+  },
+  {
+    "name": "Break",
+    "type": "BREAK",
+    "start": [10, 0],
+    "end": [10, 20]
+  },
+  {
+    "number": 4,
+    "type": "PERIOD",
+    "start": [10, 20],
+    "end": [11, 0]
+  },
+  {
+    "number": 6,
+    "type": "PERIOD",
+    "start": [11, 10],
+    "end": [11, 50]
+  },
+  {
+    "name": "Lunch",
+    "type": "BREAK",
+    "start": [11, 50],
+    "end": [12, 25]
+  },
+  {
+    "name": "Fulcrum (Students: Please go straight to the field at 12:25)",
+    "type": "ASSEMBLY",
+    "start": [12, 25],
+    "end": [13, 30],
+    "overrideSignifier": "FULCRUM"
+  },
+  {
+    "number": 3,
+    "type": "PERIOD",
+    "start": [13, 35],
+    "end": [14, 15]
+  },
+  {
+    "number": 5,
+    "type": "PERIOD",
+    "start": [14, 25],
+    "end": [15, 5]
+  }
+]
