@@ -12,11 +12,11 @@
 		"end": [10, 0]
 	},
 	{
-		"name": "Affinity",
+		"name": "US Flex",
 		"type": "ASSEMBLY",
 		"start": [10, 0],
 		"end": [10, 50],
-		"overrideSignifier": "AFFINITY"
+		"overrideSignifier": "FLEX"
 	},
 	{
 		"name": "Break",
