@@ -6,22 +6,22 @@
 		"end": [9, 40]
 	},
 	{
-		"name": "Extra Help",
+		"name": "Passing",
 		"type": "BREAK",
 		"start": [9, 40],
-		"end": [10, 0]
+		"end": [9, 50]
 	},
 	{
 		"name": "Seminar",
 		"type": "ASSEMBLY",
-		"start": [10, 0],
-		"end": [10, 50],
+		"start": [9, 50],
+		"end": [10, 40],
 		"overrideSignifier": "SEMINAR"
 	},
 	{
-		"name": "Break",
+		"name": "Extra Help",
 		"type": "BREAK",
-		"start": [10, 50],
+		"start": [10, 40],
 		"end": [11, 0]
 	},
 	{
