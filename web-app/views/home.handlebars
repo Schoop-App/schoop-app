@@ -3,7 +3,11 @@
 	<div class="gridded-item-part today-container">
 		<h1 class="today-heading">{{studentInfo.first_name}}&apos;s&nbsp;<span id="daySpan">Day</span></h1> <!-- e.g. Zane's Monday -->
 		<div class="today-schedule-outer">
-			<p class="zoom-link-hint">Click on an event to open its Zoom link.</p>
+			<p class="zoom-link-hint">
+				Click on an event to open its Zoom link. |
+				<label for="divisionSelect">SCHEDULE:</label>
+				<select id="divisionSelect"></select>
+			</p>
 			<table class="today-schedule fix-border-radius">
 				<tbody></tbody>
 			</table>

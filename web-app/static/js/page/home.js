@@ -127,6 +127,7 @@ const eventRowTemplate = ({
 		// previousDate: new Date(initialDate) // copying it
 		lastRefreshedDate: initialDate
 	};
+
 	let appState = mobx.observable({
 		time: initialDate.getTime()
 		// timeLastRefreshed: initialDate.getTime()
@@ -572,6 +573,12 @@ const eventRowTemplate = ({
 	};
 	// window.renderPage = onPageReady; // for refresh
 
+	// set student division
+	function setDivision(division) {
+		window.STUDENT_DIVISION = division;
+		handleAutorunRefresh(dateState);
+	}
+
 	document.addEventListener("DOMContentLoaded", async () => {
 		localStorage.clear();
 		window.addEventListener("focus", () => handleAutorunRefresh(dateState)); // because silly browsers can't be trusted
@@ -586,5 +593,27 @@ const eventRowTemplate = ({
 			}
 		});
 		setIntervalAdjusted(() => { appState.time = Date.now(); }, 1000);
+
+		const $divisionSelect = document.querySelector("select#divisionSelect");
+		let optionElement, divisionName;
+		for (divisionKey of Object.keys(window.DIVISIONS)) {
+			// create option
+			optionElement = document.createElement("option");
+			optionElement.value = divisionKey;
+			// select option if it's the student's default division
+			optionElement.selected = divisionKey === window.STUDENT_DIVISION;
+
+			// add text node
+			divisionName = ({MIDDLE: "Middle", UPPER: "High"})[window.DIVISIONS[divisionKey]];
+			optionElement.appendChild(document.createTextNode(divisionName + " School"));
+
+			// add option to select
+			document.querySelector("select#divisionSelect").appendChild(optionElement);
+		}
+		
+		// add listener
+		$divisionSelect.addEventListener("change", function () {
+			setDivision(this.value);
+		});
 	});
 })(window);
