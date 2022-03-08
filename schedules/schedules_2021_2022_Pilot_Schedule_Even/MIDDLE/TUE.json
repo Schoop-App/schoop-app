@@ -9,17 +9,17 @@
 		"name": "Extra Help",
 		"type": "BREAK",
 		"start": [9, 40],
-		"end": [10, 0]
+		"end": [10, 5]
 	},
 	{
 		"name": "Seminar",
 		"type": "ASSEMBLY",
-		"start": [10, 0],
+		"start": [10, 5],
 		"end": [10, 50],
 		"overrideSignifier": "SEMINAR"
 	},
 	{
-		"name": "Break",
+		"name": "Passing",
 		"type": "BREAK",
 		"start": [10, 50],
 		"end": [11, 0]
@@ -46,12 +46,12 @@
 		"number": 7,
 		"type": "PERIOD",
 		"start": [14, 10],
-		"end": [15, 20]
+		"end": [15, 0]
 	},
 	{
 		"name": "Athletics",
 		"type": "BREAK",
-		"start": [15, 20],
+		"start": [15, 0],
 		"end": [15, 30],
 		"overrideSignifier": "ATHLETICS"
 	}
