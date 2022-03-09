@@ -6,46 +6,45 @@
 		"end": [10, 0]
 	},
 	{
-		"name": "Community/Affinity",
+		"name": "Extra Help",
 		"type": "BREAK",
 		"start": [10, 0],
-		"end": [10, 40],
-		"overrideSignifier": "MEET"
+		"end": [10, 20]
 	},
 	{
 		"number": 5,
 		"type": "PERIOD",
-		"start": [10, 40],
-		"end": [11, 50]
+		"start": [10, 20],
+		"end": [11, 30]
 	},
 	{
 		"name": "Lunch",
 		"type": "BREAK",
-		"start": [11, 50],
-		"end": [12, 35]
+		"start": [11, 30],
+		"end": [12, 15]
+	},
+	{
+		"number": 8,
+		"type": "PERIOD",
+		"start": [12, 15],
+		"end": [13, 0]
 	},
 	{
 		"number": 3,
 		"type": "PERIOD",
-		"start": [12, 35],
-		"end": [13, 45]
-	},
-	{
-		"name": "Break",
-		"type": "BREAK",
-		"start": [13, 45],
-		"end": [13, 55]
+		"start": [13, 10],
+		"end": [14, 20]
 	},
 	{
 		"number": 7,
 		"type": "PERIOD",
-		"start": [13, 55],
-		"end": [15, 5]
+		"start": [14, 25],
+		"end": [15, 15]
 	},
 	{
 		"name": "Athletics",
 		"type": "BREAK",
-		"start": [15, 5],
+		"start": [15, 15],
 		"end": [15, 30],
 		"overrideSignifier": "ATHLETICS"
 	}
