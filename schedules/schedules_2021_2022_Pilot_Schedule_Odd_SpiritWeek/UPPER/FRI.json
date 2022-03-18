@@ -1,0 +1,44 @@
+[
+  {
+    "number": 1,
+    "type": "PERIOD",
+    "start": [8, 30],
+    "end": [9, 30]
+  },
+  {
+    "name": "Break",
+    "type": "BREAK",
+    "start": [9, 30],
+    "end": [9, 50]
+  },
+  {
+    "number": 7,
+    "type": "PERIOD",
+    "start": [9, 50],
+    "end": [10, 50]
+  },
+  {
+    "name": "Break",
+    "type": "BREAK",
+    "start": [10, 50],
+    "end": [11, 20]
+  },
+  {
+    "number": 3,
+    "type": "PERIOD",
+    "start": [11, 20],
+    "end": [12, 20]
+  },
+  {
+    "name": "Lunch/Activities",
+    "type": "BREAK",
+    "start": [12, 20],
+    "end": [14, 5]
+  },
+  {
+    "number": 5,
+    "type": "PERIOD",
+    "start": [14, 5],
+    "end": [15, 5]
+  }
+]

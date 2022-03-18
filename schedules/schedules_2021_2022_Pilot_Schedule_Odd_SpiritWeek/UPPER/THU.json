@@ -1,0 +1,50 @@
+[
+	{
+		"number": 2,
+		"type": "PERIOD",
+		"start": [8, 30],
+		"end": [9, 40]
+	},
+	{
+		"name": "Community/Affinity",
+		"type": "BREAK",
+		"start": [9, 40],
+		"end": [10, 25]
+	},
+	{
+		"number": 4,
+		"type": "PERIOD",
+		"start": [10, 25],
+		"end": [11, 35]
+	},
+	{
+		"name": "Lunch",
+		"type": "BREAK",
+		"start": [11, 35],
+		"end": [12, 20]
+	},
+	{
+		"number": 6,
+		"type": "PERIOD",
+		"start": [12, 20],
+		"end": [13, 30]
+	},
+	{
+		"name": "Extra Help",
+		"type": "BREAK",
+		"start": [13, 30],
+		"end": [13, 55]
+	},
+	{
+		"number": 8,
+		"type": "PERIOD",
+		"start": [13, 55],
+		"end": [14, 45]
+	},
+	{
+		"number": 9,
+		"type": "PERIOD",
+		"start": [14, 45],
+		"end": [15, 10]
+	}
+]
