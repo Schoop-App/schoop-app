@@ -1,0 +1,50 @@
+[
+	{
+		"number": 1,
+		"type": "PERIOD",
+		"start": [8, 30],
+		"end": [9, 5]
+	},
+	{
+		"number": 2,
+		"type": "PERIOD",
+		"start": [9, 10],
+		"end": [9, 45]
+	},
+	{
+		"name": "Break",
+		"type": "BREAK",
+		"start": [9, 45],
+		"end": [10, 0]
+	},
+	{
+		"number": 4,
+		"type": "PERIOD",
+		"start": [10, 0],
+		"end": [10, 35]
+	},
+	{
+		"number": 6,
+		"type": "PERIOD",
+		"start": [10, 40],
+		"end": [11, 15]
+	},
+	{
+		"name": "Break",
+		"type": "BREAK",
+		"start": [11, 15],
+		"end": [11, 30]
+	},
+	{
+		"number": 3,
+		"type": "PERIOD",
+		"start": [11, 30],
+		"end": [12, 5]
+	},
+	{
+		"number": 5,
+		"type": "PERIOD",
+		"start": [12, 10],
+		"end": [12, 45]
+	}
+]
