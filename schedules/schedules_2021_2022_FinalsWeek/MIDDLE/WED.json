@@ -1,0 +1,11 @@
+[
+  {
+    "name": "FINAL EXAMS - Science (Click for Schedule)",
+    "type": "ASSEMBLY",
+    "overrideSignifier": "FINALS",
+    "start": [12, 0],
+    "end": [23, 59],
+    "overrideLink": true,
+    "link": "https://sites.google.com/windwardschool.org/exams/home"
+  }
+]
