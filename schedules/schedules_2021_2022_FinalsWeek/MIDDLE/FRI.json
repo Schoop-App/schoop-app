@@ -1,11 +1,69 @@
 [
   {
-    "name": "???",
+    "number": 1,
+    "type": "PERIOD",
+    "start": [8, 30],
+    "end": [8, 40]
+  },
+  {
+    "number": 2,
+    "type": "PERIOD",
+    "start": [8, 50],
+    "end": [9, 0]
+  },
+  {
+    "number": 3,
+    "type": "PERIOD",
+    "start": [9, 10],
+    "end": [9, 20]
+  },
+  {
+    "number": 4,
+    "type": "PERIOD",
+    "start": [9, 30],
+    "end": [9, 40]
+  },
+  {
+    "name": "Break",
+    "type": "BREAK",
+    "start": [9, 40],
+    "end": [10, 0]
+  },
+  {
+    "number": 5,
+    "type": "PERIOD",
+    "start": [10, 0],
+    "end": [10, 10]
+  },
+  {
+    "number": 6,
+    "type": "PERIOD",
+    "start": [10, 20],
+    "end": [10, 30]
+  },
+  {
+    "number": 7,
+    "type": "PERIOD",
+    "start": [10, 40],
+    "end": [10, 50]
+  },
+  {
+    "name": "Break",
+    "type": "BREAK",
+    "start": [10, 50],
+    "end": [11, 0]
+  },
+  {
+    "name": "All School Assembly - GYM",
     "type": "ASSEMBLY",
-    "overrideSignifier": "FINALS",
-    "start": [12, 0],
-    "end": [23, 59],
-    "overrideLink": true,
-    "link": "https://sites.google.com/windwardschool.org/exams/home"
+    "start": [11, 0],
+    "end": [11, 25]
+  },
+  {
+    "name": "Yearbook Distribution and Signing - FIELD",
+    "type": "ASSEMBLY",
+    "start": [11, 25],
+    "end": [12, 0],
+    "overrideSignifier": "YEARBOOK"
   }
 ]
