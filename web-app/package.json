@@ -17,7 +17,7 @@
     "buffer-equal-constant-time": "^1.0.1",
     "connect-redis": "^4.0.4",
     "csurf": "^1.11.0",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "express-handlebars": "^3.1.0",
     "express-rate-limit": "^5.1.1",
     "express-session": "^1.17.0",
